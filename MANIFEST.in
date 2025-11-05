@@ -1,0 +1,26 @@
+# Include important metadata files
+include README.md
+include LICENSE
+include pyproject.toml
+include requirements.txt
+
+# Include documentation
+recursive-include docs *.md
+
+# Include type information
+include src/pycomptox/py.typed
+
+# Include tests (optional, but useful for users who want to run tests)
+recursive-include tests *.py
+
+# Exclude development files
+global-exclude __pycache__
+global-exclude *.py[cod]
+global-exclude *$py.class
+global-exclude .DS_Store
+global-exclude *.so
+global-exclude .coverage
+global-exclude .pytest_cache
+
+# Exclude notebooks from the package (they're examples, not part of the package)
+prune notebooks

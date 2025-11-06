@@ -1,0 +1,109 @@
+site_name: PyCompTox Documentation
+site_description: Python interface to the EPA CompTox Dashboard Chemical API
+site_author: PyCompTox Contributors
+site_url: https://github.com/USEtox/PyCompTox
+
+repo_name: USEtox/PyCompTox
+repo_url: https://github.com/USEtox/PyCompTox
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    # Light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: teal
+      accent: green
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: green
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: INSTALLATION.md
+    - Quick Start: quick_start.md
+    - Configuration: configuration.md
+  - API Reference:
+    - Chemical Search: CHEMICAL_SEARCH.md
+    - Chemical Details: CHEMICAL_DETAILS.md
+    - Chemical Properties: CHEMICAL_PROPERTIES.md
+    - Extra Data: EXTRA_DATA.md
+    - Wikipedia Links: WIKIPEDIA_LINKS.md
+    - PubChem Links: PUBCHEM_LINKS.md
+  - User Guide:
+    - Setup & Configuration: MODERN_SETUP.md
+    - Best Practices: best_practices.md
+    - Examples: examples.md
+  - API Documentation:
+    - Chemical: api/chemical.md
+    - ChemicalDetails: api/details.md
+    - ChemicalProperties: api/properties.md
+    - ExtraData: api/extradata.md
+    - WikiLink: api/wikilink.md
+    - PubChemLink: api/pubchemlink.md
+    - Configuration: api/config.md
+  - About:
+    - Contributing: contributing.md
+    - License: license.md
+    - Changelog: changelog.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/USEtox/PyCompTox
+  version:
+    provider: mike
+
+copyright: Copyright &copy; 2025 PyCompTox Contributors

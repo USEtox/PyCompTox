@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pycomptox"
-version = "0.3.0"
+version = "0.6.0"
 description = "A Python interface for the EPA CompTox Dashboard Chemical API"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -59,6 +59,11 @@ notebook = [
     "pandas>=2.0.0",
     "matplotlib>=3.7.0",
 ]
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.4.0",
+    "mkdocstrings[python]>=0.24.0",
+]
 all = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
@@ -69,6 +74,9 @@ all = [
     "jupyter>=1.0.0",
     "pandas>=2.0.0",
     "matplotlib>=3.7.0",
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.4.0",
+    "mkdocstrings[python]>=0.24.0",
 ]
 
 [project.urls]

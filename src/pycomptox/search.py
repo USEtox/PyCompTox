@@ -172,7 +172,7 @@ class Chemical:
         Example:
             >>> client = Chemical(api_key="your_api_key")
             >>> results = client.search_by_starting_value("DTXSID7020182")
-            >>> print(results[0]['preferredName'])
+            >>> print(results[0].get("preferredName"))
         """
         encoded_value = quote(value, safe='')
         endpoint = f"/chemical/search/start-with/{encoded_value}"
@@ -203,7 +203,7 @@ class Chemical:
         Example:
             >>> client = Chemical(api_key="your_api_key")
             >>> results = client.search_by_exact_value("Bisphenol A")
-            >>> print(results[0]['dtxsid'])
+            >>> print(results[0].get("dtxsid"))
         """
         encoded_value = quote(value, safe='')
         endpoint = f"/chemical/search/equal/{encoded_value}"

@@ -195,11 +195,14 @@ class ExtraData:
             >>> results = extra.get_data_by_dtxsid_batch(dtxsids)
             >>> 
             >>> for data in results:
-            ...     print(f"{data['dtxsid']}: {data['pubmed']} PubMed refs")
+            ...     pubmed_count = data.get("pubmed", 0)
+            ...     dtxsid = data.get("dtxsid", "")
+            ...     print(f"{dtxsid}: {pubmed_count} PubMed refs")
             >>> 
             >>> # Find chemicals with most references
-            >>> sorted_data = sorted(results, key=lambda x: x['refs'], reverse=True)
-            >>> print(f"Most referenced: {sorted_data[0]['dtxsid']} with {sorted_data[0]['refs']} refs")
+            >>> sorted_data = sorted(results, key=lambda x: x.get("refs", 0), reverse=True)
+            >>> top = sorted_data[0]
+            >>> print(f"Most referenced: {top.get('dtxsid')} with {top.get('refs')} refs")
         """
         if len(dtxsids) > 1000:
             raise ValueError(f"Maximum 1000 DTXSIDs allowed, got {len(dtxsids)}")

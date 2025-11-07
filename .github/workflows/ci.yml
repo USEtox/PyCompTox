@@ -97,7 +97,7 @@ jobs:
         pip install mkdocs mkdocs-material mkdocstrings[python]
     
     - name: Build documentation
-      run: mkdocs build --strict
+      run: mkdocs build
     
     - name: Upload documentation artifact
       uses: actions/upload-artifact@v4

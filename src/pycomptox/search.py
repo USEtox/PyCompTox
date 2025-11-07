@@ -154,15 +154,15 @@ class Chemical:
         Returns:
             List[Dict[str, Any]]: A list of chemical records matching the search criteria.
                 Each record contains:
-                - preferredName (str): The preferred chemical name
-                - isMarkush (bool): Whether the chemical is a Markush structure
-                - searchName (str): The name field that matched
-                - searchValue (str): The value that was matched
-                - smiles (str): The SMILES notation
-                - dtxcid (str): The DSSTox Compound ID
-                - dtxsid (str): The DSSTox Substance ID
-                - casrn (str): The CAS Registry Number
-                - rank (int): The search result ranking
+                - `preferredName` (str): The preferred chemical name
+                - `isMarkush` (bool): Whether the chemical is a Markush structure
+                - `searchName` (str): The name field that matched
+                - `searchValue` (str): The value that was matched
+                - `smiles` (str): The SMILES notation
+                - `dtxcid` (str): The DSSTox Compound ID
+                - `dtxsid` (str): The DSSTox Substance ID
+                - `casrn` (str): The CAS Registry Number
+                - `rank` (int): The search result ranking
                 - hasStructureImage (int): Whether a structure image is available
         
         Raises:

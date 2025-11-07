@@ -178,12 +178,12 @@ class ExtraData:
             
         Returns:
             List[dict]: List of extra data dictionaries, each containing:
-                - dtxsid: DSSTox Substance Identifier
-                - dtxcid: DSSTox Compound Identifier
-                - refs: Total reference count
-                - googlePatent: Number of Google Patent references
-                - literature: Number of literature references
-                - pubmed: Number of PubMed citations
+                - `dtxsid`: DSSTox Substance Identifier
+                - `dtxcid`: DSSTox Compound Identifier
+                - `refs`: Total reference count
+                - `googlePatent`: Number of Google Patent references
+                - `literature`: Number of literature references
+                - `pubmed`: Number of PubMed citations
                 
         Raises:
             ValueError: If more than 1000 DTXSIDs provided

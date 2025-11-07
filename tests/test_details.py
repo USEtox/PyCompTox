@@ -32,7 +32,7 @@ def test_search_and_details_workflow():
     except ValueError as e:
         print(f"✗ Error: {e}\n")
         print("Please set up your API key first:")
-        print("  python setup_api_key.py set YOUR_API_KEY")
+        print("  pycomptox-setup set YOUR_API_KEY")
         return
     
     # Example 1: Search by chemical name and get details

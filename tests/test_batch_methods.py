@@ -25,7 +25,7 @@ def test_batch_methods():
     except ValueError as e:
         print(f"✗ Error: {e}\n")
         print("Please set up your API key first:")
-        print("  python setup_api_key.py set YOUR_API_KEY")
+        print("  pycomptox-setup set YOUR_API_KEY")
         return
     
     # Test 1: Batch search by exact values

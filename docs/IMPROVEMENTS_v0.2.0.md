@@ -33,14 +33,14 @@ client = Chemical()
 
 ### 2. ✅ Command-Line API Key Management Utility
 
-**File**: `setup_api_key.py`
+**CLI Command**: `pycomptox-setup`
 
 **Commands**:
 ```bash
-python setup_api_key.py set YOUR_API_KEY    # Save API key
-python setup_api_key.py test                # Test connection
-python setup_api_key.py show                # Show masked key
-python setup_api_key.py delete              # Delete saved key
+pycomptox-setup set YOUR_API_KEY    # Save API key
+pycomptox-setup test                # Test connection
+pycomptox-setup show                # Show masked key
+pycomptox-setup delete              # Delete saved key
 ```
 
 **Features**:
@@ -101,11 +101,12 @@ PyCompTox/
 │   └── example.py          # Updated examples
 ├── docs/                    # NEW: Documentation folder
 │   └── API_KEY_AND_RATE_LIMITING.md
-├── setup_api_key.py         # NEW: API key utility
 ├── requirements.txt
 ├── README.md               # Updated with new features
 └── LICENSE
 ```
+
+Note: The CLI tool `pycomptox-setup` is now part of the package (in `src/pycomptox/__main__.py`).
 
 ### 5. ✅ Updated Test Suite
 
@@ -202,9 +203,9 @@ All features have been tested and verified:
 
 ## 📊 Code Statistics
 
-**New Files**: 4
-- `src/pycomptox/config.py` (143 lines)
-- `setup_api_key.py` (106 lines)
+**New Files**: 3
+- `src/pycomptox/config.py` (143 lines) - Configuration management
+- `src/pycomptox/__main__.py` (141 lines) - CLI tool
 - `tests/__init__.py` (3 lines)
 - `docs/API_KEY_AND_RATE_LIMITING.md` (343 lines)
 
@@ -259,8 +260,8 @@ results = client.search_by_exact_value("Bisphenol A")
 **After** (New way):
 ```bash
 # One-time setup
-python setup_api_key.py set abc123xyz789
-python setup_api_key.py test
+pycomptox-setup set abc123xyz789
+pycomptox-setup test
 ```
 
 ```python

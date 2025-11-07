@@ -22,16 +22,16 @@ Instead of providing your API key every time you create a `Chemical` client, you
 
 ```bash
 # Save your API key
-python setup_api_key.py set YOUR_API_KEY_HERE
+pycomptox-setup set YOUR_API_KEY_HERE
 
 # Test that it works
-python setup_api_key.py test
+pycomptox-setup test
 
 # View your saved key (masked for security)
-python setup_api_key.py show
+pycomptox-setup show
 
 # Delete your saved key
-python setup_api_key.py delete
+pycomptox-setup delete
 ```
 
 #### Method 2: Using Python
@@ -284,7 +284,7 @@ client = Chemical(time_delay_between_calls=2.0)
 
 ## Summary
 
-- ✅ Save your API key once with `save_api_key()` or `setup_api_key.py`
+- ✅ Save your API key once with `save_api_key()` or `pycomptox-setup`
 - ✅ Create clients without providing API key: `Chemical()`
 - ✅ Control rate limiting with `time_delay_between_calls` parameter
 - ✅ Default delay is 0.0 seconds (no delay)

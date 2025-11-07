@@ -130,16 +130,16 @@ print(f"API key saved: {info['has_api_key']}")
 
 ```bash
 # Save API key
-python setup_api_key.py set YOUR_API_KEY
+pycomptox-setup set YOUR_API_KEY
 
 # Test API key
-python setup_api_key.py test
+pycomptox-setup test
 
 # Show API key (masked)
-python setup_api_key.py show
+pycomptox-setup show
 
 # Delete API key
-python setup_api_key.py delete
+pycomptox-setup delete
 ```
 
 ---

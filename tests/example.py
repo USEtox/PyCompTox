@@ -5,7 +5,7 @@ This script demonstrates all available search methods.
 The API key will be loaded automatically from saved configuration.
 
 To set up your API key, run:
-    python setup_api_key.py set YOUR_API_KEY
+    pycomptox-setup set YOUR_API_KEY
 """
 
 import sys
@@ -25,7 +25,7 @@ def main():
     except ValueError as e:
         print(f"Error: {e}\n")
         print("Please set up your API key first:")
-        print("  python setup_api_key.py set YOUR_API_KEY")
+        print("  pycomptox-setup set YOUR_API_KEY")
         return
     
     print("=== PyCompTox Chemical Search Examples ===\n")

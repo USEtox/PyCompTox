@@ -12,6 +12,8 @@ PyCompTox provides a simple, Pythonic interface to the [EPA CompTox Dashboard](h
 - **Chemical Search**: Search by name, CASRN, InChIKey, SMILES, formula, and mass
 - **Chemical Details**: Retrieve comprehensive chemical information with customizable projections
 - **Chemical Properties**: Access physicochemical properties, QSAR predictions, experimental data, and fate properties
+- **Bioactivity Data**: ToxCast bioactivity data, assay results, and Activity-Exposure-Dose (AED) data
+- **Adverse Outcome Pathways**: AOP data linking ToxCast assays to biological events and pathways
 - **Extra Data**: Get reference counts from literature, PubMed, and patents
 
 ## Features
@@ -112,6 +114,40 @@ print(f"PubMed citations: {data['pubmed']}")
 print(f"Patents: {data['googlePatent']}")
 ```
 
+### Get Bioactivity Data
+
+```python
+from pycomptox import BioactivityData
+
+bioactivity = BioactivityData()
+
+# Get bioactivity summary for a chemical
+summary = bioactivity.get_summary_by_dtxsid("DTXSID7020182")
+
+# Get data for an assay endpoint
+data = bioactivity.get_data_by_aeid(3032)
+
+# Get Activity-Exposure-Dose data
+aed = bioactivity.get_aed_data_by_dtxsid("DTXSID5021209")
+```
+
+### Get Adverse Outcome Pathway Data
+
+```python
+from pycomptox import BioactivityAOP
+
+aop = BioactivityAOP()
+
+# Get AOP data by ToxCast assay endpoint
+aop_data = aop.get_aop_data_by_toxcast_aeid(63)
+
+# Get AOP data by event number
+events = aop.get_aop_data_by_event_number(18)
+
+# Get AOP data by gene ID
+gene_aops = aop.get_aop_data_by_entrez_gene_id(196)
+```
+
 ## API Key Setup
 
 PyCompTox requires a CompTox Dashboard API key. You can obtain one from the [EPA CompTox Dashboard](https://comptox.epa.gov/dashboard/api).
@@ -179,6 +215,29 @@ Access comprehensive property data:
 
 [View Chemical Properties Documentation →](CHEMICAL_PROPERTIES.md)
 
+### Bioactivity Data (`BioactivityData`)
+
+Access ToxCast bioactivity data:
+
+- Summary statistics by chemical, tissue, or assay
+- Detailed assay results
+- Activity-Exposure-Dose (AED) data
+- Sample and data identifier lookups
+- Batch operations
+
+[View Bioactivity Data Documentation →](BIOACTIVITY_DATA.md)
+
+### Adverse Outcome Pathways (`BioactivityAOP`)
+
+Link ToxCast assays to biological outcomes:
+
+- AOP data by ToxCast assay endpoint
+- AOP data by event number
+- AOP data by gene ID
+- Pathway and event relationships
+
+[View AOP Documentation →](BIOACTIVITY_DATA.md)
+
 ### Extra Data (`ExtraData`)
 
 Get reference counts and metadata:
@@ -195,19 +254,30 @@ Get reference counts and metadata:
 
 - [Installation Guide](INSTALLATION.md)
 - [Quick Start Tutorial](quick_start.md)
+- [Quick API Reference](QUICK_REFERENCE.md)
 - [Configuration](configuration.md)
 - [Best Practices](best_practices.md)
+- [Chemical Search](CHEMICAL_SEARCH.md)
+- [Chemical Details](CHEMICAL_DETAILS.md)
+- [Chemical Properties](CHEMICAL_PROPERTIES.md)
+- [Bioactivity Data & AOP](BIOACTIVITY_DATA.md)
+- [Extra Data](EXTRA_DATA.md)
+- [Batch Methods](BATCH_METHODS.md)
+- [API Key & Rate Limiting](API_KEY_AND_RATE_LIMITING.md)
 - [API Reference](api/chemical.md)
 - [Examples](examples.md)
 
 ## Examples
 
-See the `notebooks/` directory for Jupyter notebook examples:
+See the `tests/` directory for comprehensive examples:
 
-- `chemical_search_examples.ipynb` - Chemical search examples
-- `chemical_details_examples.ipynb` - Details retrieval examples
-- `chemical_properties_examples.ipynb` - Properties access examples
-- `extra_data_examples.ipynb` - Reference data examples
+- `test_api.py` - Chemical search examples
+- `test_details.py` - Details retrieval examples
+- `test_properties.py` - Properties access examples
+- `test_bioactivitydata.py` - Bioactivity data examples
+- `test_bioactivityaop.py` - AOP data examples
+- `test_extradata.py` - Reference data examples
+- `test_batch_methods.py` - Batch operation examples
 
 ## Requirements
 

@@ -234,14 +234,85 @@ details_list = details_client.data_by_dtxsid_batch(list(dtxsids))
 
 ---
 
+## Bioactivity Data (`BioactivityData` class)
+
+```python
+from pycomptox import BioactivityData
+
+client = BioactivityData(api_key=None, base_url="...", time_delay_between_calls=0.0)
+```
+
+### Summary Methods (Return Dict or List[Dict])
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `get_summary_by_dtxsid(dtxsid)` | Chemical bioactivity summary | `client.get_summary_by_dtxsid("DTXSID7020182")` |
+| `get_summary_by_dtxsid_and_tissue(dtxsid, tissue)` | Tissue-filtered summary | `client.get_summary_by_dtxsid_and_tissue("DTXSID7024241", "liver")` |
+| `get_summary_by_aeid(aeid)` | Assay endpoint summary | `client.get_summary_by_aeid("3032")` |
+
+### Detailed Data Methods (Return Dict or List[Dict])
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `get_data_by_spid(spid)` | Data by sample ID | `client.get_data_by_spid("EPAPLT0232A03")` |
+| `get_data_by_m4id(m4id)` | Data by data ID | `client.get_data_by_m4id("1135145")` |
+| `get_data_by_dtxsid_and_projection(dtxsid, projection)` | Data with projection | `client.get_data_by_dtxsid_and_projection("DTXSID7020182", "toxcast-summary-plot")` |
+| `get_data_by_aeid(aeid)` | Data by assay endpoint | `client.get_data_by_aeid(3032)` |
+
+### AED Data Methods (Return Dict or List[Dict])
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `get_aed_data_by_dtxsid(dtxsid)` | Activity-Exposure-Dose data | `client.get_aed_data_by_dtxsid("DTXSID5021209")` |
+
+### Batch Methods
+
+| Method | Returns | Example |
+|--------|---------|---------|
+| `find_bioactivity_data_by_spid_batch(spids)` | List[Dict] | `client.find_bioactivity_data_by_spid_batch(["EPAPLT0232A03", "EPAPLT0232A04"])` |
+| `find_bioactivity_data_by_m4id_batch(m4ids)` | List[Dict] | `client.find_bioactivity_data_by_m4id_batch([1135145, 1135146])` |
+| `find_bioactivity_data_by_dtxsid_batch(dtxsids)` | List[Dict] | `client.find_bioactivity_data_by_dtxsid_batch(["DTXSID7020182", "DTXSID9026974"])` |
+| `find_bioactivity_data_by_aeid_batch(aeids)` | List[Dict] | `client.find_bioactivity_data_by_aeid_batch([3032, 3033])` |
+| `find_aed_data_by_dtxsid_batch(dtxsids)` | List[Dict] | `client.find_aed_data_by_dtxsid_batch(["DTXSID5021209", "DTXSID7020182"])` |
+
+---
+
+## Bioactivity AOP (`BioactivityAOP` class)
+
+```python
+from pycomptox import BioactivityAOP
+
+client = BioactivityAOP(api_key=None, base_url="...", time_delay_between_calls=0.0)
+```
+
+### AOP Data Methods (Return List[Dict])
+
+| Method | Description | Example |
+|--------|-------------|---------|
+| `get_aop_data_by_toxcast_aeid(aeid)` | AOP by ToxCast AEID | `client.get_aop_data_by_toxcast_aeid(63)` |
+| `get_aop_data_by_event_number(event_num)` | AOP by event number | `client.get_aop_data_by_event_number(18)` |
+| `get_aop_data_by_entrez_gene_id(gene_id)` | AOP by gene ID | `client.get_aop_data_by_entrez_gene_id(196)` |
+
+**AOP Record Fields:**
+- `toxcastAeid`: ToxCast assay endpoint ID
+- `entrezGeneId`: NCBI Entrez Gene ID
+- `eventNumber`: AOP event number
+- `eventLink`: Link to AOP event details
+- `aopNumber`: AOP pathway number
+- `aopLink`: Link to AOP pathway
+
+---
+
 ## Rate Limiting
 
-Both classes support rate limiting:
+All classes support rate limiting:
 
 ```python
 # Add 0.5 second delay between API calls
 searcher = Chemical(time_delay_between_calls=0.5)
 details_client = ChemicalDetails(time_delay_between_calls=0.5)
+bioactivity = BioactivityData(time_delay_between_calls=0.5)
+aop = BioactivityAOP(time_delay_between_calls=0.5)
 ```
 
 ---
@@ -273,8 +344,9 @@ Common HTTP errors:
 
 - **Full Documentation**: `README.md`
 - **Chemical Details Guide**: `docs/CHEMICAL_DETAILS.md`
+- **Bioactivity Data Guide**: `docs/BIOACTIVITY_DATA.md`
 - **Batch Methods Guide**: `docs/BATCH_METHODS.md`
 - **API Key Guide**: `docs/API_KEY_AND_RATE_LIMITING.md`
 - **v0.2.0 Release Notes**: `docs/CHEMICAL_DETAILS_RELEASE.md`
-- **Test Examples**: `tests/test_api.py`, `tests/test_batch_methods.py`, `tests/test_details.py`
+- **Test Examples**: `tests/test_api.py`, `tests/test_batch_methods.py`, `tests/test_details.py`, `tests/test_bioactivitydata.py`, `tests/test_bioactivityaop.py`
 - **CompTox API Docs**: https://comptox.epa.gov/ctx-api

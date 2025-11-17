@@ -74,22 +74,30 @@ nav:
   - Getting Started:
     - Installation: INSTALLATION.md
     - Quick Start: quick_start.md
+    - Quick Reference: QUICK_REFERENCE.md
     - Configuration: configuration.md
   - API Reference:
     - Chemical Search: CHEMICAL_SEARCH.md
     - Chemical Details: CHEMICAL_DETAILS.md
     - Chemical Properties: CHEMICAL_PROPERTIES.md
+    - Chemical Synonyms: CHEMICAL_SYNONYMS.md
+    - Bioactivity Data & AOP: BIOACTIVITY_DATA.md
     - Extra Data: EXTRA_DATA.md
     - Wikipedia Links: WIKIPEDIA_LINKS.md
     - PubChem Links: PUBCHEM_LINKS.md
   - User Guide:
     - Setup & Configuration: MODERN_SETUP.md
+    - API Key & Rate Limiting: API_KEY_AND_RATE_LIMITING.md
+    - Batch Methods: BATCH_METHODS.md
     - Best Practices: best_practices.md
     - Examples: examples.md
   - API Documentation:
     - Chemical: api/chemical.md
     - ChemicalDetails: api/details.md
     - ChemicalProperties: api/properties.md
+    - ChemSynonym: api/chemsynonym.md
+    - BioactivityData: api/bioactivitydata.md
+    - BioactivityAOP: api/bioactivityaop.md
     - ExtraData: api/extradata.md
     - WikiLink: api/wikilink.md
     - PubChemLink: api/pubchemlink.md

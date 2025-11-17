@@ -85,6 +85,13 @@ nav:
     - Extra Data: EXTRA_DATA.md
     - Wikipedia Links: WIKIPEDIA_LINKS.md
     - PubChem Links: PUBCHEM_LINKS.md
+    - CCC Data: CCC_DATA.md
+    - MMDB Data: MMDB_DATA.md
+    - Functional Use: FUNCTIONAL_USE.md
+    - Product Data: PRODUCT_DATA.md
+    - HTTK Data: HTTK_DATA.md
+    - List Presence: LIST_PRESENCE.md
+    - Exposure Predictions: EXPOSURE_PREDICTIONS.md
   - User Guide:
     - Setup & Configuration: MODERN_SETUP.md
     - API Key & Rate Limiting: API_KEY_AND_RATE_LIMITING.md
@@ -101,6 +108,14 @@ nav:
     - ExtraData: api/extradata.md
     - WikiLink: api/wikilink.md
     - PubChemLink: api/pubchemlink.md
+    - CCCData: api/cccdata.md
+    - MMDB: api/mmdb.md
+    - FunctionalUse: api/functionaluse.md
+    - ProductData: api/productdata.md
+    - HTTKData: api/httkdata.md
+    - ListPresence: api/listpresence.md
+    - ExposurePrediction: api/exposureprediction.md
+    - DemographicExposure: api/demographicexposure.md
     - Configuration: api/config.md
   - About:
     - Contributing: contributing.md

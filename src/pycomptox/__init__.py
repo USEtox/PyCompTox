@@ -20,6 +20,14 @@ from .bioactivitymodel import BioactivityModel
 from .analyticalqc import AnalyticalQC
 from .bioactivitydata import BioactivityData
 from .bioactivityaop import BioactivityAOP
+from .cccdata import CCCData
+from .mmdb import MMDB
+from .functionaluse import FunctionalUse
+from .productdata import ProductData
+from .httkdata import HTTKData
+from .listpresence import ListPresence
+from .exposureprediction import ExposurePrediction
+from .demographicexposure import DemographicExposure
 from .config import (
     save_api_key,
     load_api_key,
@@ -44,6 +52,14 @@ __all__ = [
     "BioactivityData",
     "BioactivityAOP",
     "AnalyticalQC",
+    "CCCData",
+    "MMDB",
+    "FunctionalUse",
+    "ProductData",
+    "HTTKData",
+    "ListPresence",
+    "ExposurePrediction",
+    "DemographicExposure",
     "save_api_key",
     "load_api_key",
     "delete_api_key",

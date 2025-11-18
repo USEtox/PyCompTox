@@ -1,6 +1,6 @@
 # HTTKData API Reference
 
-::: pycomptox.httkdata.HTTKData
+::: pycomptox.exposure.httkdata.HTTKData
     options:
       show_root_heading: true
       show_source: true

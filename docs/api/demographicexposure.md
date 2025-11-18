@@ -1,6 +1,6 @@
 # DemographicExposure API Reference
 
-::: pycomptox.demographicexposure.DemographicExposure
+::: pycomptox.exposure.demographicexposure.DemographicExposure
     options:
       show_root_heading: true
       show_source: true

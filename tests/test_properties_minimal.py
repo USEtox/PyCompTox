@@ -9,7 +9,7 @@ implementation and API connectivity.
 import sys
 sys.path.insert(0, '../src')
 
-from pycomptox import Chemical, ChemicalProperties
+from pycomptox.chemical import Chemical, ChemicalProperties
 
 def main():
     print("="*70)

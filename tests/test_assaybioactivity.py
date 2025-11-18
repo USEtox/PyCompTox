@@ -11,7 +11,7 @@ This test suite covers:
 
 import pytest
 import time
-from pycomptox import AssayBioactivity
+from pycomptox.bioactivity import AssayBioactivity
 
 
 @pytest.fixture
@@ -228,10 +228,10 @@ def test_rate_limiting():
     
     start_time = time.time()
     
-    # Make two consecutive calls
+    # Make two consecutive calls with cache disabled
     try:
-        client_with_delay.get_assay_endpoints_list("TUBA1A")
-        client_with_delay.get_assay_endpoints_list("ESR1")
+        client_with_delay.get_assay_endpoints_list("TUBA1A", use_cache=False)
+        client_with_delay.get_assay_endpoints_list("ESR1", use_cache=False)
     except ValueError:
         # Ignore data errors, we're testing rate limiting
         pass

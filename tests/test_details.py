@@ -12,7 +12,7 @@ from pathlib import Path
 # Add the src directory to the path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from pycomptox import Chemical, ChemicalDetails
+from pycomptox.chemical import Chemical, ChemicalDetails
 
 
 def test_search_and_details_workflow():

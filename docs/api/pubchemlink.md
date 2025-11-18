@@ -1,6 +1,6 @@
 # PubChemLink API Reference
 
-::: pycomptox.pubchemlink.PubChemLink
+::: pycomptox.chemical.pubchemlink.PubChemLink
     options:
       show_source: true
       show_root_heading: true

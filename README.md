@@ -11,37 +11,7 @@ A Python interface for the EPA CompTox Dashboard Chemical API.
 
 ## Overview
 
-PyCompTox provides a simple and intuitive Python interface to interact with the EPA's [CompTox Dashboard](https://comptox.epa.gov/) Chemical API. This package allows you to search for chemicals by name, identifiers (DTXSID, DTXCID, CAS numbers), molecular formulas, and mass ranges.
-
-## Features
-
-### Chemical Search (`Chemical` class)
-- **Search chemicals by**:
-  - Starting value (prefix search)
-  - Exact value match
-  - Substring/contains search
-  - Molecular formula (exact and MS-ready)
-  - Mass range (for MS-ready chemicals)
-  - DTXCID
-- **Batch operations**: Search multiple values in a single API call
-
-### Chemical Details (`ChemicalDetails` class)
-- **Retrieve detailed information** for chemicals by DTXSID or DTXCID
-- **Flexible projections**: Request only the data you need
-  - Chemical identifiers (CAS, InChI, names)
-  - Chemical structures (SMILES, InChI strings)
-  - NTA toolkit data (for mass spectrometry)
-  - Assay data
-  - Complete details
-- **Batch retrieval**: Get details for up to 1000 chemicals at once
-- **Paginated access**: Retrieve all chemicals in the database
-
-### General Features
-- **API Key Management**: Save your API key once and use it automatically
-- **Rate Limiting**: Built-in rate limiting to respect API usage limits
-- **Type-Safe**: Full type hints for better IDE support and code quality
-- **Error Handling**: Comprehensive error handling with clear exception messages
-- **Well Documented**: Detailed docstrings and examples
+PyCompTox provides a simple and intuitive Python interface to interact with the EPA's [CompTox Dashboard](https://comptox.epa.gov/) Chemical, Bioactivity, Exposure, and Hazard API. This package allows you to search for chemicals by name, identifiers (DTXSID, DTXCID, CAS numbers), molecular formulas, mass ranges, and much more.
 
 ## Installation
 
@@ -127,8 +97,8 @@ The file is created with user-only read permissions on Unix-like systems.
 
 ## API Documentation
 
-For detailed API documentation, visit:
-https://comptox.epa.gov/ctx-api/docs/chemical.html
+For detailed API documentation, visit:  
+[Chemical](https://comptox.epa.gov/ctx-api/docs/chemical.html), [Bioactivity](https://comptox.epa.gov/ctx-api/docs/bioactivity.html), [Exposure](https://comptox.epa.gov/ctx-api/docs/exposure.html), and [Hazard](https://comptox.epa.gov/ctx-api/docs/hazard.html).
 
 ## License
 

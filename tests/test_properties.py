@@ -7,7 +7,7 @@ This script demonstrates basic usage of the ChemicalProperties API client.
 import sys
 sys.path.insert(0, '../src')
 
-from pycomptox import Chemical, ChemicalProperties
+from pycomptox.chemical import Chemical, ChemicalProperties
 
 def main():
     print("="*70)

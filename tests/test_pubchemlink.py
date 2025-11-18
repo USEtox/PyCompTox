@@ -4,7 +4,7 @@ Tests for the PubChemLink class
 
 import pytest
 import time
-from pycomptox import PubChemLink
+from pycomptox.chemical import PubChemLink
 
 
 class TestPubChemLink:
@@ -15,7 +15,7 @@ class TestPubChemLink:
         client = PubChemLink()
         assert client.base_url == "https://comptox.epa.gov/ctx-api"
         assert client.session is not None
-        assert client.rate_limit_delay == 0.5
+        assert client.time_delay_between_calls == 0.5
     
     def test_check_existence_by_dtxsid(self):
         """Test checking PubChem GHS data for a single chemical"""
@@ -92,7 +92,7 @@ class TestPubChemLink:
     
     def test_rate_limiting(self):
         """Test that rate limiting is enforced"""
-        client = PubChemLink(rate_limit_delay=0.5)
+        client = PubChemLink(rate_limit_delay=0.5, use_cache=False)
         
         start_time = time.time()
         client.check_existence_by_dtxsid("DTXSID7020182")
@@ -104,7 +104,7 @@ class TestPubChemLink:
     
     def test_pubchemlink_import(self):
         """Test that PubChemLink can be imported from main package"""
-        from pycomptox import PubChemLink
+        from pycomptox.chemical import PubChemLink
         assert PubChemLink is not None
 
 

@@ -8,7 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- Upcoming features will be listed here
+- **Complete Hazard Module Implementation**
+  - `ToxValDBGenetox` - Genotoxicity data from ToxValDB (4 methods: summary/detail single/batch)
+  - `ToxRefDBData` - Dose-treatment group-effect data (3 methods: by study_type/study_id/dtxsid)
+  - `ADMEIVIVE` - ADME-IVIVE toxicokinetics data (1 method: get_all_data_by_dtxsid_ccd_projection)
+  - `ToxRefDBObservation` - Endpoint observation status (3 methods: by study_type/study_id/dtxsid)
+- Comprehensive test suites for all hazard modules (90+ tests total)
+- Complete API documentation for all 13 hazard module classes
+- `HAZARD_MODULE.md` - Comprehensive overview guide with usage examples and best practices
+- Updated MkDocs navigation with dedicated Hazard Module section
+
+### Fixed
+- Type annotations for `**kwargs` parameters in all hazard module `__init__` methods
+- Documentation build warnings related to missing type annotations
 
 ## [0.6.0] - 2025-11-07
 

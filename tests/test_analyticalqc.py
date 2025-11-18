@@ -7,7 +7,7 @@ including QC data retrieval and error handling.
 
 import pytest
 import time
-from pycomptox import AnalyticalQC
+from pycomptox.bioactivity import AnalyticalQC
 
 
 @pytest.fixture
@@ -96,7 +96,7 @@ class TestClientFunctionality:
         """Test client can be initialized with and without API key."""
         # Without API key (uses config)
         client1 = AnalyticalQC()
-        assert client1.base_url == "https://comptox.epa.gov/ctx-api/"
+        assert client1.base_url == "https://comptox.epa.gov/ctx-api"
         
         # With API key
         client2 = AnalyticalQC(api_key="test_key")
@@ -106,9 +106,9 @@ class TestClientFunctionality:
         """Test that rate limiting is applied between requests."""
         start_time = time.time()
         
-        # Make multiple requests
-        qc_client.get_analytical_qc_data_by_dtxsid("DTXSID7020182")
-        qc_client.get_analytical_qc_data_by_dtxsid("DTXSID7020182")
+        # Make multiple requests with cache disabled to test rate limiting
+        qc_client.get_analytical_qc_data_by_dtxsid("DTXSID7020182", use_cache=False)
+        qc_client.get_analytical_qc_data_by_dtxsid("DTXSID5020064", use_cache=False)
         
         elapsed = time.time() - start_time
         

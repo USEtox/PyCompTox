@@ -6,7 +6,7 @@ Safety data availability from the CompTox Dashboard.
 """
 
 import pytest
-from pycomptox import WikiLink
+from pycomptox.chemical import WikiLink
 
 
 @pytest.fixture
@@ -22,7 +22,7 @@ class TestWikiLink:
         """Test that WikiLink client initializes correctly."""
         assert wiki_client is not None
         assert wiki_client.api_key is not None
-        assert wiki_client.base_url.endswith('/')
+        assert wiki_client.base_url == "https://comptox.epa.gov/ctx-api"
     
     def test_check_existence_by_dtxsid(self, wiki_client):
         """Test checking Wikipedia GHS data for a single chemical."""
@@ -111,7 +111,7 @@ class TestWikiLink:
     
     def test_rate_limiting(self):
         """Test rate limiting functionality."""
-        wiki_with_delay = WikiLink(time_delay_between_calls=0.5)
+        wiki_with_delay = WikiLink(time_delay_between_calls=0.5, use_cache=False)
         
         import time
         start_time = time.time()
@@ -136,7 +136,7 @@ class TestWikiLink:
 
 def test_wikilink_import():
     """Test that WikiLink can be imported from package."""
-    from pycomptox import WikiLink
+    from pycomptox.chemical import WikiLink
     assert WikiLink is not None
 
 

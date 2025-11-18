@@ -1,6 +1,6 @@
 # CCCData API Reference
 
-::: pycomptox.cccdata.CCCData
+::: pycomptox.exposure.ccddata.CCCData
     options:
       show_root_heading: true
       show_source: true

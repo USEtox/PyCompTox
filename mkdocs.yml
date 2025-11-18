@@ -76,6 +76,8 @@ nav:
     - Quick Start: quick_start.md
     - Quick Reference: QUICK_REFERENCE.md
     - Configuration: configuration.md
+    - Category Organization: CATEGORY_ORGANIZATION.md
+    - Caching System: CACHING.md
   - API Reference:
     - Chemical Search: CHEMICAL_SEARCH.md
     - Chemical Details: CHEMICAL_DETAILS.md
@@ -92,6 +94,7 @@ nav:
     - HTTK Data: HTTK_DATA.md
     - List Presence: LIST_PRESENCE.md
     - Exposure Predictions: EXPOSURE_PREDICTIONS.md
+    - Hazard Module: HAZARD_MODULE.md
   - User Guide:
     - Setup & Configuration: MODERN_SETUP.md
     - API Key & Rate Limiting: API_KEY_AND_RATE_LIMITING.md
@@ -99,6 +102,8 @@ nav:
     - Best Practices: best_practices.md
     - Examples: examples.md
   - API Documentation:
+    - Configuration: api/config.md
+    - Cache: api/cache.md
     - Chemical: api/chemical.md
     - ChemicalDetails: api/details.md
     - ChemicalProperties: api/properties.md
@@ -116,7 +121,20 @@ nav:
     - ListPresence: api/listpresence.md
     - ExposurePrediction: api/exposureprediction.md
     - DemographicExposure: api/demographicexposure.md
-    - Configuration: api/config.md
+    - Hazard Module:
+      - PPRTV: api/pprtv.md
+      - ToxValDBCancer: api/toxvaldbcancer.md
+      - ToxRefDBEffects: api/toxrefdbeffects.md
+      - ToxRefDBSummary: api/toxrefdbsummary.md
+      - ToxRefDBBatch: api/toxrefdbbatch.md
+      - ToxValDBSkinEye: api/toxvaldbskineye.md
+      - ToxValDB: api/toxvaldb.md
+      - HAWC: api/hawc.md
+      - IRIS: api/iris.md
+      - ToxValDBGenetox: api/toxvaldbgenetox.md
+      - ToxRefDBData: api/toxrefdbdata.md
+      - ADMEIVIVE: api/admeivive.md
+      - ToxRefDBObservation: api/toxrefdbobservation.md
   - About:
     - Contributing: contributing.md
     - License: license.md

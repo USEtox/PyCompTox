@@ -1,6 +1,6 @@
 # FunctionalUse API Reference
 
-::: pycomptox.functionaluse.FunctionalUse
+::: pycomptox.exposure.functionaluse.FunctionalUse
     options:
       show_root_heading: true
       show_source: true

@@ -1,6 +1,6 @@
 # WikiLink API Reference
 
-::: pycomptox.wikilink.WikiLink
+::: pycomptox.chemical.wikilink.WikiLink
     options:
       show_source: true
       show_root_heading: true

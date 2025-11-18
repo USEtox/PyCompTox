@@ -11,7 +11,7 @@ from pathlib import Path
 # Add the src directory to the path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from pycomptox import ExposurePrediction
+from pycomptox.exposure import ExposurePrediction
 
 
 def test_general_prediction_by_dtxsid():

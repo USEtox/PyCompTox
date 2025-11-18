@@ -1,6 +1,6 @@
 # ExposurePrediction API Reference
 
-::: pycomptox.exposureprediction.ExposurePrediction
+::: pycomptox.exposure.exposureprediction.ExposurePrediction
     options:
       show_root_heading: true
       show_source: true

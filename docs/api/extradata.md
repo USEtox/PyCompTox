@@ -1,6 +1,6 @@
 # Extra Data API Reference
 
-::: pycomptox.extradata.ExtraData
+::: pycomptox.chemical.extradata.ExtraData
     options:
       show_source: true
       heading_level: 2

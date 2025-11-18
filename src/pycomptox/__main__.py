@@ -108,7 +108,7 @@ For more information, visit: https://github.com/USEtox/PyCompTox
             print("Testing API connection...")
             
             try:
-                from .search import Chemical
+                from .chemical.search import Chemical
                 
                 client = Chemical()
                 results = client.search_by_exact_value("Bisphenol A")

@@ -11,7 +11,7 @@ from pathlib import Path
 # Add the src directory to the path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from pycomptox import HTTKData
+from pycomptox.exposure import HTTKData
 
 
 def test_httk_data_by_dtxsid():

@@ -1,6 +1,6 @@
 # MMDB API Reference
 
-::: pycomptox.mmdb.MMDB
+::: pycomptox.exposure.mmdb.MMDB
     options:
       show_root_heading: true
       show_source: true

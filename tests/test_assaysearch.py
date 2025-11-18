@@ -12,7 +12,7 @@ This test suite covers:
 
 import pytest
 import time
-from pycomptox import AssaySearch
+from pycomptox.bioactivity import AssaySearch
 
 
 @pytest.fixture
@@ -130,9 +130,10 @@ def test_search_result_field_types(search_client):
 
 def test_invalid_search_value(search_client):
     """Test searching with a value that returns no results."""
-    with pytest.raises(ValueError, match="No data returned from API"):
-        # Using a very unlikely search string
-        search_client.search_by_exact_value("ZZZZZZZZZZZ_NONEXISTENT_12345")
+    # Using a very unlikely search string - API returns empty list, not error
+    result = search_client.search_by_exact_value("ZZZZZZZZZZZ_NONEXISTENT_12345")
+    assert result == []
+    assert len(result) == 0
 
 
 def test_client_initialization_with_api_key():
@@ -147,8 +148,8 @@ def test_client_initialization_with_api_key():
 
 def test_rate_limiting(search_client):
     """Test that rate limiting works correctly."""
-    # Create a client with rate limiting
-    client_with_delay = AssaySearch(time_delay_between_calls=0.5)
+    # Create a client with rate limiting and cache disabled
+    client_with_delay = AssaySearch(time_delay_between_calls=0.5, use_cache=False)
     
     start_time = time.time()
     
@@ -181,9 +182,10 @@ def test_different_search_methods_consistency(search_client):
 
 def test_empty_results_handling(search_client):
     """Test handling of searches that should return no results."""
-    with pytest.raises(ValueError):
-        # Very specific non-existent value
-        search_client.search_by_exact_value("NONEXISTENT_ASSAY_XYZ_999")
+    # Very specific non-existent value - API returns empty list
+    result = search_client.search_by_exact_value("NONEXISTENT_ASSAY_XYZ_999")
+    assert result == []
+    assert len(result) == 0
 
 
 # Manual test runner for development

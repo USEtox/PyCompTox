@@ -5,7 +5,7 @@ The `ChemicalDetails` class provides methods to retrieve detailed chemical infor
 ## Installation & Setup
 
 ```python
-from pycomptox import Chemical, ChemicalDetails
+from pycomptox.chemical import Chemical, ChemicalDetails
 
 # Initialize clients
 searcher = Chemical(api_key="your-api-key")
@@ -39,7 +39,7 @@ Retrieve detailed information for a single chemical by DTXSID.
 
 **Example:**
 ```python
-from pycomptox import Chemical, ChemicalDetails
+from pycomptox.chemical import Chemical, ChemicalDetails
 
 # Step 1: Search for chemical
 searcher = Chemical()
@@ -182,7 +182,7 @@ Returns: Only essential fields in a compact format
 ## Complete Example: Search to Details
 
 ```python
-from pycomptox import Chemical, ChemicalDetails
+from pycomptox.chemical import Chemical, ChemicalDetails
 
 # Initialize clients
 searcher = Chemical()

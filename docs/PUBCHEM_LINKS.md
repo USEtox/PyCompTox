@@ -124,7 +124,8 @@ for result in results:
 ### Example 3: Integration with Chemical Search
 
 ```python
-from pycomptox import Chemical, PubChemLink
+from pycomptox.chemical import Chemical
+from pycomptox.links import PubChemLink
 
 # Search for phthalates
 chem = Chemical()
@@ -246,7 +247,8 @@ print("✓ Exported to pubchem_data.csv")
 ### Example 7: Filter Chemicals by Data Availability
 
 ```python
-from pycomptox import Chemical, PubChemLink
+from pycomptox.chemical import Chemical
+from pycomptox.links import PubChemLink
 
 # Search for a chemical class
 chem = Chemical()

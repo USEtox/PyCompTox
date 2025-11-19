@@ -234,9 +234,10 @@ client = BioactivityData()  # Loads key automatically
 Both classes integrate seamlessly with existing PyCompTox functionality:
 
 ```python
-from pycomptox import Chemical, BioactivityData, BioactivityAOP
+from pycomptox.chemical import Chemical
+from pycomptox.bioactivity import BioactivityData, BioactivityAOP
 
-# Search for chemical
+# 1. Search for chemical
 chem = Chemical()
 results = chem.search_by_exact_value("name", "Bisphenol A")
 dtxsid = results[0]['dtxsid']

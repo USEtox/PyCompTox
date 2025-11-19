@@ -188,6 +188,9 @@ from pycomptox import Chemical, ChemicalDetails
 searcher = Chemical()
 details_client = ChemicalDetails()
 
+```python
+from pycomptox.chemical import Chemical, ChemicalDetails
+
 # Search for a chemical by CAS number
 cas_rn = "80-05-7"
 search_results = searcher.search_by_exact_value("rn", cas_rn)

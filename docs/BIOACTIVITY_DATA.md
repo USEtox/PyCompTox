@@ -14,7 +14,7 @@ The bioactivity module consists of two main classes:
 ### Quick Start
 
 ```python
-from pycomptox import BioactivityData
+from pycomptox.bioactivity import BioactivityData
 
 # Initialize client
 client = BioactivityData()
@@ -144,7 +144,7 @@ The AOP class links ToxCast assay endpoints to biological events and adverse out
 ### Quick Start
 
 ```python
-from pycomptox import BioactivityAOP
+from pycomptox.bioactivity import BioactivityAOP
 
 # Initialize client
 client = BioactivityAOP()
@@ -196,7 +196,7 @@ Each record links:
 ### Example: Exploring Gene-Level AOPs
 
 ```python
-from pycomptox import BioactivityAOP
+from pycomptox.bioactivity import BioactivityAOP
 
 client = BioactivityAOP()
 

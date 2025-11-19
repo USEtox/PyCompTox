@@ -60,9 +60,9 @@ $env:COMPTOX_API_KEY="your-api-key-here"
 Pass the API key directly when creating a client:
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
-chem = Chemical(api_key="your-api-key-here")
+chem = Chemical(api_key="your_api_key_here")
 ```
 
 ## Rate Limiting
@@ -70,7 +70,7 @@ chem = Chemical(api_key="your-api-key-here")
 Configure rate limiting to avoid overwhelming the API:
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 # Add 0.5 second delay between requests
 chem = Chemical(time_delay_between_calls=0.5)
@@ -91,7 +91,7 @@ for name in ["caffeine", "aspirin", "ibuprofen"]:
 Use a different API endpoint (e.g., for testing):
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 chem = Chemical(base_url="https://custom-api-endpoint.com/ctx-api")
 ```
@@ -101,7 +101,7 @@ chem = Chemical(base_url="https://custom-api-endpoint.com/ctx-api")
 All clients use `requests.Session` for connection pooling and persistence. You can access the session to customize headers or other settings:
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 chem = Chemical()
 
@@ -119,7 +119,7 @@ chem.session.headers.update({
 Configure batch sizes for optimal performance:
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 def process_in_batches(dtxsids, batch_size=100):
     """Process DTXSIDs in batches."""
@@ -137,7 +137,7 @@ def process_in_batches(dtxsids, batch_size=100):
 Configure how your application handles errors:
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 import requests
 
 chem = Chemical()
@@ -161,7 +161,7 @@ Add logging to track API calls:
 
 ```python
 import logging
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 # Configure logging
 logging.basicConfig(
@@ -187,7 +187,8 @@ results = logged_search("caffeine")
 ## Advanced Configuration Example
 
 ```python
-from pycomptox import Chemical, ChemicalDetails, ChemicalProperties, ExtraData
+from pycomptox.chemical import Chemical, ChemicalDetails, ChemicalProperties
+from pycomptox.extra import ExtraData
 import logging
 from pathlib import Path
 
@@ -263,7 +264,7 @@ COMPTOX_CONFIG = {
 
 # usage.py
 from config import COMPTOX_CONFIG
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 chem = Chemical(
     time_delay_between_calls=COMPTOX_CONFIG['rate_limit']
@@ -277,7 +278,7 @@ For testing, use a separate configuration:
 ```python
 # test_config.py
 import pytest
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 @pytest.fixture
 def test_client():

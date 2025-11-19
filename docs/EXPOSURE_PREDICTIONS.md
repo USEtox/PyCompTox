@@ -22,7 +22,7 @@ Uses a heuristic model for demographic-specific predictions. Method described in
 ### General Population Predictions
 
 ```python
-from pycomptox import ExposurePrediction
+from pycomptox.exposure import ExposurePrediction
 
 # Initialize client
 exp_pred = ExposurePrediction()
@@ -40,7 +40,7 @@ for pred in predictions:
 ### Demographic-Specific Predictions
 
 ```python
-from pycomptox import DemographicExposure
+from pycomptox.exposure import DemographicExposure
 
 # Initialize client
 demo_exp = DemographicExposure()
@@ -361,7 +361,7 @@ Consider these factors when interpreting predictions:
 ## Error Handling
 
 ```python
-from pycomptox import ExposurePrediction, DemographicExposure
+from pycomptox.exposure import ExposurePrediction, DemographicExposure
 
 try:
     exp_pred = ExposurePrediction()

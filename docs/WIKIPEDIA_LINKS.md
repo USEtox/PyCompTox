@@ -113,7 +113,8 @@ for result in results:
 ### Example 3: Integration with Chemical Search
 
 ```python
-from pycomptox import Chemical, WikiLink
+from pycomptox.chemical import Chemical
+from pycomptox.links import WikiLink
 
 # Search for chemicals
 chem = Chemical()
@@ -204,7 +205,8 @@ for class_name, dtxsids in chemical_classes.items():
 ### Example 7: Complete Safety Profile
 
 ```python
-from pycomptox import Chemical, ChemicalDetails, WikiLink
+from pycomptox.chemical import Chemical, ChemicalDetails
+from pycomptox.links import WikiLink
 
 dtxsid = "DTXSID7020182"
 

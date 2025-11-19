@@ -51,7 +51,7 @@ pip install -e .
 ### Basic Usage
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 # Initialize the client
 chem = Chemical()
@@ -70,7 +70,7 @@ if results:
 ### Get Chemical Details
 
 ```python
-from pycomptox import ChemicalDetails
+from pycomptox.chemical import ChemicalDetails
 
 details = ChemicalDetails()
 
@@ -88,7 +88,7 @@ print(f"Molecular Weight: {info['molWeight']}")
 ### Get Chemical Properties
 
 ```python
-from pycomptox import ChemicalProperties
+from pycomptox.chemical import ChemicalProperties
 
 props = ChemicalProperties()
 
@@ -117,7 +117,7 @@ print(f"Patents: {data['googlePatent']}")
 ### Get Bioactivity Data
 
 ```python
-from pycomptox import BioactivityData
+from pycomptox.bioactivity import BioactivityData
 
 bioactivity = BioactivityData()
 
@@ -134,7 +134,7 @@ aed = bioactivity.get_aed_data_by_dtxsid("DTXSID5021209")
 ### Get Adverse Outcome Pathway Data
 
 ```python
-from pycomptox import BioactivityAOP
+from pycomptox.bioactivity import BioactivityAOP
 
 aop = BioactivityAOP()
 

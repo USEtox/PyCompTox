@@ -54,7 +54,7 @@ results = [chem.get_chemical_by_dtxsid(d) for d in dtxsids]
 ```python
 def process_large_dataset(dtxsids, batch_size=500):
     """Process large datasets efficiently."""
-    from pycomptox import Chemical
+    from pycomptox.chemical import Chemical
     
     chem = Chemical(time_delay_between_calls=1.0)
     all_results = []
@@ -116,7 +116,7 @@ except:  # Too broad!
 Only request the data you need:
 
 ```python
-from pycomptox import ChemicalDetails
+from pycomptox.chemical import ChemicalDetails
 
 details = ChemicalDetails()
 
@@ -241,7 +241,7 @@ class ChemicalAnalyzer:
 
 ```python
 import pytest
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 @pytest.fixture
 def chem_client():

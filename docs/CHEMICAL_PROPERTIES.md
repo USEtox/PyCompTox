@@ -12,7 +12,7 @@ The `ChemicalProperties` class provides access to chemical property data from th
 ## Installation
 
 ```python
-from pycomptox import ChemicalProperties
+from pycomptox.chemical import ChemicalProperties
 
 # Initialize client (API key auto-loaded)
 props = ChemicalProperties()
@@ -164,7 +164,7 @@ Batch retrieval of fate properties (max 1000).
 ## Complete Workflow Example
 
 ```python
-from pycomptox import Chemical, ChemicalProperties
+from pycomptox.chemical import Chemical, ChemicalProperties
 
 # Initialize
 searcher = Chemical()

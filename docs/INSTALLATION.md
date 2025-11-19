@@ -160,7 +160,7 @@ import pycomptox
 print(pycomptox.__version__)  # Should print: 0.3.0
 
 # Check available classes
-from pycomptox import Chemical, ChemicalDetails, ChemicalProperties
+from pycomptox.chemical import Chemical, ChemicalDetails, ChemicalProperties
 ```
 
 ## Development Workflow

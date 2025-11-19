@@ -250,7 +250,7 @@ All features have been tested and verified:
 
 **Before** (Old way):
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 # Had to provide API key every time
 client = Chemical(api_key="abc123xyz789")
@@ -265,7 +265,7 @@ pycomptox-setup test
 ```
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 # API key loaded automatically!
 client = Chemical()

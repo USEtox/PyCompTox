@@ -158,7 +158,8 @@ for data in highly_cited:
 ### Example 5: Integration with Chemical Search
 
 ```python
-from pycomptox import Chemical, ExtraData
+from pycomptox.chemical import Chemical
+from pycomptox.extra import ExtraData
 
 # Search for chemicals
 chem = Chemical()

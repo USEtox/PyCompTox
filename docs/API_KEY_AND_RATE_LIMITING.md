@@ -72,7 +72,7 @@ PyCompTox looks for your API key in this order:
 Once saved, you can create a client without providing the API key:
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 # API key is loaded automatically
 client = Chemical()
@@ -108,7 +108,7 @@ API providers often limit the number of requests you can make per second or minu
 The `time_delay_between_calls` parameter controls the minimum delay between consecutive API calls:
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 # Create a client with 0.5 second delay between calls
 client = Chemical(time_delay_between_calls=0.5)
@@ -135,7 +135,7 @@ The rate limiting mechanism:
 ### Example: Batch Processing with Rate Limiting
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 import time
 
 # Create client with rate limiting
@@ -168,7 +168,7 @@ for name, count in results:
 If you receive a 429 (Too Many Requests) error, increase the delay:
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 try:
     # Try with no delay
@@ -203,7 +203,7 @@ This will make 3 API calls with a 0.5 second delay and verify the timing.
 2. **Use saved configuration for development**
    ```python
    # In your scripts
-   from pycomptox import Chemical
+   from pycomptox.chemical import Chemical
    client = Chemical()  # Loads from saved config
    ```
 
@@ -234,7 +234,7 @@ This will make 3 API calls with a 0.5 second delay and verify the timing.
 
 4. **Handle errors gracefully**
    ```python
-   from pycomptox import Chemical
+   from pycomptox.chemical import Chemical
    
    client = Chemical(time_delay_between_calls=0.5)
    

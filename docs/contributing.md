@@ -93,7 +93,7 @@ Tests are located in the `tests/` directory. Each module has a corresponding tes
 
 ```python
 import pytest
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 @pytest.fixture
 def chem_client():
@@ -211,7 +211,7 @@ Brief description of the bug
 
 **Code to Reproduce:**
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 chem = Chemical()
 # ... code that triggers the bug
 ```

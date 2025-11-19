@@ -5,7 +5,7 @@ Quick reference for all available methods in PyCompTox v0.2.0.
 ## Chemical Search (`Chemical` class)
 
 ```python
-from pycomptox import Chemical
+from pycomptox.chemical import Chemical
 
 client = Chemical(api_key=None, base_url="...", time_delay_between_calls=0.0)
 ```
@@ -60,7 +60,7 @@ client = Chemical(api_key=None, base_url="...", time_delay_between_calls=0.0)
 ## Chemical Details (`ChemicalDetails` class)
 
 ```python
-from pycomptox import ChemicalDetails
+from pycomptox.chemical import ChemicalDetails
 
 client = ChemicalDetails(api_key=None, base_url="...", time_delay_between_calls=0.0)
 ```
@@ -147,7 +147,7 @@ pycomptox-setup delete
 ## Complete Workflow Example
 
 ```python
-from pycomptox import Chemical, ChemicalDetails
+from pycomptox.chemical import Chemical, ChemicalDetails
 
 # Initialize clients (API key auto-loaded)
 searcher = Chemical()
@@ -237,7 +237,7 @@ details_list = details_client.data_by_dtxsid_batch(list(dtxsids))
 ## Bioactivity Data (`BioactivityData` class)
 
 ```python
-from pycomptox import BioactivityData
+from pycomptox.bioactivity import BioactivityData
 
 client = BioactivityData(api_key=None, base_url="...", time_delay_between_calls=0.0)
 ```
@@ -280,7 +280,7 @@ client = BioactivityData(api_key=None, base_url="...", time_delay_between_calls=
 ## Bioactivity AOP (`BioactivityAOP` class)
 
 ```python
-from pycomptox import BioactivityAOP
+from pycomptox.bioactivity import BioactivityAOP
 
 client = BioactivityAOP(api_key=None, base_url="...", time_delay_between_calls=0.0)
 ```

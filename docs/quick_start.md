@@ -134,9 +134,10 @@ print(f"Patents: {data['googlePatent']}")
 ### Workflow 1: Find a Chemical and Get All Data
 
 ```python
-from pycomptox import Chemical, ChemicalDetails, ChemicalProperties, ExtraData
+from pycomptox.chemical import Chemical, ChemicalDetails, ChemicalProperties
+from pycomptox.extra import ExtraData
 
-# 1. Search for the chemical
+# 1. Search for chemical
 chem = Chemical()
 results = chem.search_by_name("bisphenol A")
 dtxsid = results[0]['dtxsid']

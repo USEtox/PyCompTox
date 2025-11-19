@@ -134,7 +134,7 @@ if profile:
 ### Example 5: Property Comparison Across Chemicals
 
 ```python
-from pycomptox import ChemicalProperties
+from pycomptox.chemical import ChemicalProperties
 import pandas as pd
 
 def compare_properties(dtxsids, property_names):

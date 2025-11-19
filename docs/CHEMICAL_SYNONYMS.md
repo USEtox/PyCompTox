@@ -15,9 +15,9 @@ The Chemical Synonyms API allows you to retrieve:
 ## Quick Start
 
 ```python
-from pycomptox import ChemSynonym
+from pycomptox.chemical import ChemSynonym
 
-# Initialize the client
+# Initialize client
 synonym_client = ChemSynonym()
 
 # Get synonyms for Bisphenol A

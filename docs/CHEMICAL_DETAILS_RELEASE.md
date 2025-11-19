@@ -11,9 +11,9 @@ Version 0.2.0 adds the **Chemical Details Resource** to PyCompTox, enabling retr
 A new `ChemicalDetails` class provides methods for retrieving detailed chemical information:
 
 ```python
-from pycomptox import Chemical, ChemicalDetails
+from pycomptox.chemical import Chemical, ChemicalDetails
 
-# Search for chemicals
+# Search for a chemical
 searcher = Chemical()
 results = searcher.search_by_exact_value("name", "Bisphenol A")
 

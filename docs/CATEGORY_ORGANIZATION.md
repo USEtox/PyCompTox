@@ -16,9 +16,9 @@ PyCompTox supports three flexible access patterns:
 Import individual classes directly from the main package:
 
 ```python
->>> from pycomptox import Chemical, ChemicalProperties
->>> from pycomptox import AssaySearch, BioactivityData
->>> from pycomptox import ExposurePrediction, FunctionalUse
+>>> from pycomptox.chemical import Chemical, ChemicalProperties
+>>> from pycomptox.bioactivity import AssaySearch, BioactivityData
+>>> from pycomptox.exposure import ExposurePrediction, FunctionalUse
 
 # Use the classes
 chem = Chemical()
@@ -256,7 +256,7 @@ Both patterns can be mixed in the same project:
 
 ```python
 # Mix as needed
-from pycomptox import Chemical  # Direct import
+from pycomptox.chemical import Chemical  # Direct import
 from pycomptox import exposure  # Category import
 
 chem = Chemical()
@@ -267,7 +267,7 @@ exp = exposure.ExposurePrediction()
 
 1. **For small scripts**: Use direct imports for brevity
    ```python
-   from pycomptox import Chemical, ChemicalProperties
+   from pycomptox.chemical import Chemical, ChemicalProperties
    ```
 
 2. **For large projects**: Use category-based imports for organization

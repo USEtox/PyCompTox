@@ -45,7 +45,6 @@ jobs:
 
   build:
     name: Build Distribution
-    needs: test
     runs-on: ubuntu-latest
     
     steps:

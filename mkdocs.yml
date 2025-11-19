@@ -1,7 +1,7 @@
 site_name: PyCompTox Documentation
 site_description: Python interface to the EPA CompTox Dashboard Chemical API
 site_author: PyCompTox Contributors
-site_url: https://github.com/USEtox/PyCompTox
+site_url: https://usetox.github.io/PyCompTox/
 
 repo_name: USEtox/PyCompTox
 repo_url: https://github.com/USEtox/PyCompTox

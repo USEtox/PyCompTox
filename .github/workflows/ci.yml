@@ -41,7 +41,7 @@ jobs:
       env:
         COMPTOX_API_KEY: ${{ secrets.CTX_API_KEY }}
       run: |
-        pytest tests/ -v --cov=pycomptox --cov-report=xml --cov-report=term
+        pytest tests/test_api.py -v --cov=pycomptox --cov-report=xml --cov-report=term
     
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4

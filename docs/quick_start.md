@@ -12,8 +12,10 @@ Get up and running with PyCompTox in minutes!
 Install PyCompTox using pip:
 
 ```bash
-pip install pycomptox
+pip install comptox-python[all]
 ```
+
+**Note**: do not install the package by ~~`pip install pycomptox`~~ which is a different package with the old comptox API.  
 
 ## API Key Configuration
 

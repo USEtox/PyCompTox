@@ -1,7 +1,7 @@
 # PyCompTox
 
 [![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
-[![PyPI version](https://img.shields.io/pypi/v/pycomptox.svg)](https://pypi.org/project/pycomptox/)
+[![PyPI version](https://img.shields.io/pypi/v/comptox-python.svg)](https://pypi.org/project/comptox-python/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://github.com/USEtox/PyCompTox/workflows/CI/badge.svg)](https://github.com/USEtox/PyCompTox/actions/workflows/ci.yml)
 [![Documentation Status](https://img.shields.io/badge/docs-mkdocs-blue.svg)](https://usetox.github.io/PyCompTox/)
@@ -18,10 +18,13 @@ PyCompTox provides a simple and intuitive Python interface to interact with the 
 ### Quick Install
 
 ```bash
-pip install pycomptox[all]
+pip install comptox-python[all]
 ```
 
-install the latest released version. For the latest development version:
+install the latest released version.  
+**Note**: do not install the package by ~~`pip install pycomptox`~~ which is a different package with the old comptox API.  
+
+For the latest development version:
 
 ```bash
 # Clone the repository
@@ -107,4 +110,6 @@ See the LICENSE file for details.
 ## Disclaimer
 
 This package is not officially affiliated with or endorsed by the U.S. Environmental Protection Agency (EPA). It is an independent implementation of a Python client for the publicly available CompTox Dashboard API.  
-You can find [the official Python client](https://github.com/USEPA/ctx-python) from the [official USEPA GitHub page](https://github.com/USEPA).
+You can find [the official Python client](https://github.com/USEPA/ctx-python) from the [official USEPA GitHub page](https://github.com/USEPA).  
+
+Also, note that there is another package called [pycomptox](https://github.com/Kunal627/pycomptox) that is registered on `PyPi` nder the same name, which is why this package is installed by `pip install comptox-python`.

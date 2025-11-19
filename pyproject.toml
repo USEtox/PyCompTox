@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pycomptox"
+name = "comptox-python"
 version = "0.6.0"
 description = "A Python interface for the EPA CompTox Dashboard Chemical API"
 readme = "README.md"

@@ -80,7 +80,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'testpypi'
     environment:
       name: testpypi
-      url: https://test.pypi.org/p/pycomptox
+      url: https://test.pypi.org/p/comptox-python
     
     permissions:
       id-token: write
@@ -104,7 +104,7 @@ jobs:
     if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'pypi')
     environment:
       name: pypi
-      url: https://pypi.org/p/pycomptox
+      url: https://pypi.org/p/comptox-python
     
     permissions:
       id-token: write

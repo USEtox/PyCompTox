@@ -384,13 +384,8 @@ class Chemical(CachedAPIClient):
         Search by exact batch of values.
         
         POST /chemical/search/equal/
-        NOTE: Search batch of values (values are separated by newline and maximum 200 values are allowed).
-        
-        Example:
-            curl -X POST "https://comptox.epa.gov/ctx-api/chemical/search/equal/" \\
-                -H 'accept: application/json'\\
-                -H 'content-type: application/json' \\
-                -d '"Bisphenol A\\nDTXSID7020182\\n80-05-7"' 
+        NOTE: The batch API endpoint doesn't work as documented. This method implements
+        a workaround by calling the single-value endpoint for each value and aggregating results.
         
         Args:
             values (List[str]): A list of search values (chemical names, DTXSID, CAS numbers, etc.).
@@ -430,19 +425,33 @@ class Chemical(CachedAPIClient):
         if not values:
             raise ValueError("At least one value must be provided")
         
-        # The API expects a JSON string with newline-separated values
-        request_body = "\\n".join(values)
+        # The batch POST endpoint doesn't work as documented by the API.
+        # Workaround: Call the single-value endpoint for each value
+        all_results = []
+        for value in values:
+            try:
+                result = self.search_by_exact_value(value, use_cache=use_cache)
+                if isinstance(result, list):
+                    all_results.extend(result)
+                elif isinstance(result, dict):
+                    all_results.append(result)
+            except Exception:
+                # If a single search fails, continue with the rest
+                # Add a placeholder result to indicate the search failed
+                all_results.append({
+                    'dtxsid': None,
+                    'dtxcid': None,
+                    'casrn': None,
+                    'smiles': None,
+                    'preferredName': None,
+                    'searchName': None,
+                    'searchValue': value,
+                    'rank': None,
+                    'hasStructureImage': None,
+                    'isMarkush': None,
+                })
         
-        endpoint = "/chemical/search/equal/"
-        result = self._make_cached_request(endpoint, method='POST', json=request_body, use_cache=use_cache)
-        
-        # Ensure we always return a list
-        if isinstance(result, list):
-            return result
-        elif isinstance(result, dict):
-            return [result]
-        else:
-            return []
+        return all_results
 
     def search_ms_ready_by_mass_range_batch(
         self, 

@@ -56,29 +56,19 @@ pip install -e ".[dev]"
 
 Includes:
 - pytest, pytest-cov (testing)
-- black (formatting)
-- flake8 (linting)
-- mypy (type checking)
+- pytest-mock (test mocking)
 - types-requests (type stubs)
 
-### Notebook Support
+### Documentation Tools
 
 ```bash
-pip install -e ".[notebook]"
+pip install -e ".[docs]"
 ```
 
 Includes:
-- jupyter (notebooks)
-- pandas (data analysis)
-- matplotlib (visualization)
-
-### All Optional Dependencies
-
-```bash
-pip install -e ".[all]"
-```
-
-Includes everything (dev + notebook).
+- mkdocs (documentation site)
+- mkdocs-material (theme)
+- mkdocstrings[python] (API docs)
 
 ## Tool Configurations
 
@@ -175,11 +165,8 @@ Installs in editable mode - changes to source code are immediately available wit
 # Development tools
 pip install -e ".[dev]"
 
-# Notebook support
-pip install -e ".[notebook]"
-
-# Everything
-pip install -e ".[all]"
+# Documentation tools
+pip install -e ".[docs]"
 ```
 
 ## Building Distribution

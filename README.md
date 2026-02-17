@@ -18,7 +18,7 @@ PyCompTox provides a simple and intuitive Python interface to interact with the 
 ### Quick Install
 
 ```bash
-pip install comptox-python[all]
+pip install comptox-python
 ```
 
 install the latest released version.  
@@ -37,20 +37,19 @@ pip install -e .
 # Or with development tools
 pip install -e ".[dev]"
 
-# Or with notebook support
-pip install -e ".[notebook]"
+# Or with docs tools
+pip install -e ".[docs]"
 ```
 
 PyCompTox now uses modern Python packaging with `pyproject.toml`. See [INSTALLATION.md](docs/INSTALLATION.md) for detailed installation options.
 
 ### Optional Dependencies
 
-- **dev**: Development tools (pytest, black, mypy, flake8)
-- **notebook**: Jupyter notebook support with pandas and matplotlib
-- **all**: All optional dependencies
+- **dev**: Testing and typing helpers (pytest, pytest-cov, pytest-mock, types-requests)
+- **docs**: Documentation build tools (mkdocs, mkdocs-material, mkdocstrings)
 
 ```bash
-pip install -e ".[all]"
+pip install -e ".[dev]"
 ```
 
 ## API Key Setup

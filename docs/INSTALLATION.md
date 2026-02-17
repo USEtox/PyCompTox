@@ -13,11 +13,8 @@ pip install .
 # Install with development dependencies
 pip install -e ".[dev]"
 
-# Install with notebook support
-pip install -e ".[notebook]"
-
-# Install everything
-pip install -e ".[all]"
+# Install with documentation tools
+pip install -e ".[docs]"
 ```
 
 ### Install Options
@@ -34,25 +31,17 @@ pip install -e ".[dev]"
 ```
 Includes:
 - pytest, pytest-cov (testing)
-- black (code formatting)
-- flake8 (linting)
-- mypy (type checking)
+- pytest-mock (test mocking)
 - types-requests (type stubs)
 
-**Notebook Support:**
+**Documentation Support:**
 ```bash
-pip install -e ".[notebook]"
+pip install -e ".[docs]"
 ```
 Includes:
-- jupyter (notebooks)
-- pandas (data analysis)
-- matplotlib (visualization)
-
-**Everything:**
-```bash
-pip install -e ".[all]"
-```
-Includes all optional dependencies.
+- mkdocs (documentation site)
+- mkdocs-material (theme)
+- mkdocstrings[python] (API docs)
 
 ### Editable Install
 
@@ -88,7 +77,7 @@ This creates:
 All project metadata and build configuration is in `pyproject.toml`:
 - Package metadata (name, version, description)
 - Dependencies
-- Optional dependencies (dev, notebook, all)
+- Optional dependencies (dev, docs)
 - Tool configurations (black, mypy, pytest, coverage)
 
 ### setup.py

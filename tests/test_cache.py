@@ -9,12 +9,11 @@ This module tests the CacheManager functionality including:
 - Expiration handling
 """
 
-import pytest
 import json
 import tempfile
 import shutil
 from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
 import time
 
 from pycomptox.cache import CacheManager, get_default_cache, clear_cache, cache_status

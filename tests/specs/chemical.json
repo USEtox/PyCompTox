@@ -1,0 +1,283 @@
+{
+ "info": {
+  "title": "Computational Toxicology and Exposure (CTX) APIs - CTX Chemical API",
+  "version": "1.1.1"
+ },
+ "paths": {
+  "/chemical/count/by-exact-formula/{formula}": {
+   "get": {
+    "summary": "Get chemical count by exact formula"
+   }
+  },
+  "/chemical/count/by-msready-formula/{formula}": {
+   "get": {
+    "summary": "Get chemical count by MS-ready formula"
+   }
+  },
+  "/chemical/detail/search/by-dtxcid/": {
+   "post": {
+    "summary": "Get data for a batch of DTXCIDs"
+   }
+  },
+  "/chemical/detail/search/by-dtxcid/{dtxcid}": {
+   "get": {
+    "summary": "Get data by DTXCID"
+   }
+  },
+  "/chemical/detail/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get data for a batch of DTXSIDs"
+   }
+  },
+  "/chemical/detail/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get data by DTXSID"
+   }
+  },
+  "/chemical/detail/search/by-smiles/": {
+   "get": {
+    "summary": "Get data by SMILES"
+   }
+  },
+  "/chemical/extra-data/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get data for a batch of DTXSIDs"
+   }
+  },
+  "/chemical/extra-data/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get data by DTXSID"
+   }
+  },
+  "/chemical/fate/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get fate data for a batch of DTXSIDs"
+   }
+  },
+  "/chemical/fate/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get fate data by DTXSID"
+   }
+  },
+  "/chemical/fate/summary/experimental/search/": {
+   "get": {
+    "summary": "Get experimental fate summary by DTXSID and property"
+   }
+  },
+  "/chemical/fate/summary/predicted/search/": {
+   "get": {
+    "summary": "Get predicted fate summary by DTXSID and property"
+   }
+  },
+  "/chemical/fate/summary/search/": {
+   "get": {
+    "summary": "Get fate summary by DTXSID and property"
+   }
+  },
+  "/chemical/fate/summary/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get fate summary by DTXSID"
+   }
+  },
+  "/chemical/file/image/search/by-dtxcid/{dtxcid}": {
+   "get": {
+    "summary": "Get structure image by DTXCID"
+   }
+  },
+  "/chemical/file/image/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get structure image by DTXSID"
+   }
+  },
+  "/chemical/file/image/search/by-gsid/{gsid}": {
+   "get": {
+    "summary": "Get structure image by GSID"
+   }
+  },
+  "/chemical/file/mol/search/by-dtxcid/{dtxcid}": {
+   "get": {
+    "summary": "Get mol file by DTXCID"
+   }
+  },
+  "/chemical/file/mol/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get mol file by DTXSID"
+   }
+  },
+  "/chemical/list/all": {
+   "get": {
+    "summary": "Get all lists"
+   }
+  },
+  "/chemical/list/chemicals/search/by-listname/{list}": {
+   "get": {
+    "summary": "Get DTXSIDs by list"
+   }
+  },
+  "/chemical/list/chemicals/search/contain/{list}/{word}": {
+   "get": {
+    "summary": "Get DTXSIDs for list and containing substring in chemical name"
+   }
+  },
+  "/chemical/list/chemicals/search/equal/{list}/{word}": {
+   "get": {
+    "summary": "Get DTXSIDs for list and containing exact string in chemical name"
+   }
+  },
+  "/chemical/list/chemicals/search/start-with/{list}/{word}": {
+   "get": {
+    "summary": "Get DTXSIDs for list and containing starting string in chemical name"
+   }
+  },
+  "/chemical/list/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get lists containing DTXSID"
+   }
+  },
+  "/chemical/list/search/by-name/{listName}": {
+   "get": {
+    "summary": "Get lists by name"
+   }
+  },
+  "/chemical/list/search/by-type/{type}": {
+   "get": {
+    "summary": "Get lists by list type"
+   }
+  },
+  "/chemical/list/type": {
+   "get": {
+    "summary": "Get all list types"
+   }
+  },
+  "/chemical/msready/search/by-dtxcid/": {
+   "post": {
+    "summary": "Get MS-ready chemicals for a batch of DTXCIDs"
+   }
+  },
+  "/chemical/msready/search/by-dtxcid/{dtxcid}": {
+   "get": {
+    "summary": "Get MS-ready chemicals by DTXCID"
+   }
+  },
+  "/chemical/msready/search/by-formula/{formula}": {
+   "get": {
+    "summary": "Get MS-ready chemicals by formula"
+   }
+  },
+  "/chemical/msready/search/by-mass/": {
+   "post": {
+    "summary": "Get MS-ready chemicals for a batch of mass ranges"
+   }
+  },
+  "/chemical/msready/search/by-mass/{start}/{end}": {
+   "get": {
+    "summary": "Get MS-ready chemicals using mass range"
+   }
+  },
+  "/chemical/property/experimental/name": {
+   "get": {
+    "summary": "Get all experimental property options"
+   }
+  },
+  "/chemical/property/experimental/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get experimental properties for a batch of DTXSIDs"
+   }
+  },
+  "/chemical/property/experimental/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get experimental properties by DTXSID"
+   }
+  },
+  "/chemical/property/experimental/search/by-range/{propertyName}/{start}/{end}": {
+   "get": {
+    "summary": "Get experimental properties by property and range"
+   }
+  },
+  "/chemical/property/predicted/name": {
+   "get": {
+    "summary": "Get all predicted property options"
+   }
+  },
+  "/chemical/property/predicted/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get predicted properties for a batch of DTXSIDs"
+   }
+  },
+  "/chemical/property/predicted/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get predicted properties by DTXSID"
+   }
+  },
+  "/chemical/property/predicted/search/by-range/{propertyId}/{start}/{end}": {
+   "get": {
+    "summary": "Get predicted properties by property and range"
+   }
+  },
+  "/chemical/property/summary/experimental/search/": {
+   "get": {
+    "summary": "Get experimental summary by DTXSID and property"
+   }
+  },
+  "/chemical/property/summary/predicted/search/": {
+   "get": {
+    "summary": "Get predicted property summary by DTXSID and property"
+   }
+  },
+  "/chemical/property/summary/search/": {
+   "get": {
+    "summary": "Get summary by DTXSID and property"
+   }
+  },
+  "/chemical/property/summary/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get summary by DTXSID"
+   }
+  },
+  "/chemical/search/by-exact-formula/{formula}": {
+   "get": {
+    "summary": "Get chemicals by exact formula"
+   }
+  },
+  "/chemical/search/by-msready-formula/": {
+   "post": {
+    "summary": "Get chemicals for a batch of  MS-ready formulas"
+   }
+  },
+  "/chemical/search/by-msready-formula/{formula}": {
+   "get": {
+    "summary": "Get chemicals by MS-ready formula"
+   }
+  },
+  "/chemical/search/contain/{word}": {
+   "get": {
+    "summary": "Get chemicals by substring value"
+   }
+  },
+  "/chemical/search/equal/": {
+   "post": {
+    "summary": "Get chemicals for a batch of exact values"
+   }
+  },
+  "/chemical/search/equal/{word}": {
+   "get": {
+    "summary": "Get chemicals by exact value"
+   }
+  },
+  "/chemical/search/start-with/{word}": {
+   "get": {
+    "summary": "Get chemicals by starting value"
+   }
+  },
+  "/chemical/synonym/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get synonyms for a batch of DTXSIDs"
+   }
+  },
+  "/chemical/synonym/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get synonyms by DTXSID"
+   }
+  }
+ }
+}

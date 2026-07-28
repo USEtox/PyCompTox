@@ -21,11 +21,11 @@ httk = HTTKData()
 
 # Get HTTK data for a chemical
 dtxsid = "DTXSID0020232"
-httk_params = httk.httk_data_by_dtxsid(dtxsid)
+httk_params = httk.get_httk_data_by_dtxsid(dtxsid)
 
 # Batch operation
 dtxsids = ["DTXSID0020232", "DTXSID7020182"]
-batch_data = httk.httk_data_by_dtxsid_batch(dtxsids)
+batch_data = httk.get_httk_data_by_dtxsid_batch(dtxsids)
 ```
 
 ## API Methods
@@ -34,7 +34,7 @@ batch_data = httk.httk_data_by_dtxsid_batch(dtxsids)
 
 ```python
 httk = HTTKData()
-params = httk.httk_data_by_dtxsid("DTXSID0020232")
+params = httk.get_httk_data_by_dtxsid("DTXSID0020232")
 
 for param in params:
     print(f"Parameter: {param.get('parameterName')}")
@@ -47,7 +47,7 @@ for param in params:
 
 ```python
 dtxsids = ["DTXSID0020232", "DTXSID7020182"]
-batch_data = httk.httk_data_by_dtxsid_batch(dtxsids)
+batch_data = httk.get_httk_data_by_dtxsid_batch(dtxsids)
 
 for result in batch_data:
     print(f"{result.get('dtxsid')}: {result.get('parameterName')}")
@@ -61,7 +61,7 @@ for result in batch_data:
 # Get PK parameters for dose-response modeling
 httk = HTTKData()
 dtxsid = "DTXSID0020232"
-pk_data = httk.httk_data_by_dtxsid(dtxsid)
+pk_data = httk.get_httk_data_by_dtxsid(dtxsid)
 
 # Extract key parameters
 for param in pk_data:
@@ -77,7 +77,7 @@ for param in pk_data:
 # Analyze HTTK data for multiple chemicals
 chemicals = ["DTXSID0020232", "DTXSID7020182", "DTXSID3020268"]
 httk = HTTKData()
-results = httk.httk_data_by_dtxsid_batch(chemicals)
+results = httk.get_httk_data_by_dtxsid_batch(chemicals)
 
 # Group by chemical
 from collections import defaultdict

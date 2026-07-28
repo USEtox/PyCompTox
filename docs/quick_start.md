@@ -4,7 +4,7 @@ Get up and running with PyCompTox in minutes!
 
 ## Prerequisites
 
-- Python 3.8 or higher
+- Python 3.9 or higher
 - CompTox Dashboard API key ([Get one here](https://comptox.epa.gov/dashboard/api))
 
 ## Installation
@@ -65,7 +65,7 @@ from pycomptox import Chemical
 chem = Chemical()
 
 # Search by name
-results = chem.search_by_name("caffeine")
+results = chem.search_by_exact_value("caffeine")
 
 # Display results
 for result in results[:5]:
@@ -87,7 +87,7 @@ from pycomptox import ChemicalDetails
 details = ChemicalDetails()
 
 # Get basic information
-info = details.get_chemical_by_dtxsid("DTXSID2021315")
+info = details.get_data_by_dtxsid("DTXSID2021315")
 
 print(f"Name: {info['preferredName']}")
 print(f"Formula: {info['molFormula']}")
@@ -141,12 +141,12 @@ from pycomptox.extra import ExtraData
 
 # 1. Search for chemical
 chem = Chemical()
-results = chem.search_by_name("bisphenol A")
+results = chem.search_by_exact_value("bisphenol A")
 dtxsid = results[0]['dtxsid']
 
 # 2. Get detailed information
 details = ChemicalDetails()
-info = details.get_chemical_by_dtxsid(dtxsid, projection="chemicaldetailall")
+info = details.get_data_by_dtxsid(dtxsid, projection="chemicaldetailall")
 
 # 3. Get properties
 props = ChemicalProperties()

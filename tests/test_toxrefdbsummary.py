@@ -29,6 +29,7 @@ def test_client_initialization(toxref_summary_client):
     assert hasattr(toxref_summary_client, 'get_data_by_dtxsid')
 
 
+@pytest.mark.slow
 def test_get_data_by_study_type_dev(toxref_summary_client):
     """Test retrieving summary data by study type (DEV)."""
     study_type = "DEV"
@@ -43,6 +44,7 @@ def test_get_data_by_study_type_dev(toxref_summary_client):
         assert isinstance(record, dict)
 
 
+@pytest.mark.slow
 def test_get_data_by_study_id(toxref_summary_client):
     """Test retrieving summary data by study ID."""
     study_id = 63
@@ -119,6 +121,7 @@ def test_get_data_by_dtxsid_wrong_type(toxref_summary_client):
         toxref_summary_client.get_data_by_dtxsid(12345)
 
 
+@pytest.mark.slow
 def test_caching_study_type(toxref_summary_client):
     """Test that caching works for study type requests."""
     study_type = "DEV"
@@ -133,6 +136,7 @@ def test_caching_study_type(toxref_summary_client):
     assert data1 == data2
 
 
+@pytest.mark.slow
 def test_caching_study_id(toxref_summary_client):
     """Test that caching works for study ID requests."""
     study_id = 63

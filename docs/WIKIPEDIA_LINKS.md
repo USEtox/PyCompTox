@@ -216,7 +216,7 @@ search = chem.search_by_exact_value(dtxsid)
 
 # Get detailed info
 details = ChemicalDetails()
-info = details.data_by_dtxsid(dtxsid)
+info = details.get_data_by_dtxsid(dtxsid)
 
 # Get Wikipedia link
 wiki = WikiLink()

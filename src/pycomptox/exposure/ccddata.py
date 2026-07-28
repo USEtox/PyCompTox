@@ -8,15 +8,12 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
 
-class CCCData(CachedAPIClient):
+class CCDData(CachedAPIClient):
     """
     Client for accessing Chemical and Products Categories (CCC) data from EPA CompTox Dashboard.
     
@@ -31,39 +28,15 @@ class CCCData(CachedAPIClient):
             rate limiting. Default is 0.0 (no delay).
     
     Example:
-        >>> from pycomptox import CCCData
-        >>> ccc = CCCData()
+        >>> from pycomptox import CCDData
+        >>> ccc = CCDData()
         >>> 
         >>> # Get product use category data
-        >>> puc_data = ccc.product_use_category_by_dtxsid("DTXSID0020232")
+        >>> puc_data = ccc.get_product_use_category_by_dtxsid("DTXSID0020232")
         >>> print(f"Products: {puc_data[0].get('prodCount')}")
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0
-    , **kwargs):
-        """
-        Initialize the CCCData client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-    
-    def product_use_category_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_product_use_category_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get Product Use Category data for a chemical.
         
@@ -90,8 +63,8 @@ class CCCData(CachedAPIClient):
             ValueError: If dtxsid is not a valid non-empty string
         
         Example:
-            >>> ccc = CCCData()
-            >>> puc_data = ccc.product_use_category_by_dtxsid("DTXSID0020232")
+            >>> ccc = CCDData()
+            >>> puc_data = ccc.get_product_use_category_by_dtxsid("DTXSID0020232")
             >>> for puc in puc_data:
             ...     print(f"{puc['displayPuc']}: {puc['prodCount']} products")
         """
@@ -101,7 +74,7 @@ class CCCData(CachedAPIClient):
         endpoint = f"exposure/ccd/puc/search/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
     
-    def production_volume_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> Dict[str, Any]:
+    def get_production_volume_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> Dict[str, Any]:
         """
         Get Production Volume data for a chemical.
         
@@ -122,8 +95,8 @@ class CCCData(CachedAPIClient):
             ValueError: If dtxsid is not a valid non-empty string
         
         Example:
-            >>> ccc = CCCData()
-            >>> prod_vol = ccc.production_volume_by_dtxsid("DTXSID0020232")
+            >>> ccc = CCDData()
+            >>> prod_vol = ccc.get_production_volume_by_dtxsid("DTXSID0020232")
             >>> print(f"Amount: {prod_vol['amount']}")
         """
         if not dtxsid or not isinstance(dtxsid, str):
@@ -132,7 +105,7 @@ class CCCData(CachedAPIClient):
         endpoint = f"exposure/ccd/production-volume/search/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def biomonitoring_data_by_dtxsid_and_ccd(self, dtxsid: str, projection: str = "", use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_biomonitoring_data_by_dtxsid(self, dtxsid: str, projection: str = "", use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get NHANES biomonitoring data for a chemical.
         
@@ -159,8 +132,8 @@ class CCCData(CachedAPIClient):
             ValueError: If dtxsid is not a valid non-empty string
         
         Example:
-            >>> ccc = CCCData()
-            >>> biomon = ccc.biomonitoring_data_by_dtxsid_and_ccd("DTXSID7020182")
+            >>> ccc = CCDData()
+            >>> biomon = ccc.get_biomonitoring_data_by_dtxsid("DTXSID7020182")
             >>> for record in biomon:
             ...     print(f"{record['demographic']}: {record['median']}")
         """
@@ -171,7 +144,7 @@ class CCCData(CachedAPIClient):
         params = {"projection": projection} if projection else None
         return self._make_cached_request(endpoint, params=params, use_cache=use_cache)
 
-    def general_use_keywords_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_general_use_keywords_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get general use keywords data for a chemical.
         
@@ -193,8 +166,8 @@ class CCCData(CachedAPIClient):
             ValueError: If dtxsid is not a valid non-empty string
         
         Example:
-            >>> ccc = CCCData()
-            >>> keywords = ccc.general_use_keywords_by_dtxsid("DTXSID0020232")
+            >>> ccc = CCDData()
+            >>> keywords = ccc.get_general_use_keywords_by_dtxsid("DTXSID0020232")
             >>> for kw in keywords:
             ...     print(f"{kw['keywordset']}: {kw['sourceCount']} sources")
         """
@@ -204,7 +177,7 @@ class CCCData(CachedAPIClient):
         endpoint = f"exposure/ccd/keywords/search/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def reported_functional_use_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_reported_functional_use_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get reported functional use data for a chemical.
         
@@ -226,8 +199,8 @@ class CCCData(CachedAPIClient):
             ValueError: If dtxsid is not a valid non-empty string
         
         Example:
-            >>> ccc = CCCData()
-            >>> func_uses = ccc.reported_functional_use_by_dtxsid("DTXSID0020232")
+            >>> ccc = CCDData()
+            >>> func_uses = ccc.get_reported_functional_use_by_dtxsid("DTXSID0020232")
             >>> for use in func_uses:
             ...     print(f"{use['category']}: {use['definition']}")
         """
@@ -237,7 +210,7 @@ class CCCData(CachedAPIClient):
         endpoint = f"exposure/ccd/functional-use/search/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def chemical_weight_fraction_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_chemical_weight_fractions_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get chemical weight fraction data for a chemical.
         
@@ -272,8 +245,8 @@ class CCCData(CachedAPIClient):
             ValueError: If dtxsid is not a valid non-empty string
         
         Example:
-            >>> ccc = CCCData()
-            >>> weight_fracs = ccc.chemical_weight_fraction_by_dtxsid("DTXSID0020232")
+            >>> ccc = CCDData()
+            >>> weight_fracs = ccc.get_chemical_weight_fractions_by_dtxsid("DTXSID0020232")
             >>> for wf in weight_fracs:
             ...     print(f"{wf['prodName']}: {wf['lowerweightfraction']}-{wf['upperweightfraction']}")
         """

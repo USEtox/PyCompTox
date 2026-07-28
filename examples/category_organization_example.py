@@ -44,7 +44,7 @@ def main():
     print(f"Checking bioactivity data for {dtxsid}...")
     
     try:
-        summary = bio_data.get_bioactivity_summary(dtxsid)
+        summary = bio_data.get_summary_by_dtxsid(dtxsid)
         if summary:
             print(f"Found {len(summary)} bioactivity records")
             if summary:
@@ -64,7 +64,7 @@ def main():
     print(f"Checking functional use for {dtxsid}...")
     
     try:
-        uses = func_use.functiona_use_by_dtxsid(dtxsid)
+        uses = func_use.get_functional_use_by_dtxsid(dtxsid)
         if uses:
             print(f"Found {len(uses)} functional uses:")
             for use in uses[:3]:  # Show first 3
@@ -79,7 +79,7 @@ def main():
     print(f"\nChecking regulatory/screening lists...")
     
     try:
-        presence = lists.list_presence_data_by_dtxsid(dtxsid)
+        presence = lists.get_list_presence_data_by_dtxsid(dtxsid)
         if presence:
             present_lists = [p['listName'] for p in presence if p.get('isPresent')]
             if present_lists:

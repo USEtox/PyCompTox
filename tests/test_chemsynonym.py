@@ -26,8 +26,8 @@ def test_get_synonyms_by_dtxsid_default(synonym_client):
     assert result["dtxsid"] == dtxsid
     
     # Check expected fields exist
-    expected_fields = ["beilstein", "alternateCasrn", "dtxsid", "pcCode",
-                       "deletedCasrn", "other", "valid", "good"]
+    expected_fields = ["beilstein", "alternate", "dtxsid", "pcCode",
+                       "deleted", "other", "valid", "good"]
     for field in expected_fields:
         assert field in result
     
@@ -158,9 +158,9 @@ def test_synonym_fields_content(synonym_client):
         print(f"✓ Good quality synonyms: {result['good'][:3]}...")
     
     # Test alternate CAS numbers if present
-    if result.get("alternateCasrn"):
-        assert all(isinstance(cas, str) for cas in result["alternateCasrn"])
-        print(f"✓ Alternate CAS numbers: {result['alternateCasrn']}")
+    if result.get("alternate"):
+        assert all(isinstance(cas, str) for cas in result["alternate"])
+        print(f"✓ Alternate CAS numbers: {result['alternate']}")
 
 
 def test_invalid_dtxsid(synonym_client):
@@ -197,7 +197,7 @@ def test_batch_returns_all_fields(synonym_client):
     results = synonym_client.get_synonyms_by_dtxsid_batch(dtxsids)
     
     expected_fields = ["dtxsid", "valid", "good", "other", "beilstein",
-                       "alternateCasrn", "deletedCasrn", "pcCode"]
+                       "alternate", "deleted", "pcCode"]
     
     for result in results:
         for field in expected_fields:
@@ -221,11 +221,11 @@ def test_rate_limiting():
     
     client = ChemSynonym(time_delay_between_calls=0.5)
     
-    start_time = time.time()
+    start_time = time.monotonic()
     # Use different DTXSIDs to avoid cache
     client.get_synonyms_by_dtxsid("DTXSID7020182", use_cache=False)
     client.get_synonyms_by_dtxsid("DTXSID2021315", use_cache=False)
-    elapsed_time = time.time() - start_time
+    elapsed_time = time.monotonic() - start_time
     
     # Should take at least 0.5 seconds due to rate limiting
     assert elapsed_time >= 0.5

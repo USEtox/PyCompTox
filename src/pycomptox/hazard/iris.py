@@ -61,32 +61,6 @@ class IRIS(CachedAPIClient):
         ...     print(f"Found {len(data)} IRIS assessment(s)")
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0,
-        **kwargs: Any
-    ):
-        """
-        Initialize the IRIS client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-            kwargs: Additional arguments for CachedAPIClient (cache_manager, use_cache)
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-
     def get_data_by_dtxsid(self, dtxsid: str, 
                            use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
@@ -133,8 +107,10 @@ class IRIS(CachedAPIClient):
         
         Raises:
             ValueError: If dtxsid is not a valid non-empty string
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox.hazard import IRIS

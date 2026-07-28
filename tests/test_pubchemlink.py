@@ -92,12 +92,12 @@ class TestPubChemLink:
     
     def test_rate_limiting(self):
         """Test that rate limiting is enforced"""
-        client = PubChemLink(rate_limit_delay=0.5, use_cache=False)
+        client = PubChemLink(time_delay_between_calls=0.5, use_cache=False)
         
-        start_time = time.time()
+        start_time = time.monotonic()
         client.check_existence_by_dtxsid("DTXSID7020182")
         client.check_existence_by_dtxsid("DTXSID2021315")
-        elapsed = time.time() - start_time
+        elapsed = time.monotonic() - start_time
         
         # Should take at least 0.5 seconds due to rate limiting
         assert elapsed >= 0.5

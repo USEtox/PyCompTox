@@ -19,28 +19,28 @@ results = searcher.search_by_exact_value("name", "Bisphenol A")
 
 # Get detailed information
 details_client = ChemicalDetails()
-details = details_client.data_by_dtxsid(results[0]['dtxsid'])
+details = details_client.get_data_by_dtxsid(results[0]['dtxsid'])
 ```
 
 ### Five New Methods
 
-1. **`data_by_dtxsid(dtxsid, projection=None)`**
+1. **`get_data_by_dtxsid(dtxsid, projection=None)`**
    - Retrieve details for a single chemical by DTXSID
    - Supports projection parameter for data filtering
 
-2. **`data_by_dtxcid(dtxcid, projection=None)`**
+2. **`get_data_by_dtxcid(dtxcid, projection=None)`**
    - Retrieve details for a single chemical by DTXCID
    - Same projection support as DTXSID method
 
-3. **`data_by_dtxsid_batch(dtxsids, projection=None)`**
+3. **`get_data_by_dtxsid_batch(dtxsids, projection=None)`**
    - Batch retrieval for up to 1000 DTXSIDs
    - Single API call for multiple chemicals
 
-4. **`data_by_dtxcid_batch(dtxcids, projection=None)`**
+4. **`get_data_by_dtxcid_batch(dtxcids, projection=None)`**
    - Batch retrieval for up to 1000 DTXCIDs
    - Efficient bulk data access
 
-5. **`find_all_chemical_details(next_page=1, projection=None)`**
+5. **`get_all_chemical_details(next_page=1, projection=None)`**
    - Paginated access to all chemicals in database
    - Navigate through results page by page
 
@@ -94,7 +94,7 @@ results = searcher.search_by_exact_value("name", "Caffeine")
 dtxsid = results[0]['dtxsid']
 
 # Get full details
-details = details_client.data_by_dtxsid(dtxsid)
+details = details_client.get_data_by_dtxsid(dtxsid)
 print(f"Name: {details['preferredName']}")
 print(f"Formula: {details['molFormula']}")
 print(f"SMILES: {details['smiles']}")
@@ -105,7 +105,7 @@ print(f"Mass: {details['monoisotopicMass']}")
 
 ```python
 # Get only structure information
-structure = details_client.data_by_dtxsid(
+structure = details_client.get_data_by_dtxsid(
     "DTXSID7020182",
     projection="chemicalstructure"
 )
@@ -113,7 +113,7 @@ print(f"SMILES: {structure['smiles']}")
 print(f"InChI: {structure['inchiString']}")
 
 # Get only identifiers
-identifiers = details_client.data_by_dtxsid(
+identifiers = details_client.get_data_by_dtxsid(
     "DTXSID7020182",
     projection="chemicalidentifier"
 )
@@ -134,7 +134,7 @@ for name in names:
         dtxsids.append(results[0]['dtxsid'])
 
 # Get batch details in one request
-batch_details = details_client.data_by_dtxsid_batch(dtxsids)
+batch_details = details_client.get_data_by_dtxsid_batch(dtxsids)
 
 for chem in batch_details:
     print(f"{chem['preferredName']}: {chem.get('casrn', 'N/A')}")
@@ -151,7 +151,7 @@ if results:
     dtxsid = results[0]['dtxsid']
     
     # Get comprehensive details
-    details = details_client.data_by_dtxsid(
+    details = details_client.get_data_by_dtxsid(
         dtxsid,
         projection="chemicaldetailall"
     )
@@ -245,7 +245,7 @@ Instead of making N separate API calls:
 # Inefficient - N requests
 details_list = []
 for dtxsid in dtxsids:
-    details = details_client.data_by_dtxsid(dtxsid)
+    details = details_client.get_data_by_dtxsid(dtxsid)
     details_list.append(details)
 ```
 
@@ -253,7 +253,7 @@ Make a single batch request:
 
 ```python
 # Efficient - 1 request (up to 1000 chemicals)
-details_list = details_client.data_by_dtxsid_batch(dtxsids)
+details_list = details_client.get_data_by_dtxsid_batch(dtxsids)
 ```
 
 ### Projection Filtering
@@ -262,10 +262,10 @@ Request only the data you need:
 
 ```python
 # Get full details (larger response)
-full = details_client.data_by_dtxsid(dtxsid)
+full = details_client.get_data_by_dtxsid(dtxsid)
 
 # Get only identifiers (smaller response)
-ids = details_client.data_by_dtxsid(
+ids = details_client.get_data_by_dtxsid(
     dtxsid,
     projection="chemicalidentifier"
 )
@@ -283,14 +283,14 @@ name = "Bisphenol A"
 results = searcher.search_by_exact_value("name", name)
 
 # Get comprehensive details
-details = details_client.data_by_dtxsid(results[0]['dtxsid'])
+details = details_client.get_data_by_dtxsid(results[0]['dtxsid'])
 ```
 
 ### 2. Structure Retrieval
 
 ```python
 # Need SMILES for cheminformatics
-structure = details_client.data_by_dtxsid(
+structure = details_client.get_data_by_dtxsid(
     dtxsid,
     projection="chemicalstructure"
 )
@@ -304,7 +304,7 @@ smiles = structure['smiles']
 dtxsids = searcher.search_ms_ready_by_mass_range(228.0, 228.2)
 
 # Get NTA toolkit data for all matches
-nta_data = details_client.data_by_dtxsid_batch(
+nta_data = details_client.get_data_by_dtxsid_batch(
     dtxsids,
     projection="ntatoolkit"
 )
@@ -317,7 +317,7 @@ for chem in nta_data:
 
 ```python
 # Get assay information
-details = details_client.data_by_dtxsid(dtxsid)
+details = details_client.get_data_by_dtxsid(dtxsid)
 print(f"Active Assays: {details['activeAssays']}")
 print(f"Total Assays: {details['totalAssays']}")
 print(f"Percent Active: {details['activeAssays']/details['totalAssays']*100:.1f}%")
@@ -344,7 +344,7 @@ from pycomptox import Chemical, ChemicalDetails
 
 # Use as needed
 details_client = ChemicalDetails()
-details = details_client.data_by_dtxsid("DTXSID7020182")
+details = details_client.get_data_by_dtxsid("DTXSID7020182")
 ```
 
 ## What's Next

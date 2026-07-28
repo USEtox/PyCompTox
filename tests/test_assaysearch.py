@@ -151,13 +151,13 @@ def test_rate_limiting(search_client):
     # Create a client with rate limiting and cache disabled
     client_with_delay = AssaySearch(time_delay_between_calls=0.5, use_cache=False)
     
-    start_time = time.time()
+    start_time = time.monotonic()
     
     # Make two consecutive calls
     client_with_delay.search_by_starting_value("ATG_", top=5)
     client_with_delay.search_by_starting_value("ATG_", top=5)
     
-    elapsed_time = time.time() - start_time
+    elapsed_time = time.monotonic() - start_time
     
     # Should take at least 0.5 seconds due to rate limiting
     assert elapsed_time >= 0.5

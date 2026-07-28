@@ -29,7 +29,7 @@ exp_pred = ExposurePrediction()
 
 # Get general population exposure estimates
 dtxsid = "DTXSID0020232"
-predictions = exp_pred.general_prediction_SEEMs_by_dtxsid(dtxsid)
+predictions = exp_pred.get_general_seem_prediction_by_dtxsid(dtxsid)
 
 for pred in predictions:
     print(f"Pathway: {pred.get('pathway')}")
@@ -46,7 +46,7 @@ from pycomptox.exposure import DemographicExposure
 demo_exp = DemographicExposure()
 
 # Get demographic-specific estimates
-predictions = demo_exp.prediction_SEEMs_data_by_dtxsid(dtxsid)
+predictions = demo_exp.get_seem_prediction_by_dtxsid(dtxsid)
 
 for pred in predictions:
     print(f"Demographic: {pred.get('demographic')}")
@@ -64,10 +64,10 @@ Get exposure predictions for the total U.S. population:
 exp_pred = ExposurePrediction()
 
 # Basic usage
-predictions = exp_pred.general_prediction_SEEMs_by_dtxsid("DTXSID0020232")
+predictions = exp_pred.get_general_seem_prediction_by_dtxsid("DTXSID0020232")
 
 # With projection
-predictions = exp_pred.general_prediction_SEEMs_by_dtxsid(
+predictions = exp_pred.get_general_seem_prediction_by_dtxsid(
     "DTXSID0020232",
     projection="ccd-general"
 )
@@ -102,7 +102,7 @@ dtxsids = [
     "DTXSID0020245"
 ]
 
-batch_results = exp_pred.general_prediction_SEEMs_by_dtxsid_batch(dtxsids)
+batch_results = exp_pred.get_general_seem_prediction_by_dtxsid_batch(dtxsids)
 
 for result in batch_results:
     dtxsid = result.get('dtxsid')
@@ -120,10 +120,10 @@ Get exposure predictions broken down by demographic groups:
 demo_exp = DemographicExposure()
 
 # Basic usage
-predictions = demo_exp.prediction_SEEMs_data_by_dtxsid("DTXSID0020232")
+predictions = demo_exp.get_seem_prediction_by_dtxsid("DTXSID0020232")
 
 # With projection
-predictions = demo_exp.prediction_SEEMs_data_by_dtxsid(
+predictions = demo_exp.get_seem_prediction_by_dtxsid(
     "DTXSID0020232",
     projection="ccd-demographic"
 )
@@ -149,7 +149,7 @@ for pred in predictions:
 demo_exp = DemographicExposure()
 
 dtxsids = ["DTXSID0020232", "DTXSID0020267"]
-batch_results = demo_exp.prediction_SEEMs_data_by_dtxsid_batch(dtxsids)
+batch_results = demo_exp.get_seem_prediction_by_dtxsid_batch(dtxsids)
 
 # Group by demographic
 from collections import defaultdict
@@ -248,7 +248,7 @@ exp_pred = ExposurePrediction()
 
 # Get exposure predictions
 chemicals = ["DTXSID0020232", "DTXSID7020182", "DTXSID0020245"]
-predictions = exp_pred.general_prediction_SEEMs_by_dtxsid_batch(chemicals)
+predictions = exp_pred.get_general_seem_prediction_by_dtxsid_batch(chemicals)
 
 # Sort by exposure level
 sorted_preds = sorted(
@@ -269,7 +269,7 @@ demo_exp = DemographicExposure()
 dtxsid = "DTXSID0020232"
 
 # Get demographic predictions
-predictions = demo_exp.prediction_SEEMs_data_by_dtxsid(dtxsid)
+predictions = demo_exp.get_seem_prediction_by_dtxsid(dtxsid)
 
 # Identify highest-exposed demographic
 max_exposure = max(predictions, key=lambda x: x.get('upper95', 0))
@@ -280,7 +280,7 @@ print(f"95th percentile: {max_exposure.get('upper95')} mg/kg/day")
 
 # Compare to general population
 gen_pred = ExposurePrediction()
-general = gen_pred.general_prediction_SEEMs_by_dtxsid(dtxsid)
+general = gen_pred.get_general_seem_prediction_by_dtxsid(dtxsid)
 gen_upper95 = general[0].get('upper95')
 
 ratio = max_exposure.get('upper95') / gen_upper95
@@ -293,7 +293,7 @@ print(f"Demographic exposure is {ratio:.1f}x general population")
 exp_pred = ExposurePrediction()
 
 # Get predictions with all pathways
-predictions = exp_pred.general_prediction_SEEMs_by_dtxsid("DTXSID0020232")
+predictions = exp_pred.get_general_seem_prediction_by_dtxsid("DTXSID0020232")
 
 # Calculate total exposure
 total_median = sum(p.get('medianEstimate', 0) for p in predictions)
@@ -315,7 +315,7 @@ for pred in predictions:
 
 ```python
 exp_pred = ExposurePrediction()
-predictions = exp_pred.general_prediction_SEEMs_by_dtxsid("DTXSID0020232")
+predictions = exp_pred.get_general_seem_prediction_by_dtxsid("DTXSID0020232")
 
 for pred in predictions:
     pathway = pred.get('pathway')
@@ -365,7 +365,7 @@ from pycomptox.exposure import ExposurePrediction, DemographicExposure
 
 try:
     exp_pred = ExposurePrediction()
-    predictions = exp_pred.general_prediction_SEEMs_by_dtxsid("DTXSID0020232")
+    predictions = exp_pred.get_general_seem_prediction_by_dtxsid("DTXSID0020232")
 except PermissionError as e:
     print(f"Invalid API key: {e}")
 except ValueError as e:

@@ -12,10 +12,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
@@ -54,35 +51,12 @@ class ChemSynonym(CachedAPIClient):
         ... )
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0
-    , **kwargs):
-        """
-        Initialize the ChemSynonym client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-    
     def get_synonyms_by_dtxsid(
         self,
         dtxsid: str,
-        projection: Optional[str] = None
-    , use_cache: Optional[bool] = None) -> Dict[str, Any]:
+        projection: Optional[str] = None,
+        use_cache: Optional[bool] = None,
+    ) -> Dict[str, Any]:
         """
         Get synonyms for a chemical by DTXSID with optional projection.
         
@@ -101,10 +75,10 @@ class ChemSynonym(CachedAPIClient):
             
             Default projection returns:
                 - `beilstein` (List[str]): Beilstein registry numbers
-                - `alternateCasrn` (List[str]): Alternate CAS Registry Numbers
+                - `alternate` (List[str]): Alternate CAS Registry Numbers
                 - `dtxsid` (str): DSSTox Substance Identifier
                 - `pcCode` (str): PC code
-                - `deletedCasrn` (List[str]): Deleted CAS Registry Numbers
+                - `deleted` (List[str]): Deleted CAS Registry Numbers
                 - `other` (List[str]): Other synonyms
                 - `valid` (List[str]): Valid synonyms
                 - `good` (List[str]): Good quality synonyms
@@ -115,8 +89,10 @@ class ChemSynonym(CachedAPIClient):
         
         Raises:
             ValueError: If DTXSID is not found or request fails
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> synonym_client = ChemSynonym()
@@ -124,7 +100,7 @@ class ChemSynonym(CachedAPIClient):
             >>> # Get structured synonyms
             >>> data = synonym_client.get_synonyms_by_dtxsid("DTXSID7020182")
             >>> print(f"Valid names: {data.get('valid', [])}")
-            >>> print(f"Alternate CAS: {data.get('alternateCasrn', [])}")
+            >>> print(f"Alternate CAS: {data.get('alternate', [])}")
             >>> 
             >>> # Get flat list with quality ratings
             >>> flat_data = synonym_client.get_synonyms_by_dtxsid(
@@ -143,8 +119,9 @@ class ChemSynonym(CachedAPIClient):
 
     def get_synonyms_by_dtxsid_batch(
         self,
-        dtxsid_list: List[str]
-    , use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+        dtxsid_list: List[str],
+        use_cache: Optional[bool] = None,
+    ) -> List[Dict[str, Any]]:
         """
         Get synonyms for multiple chemicals in a single batch request.
         
@@ -160,18 +137,20 @@ class ChemSynonym(CachedAPIClient):
         Returns:
             List[Dict[str, Any]]: List of synonym data dictionaries, each containing:
                 - `beilstein` (List[str]): Beilstein registry numbers
-                - `alternateCasrn` (List[str]): Alternate CAS Registry Numbers
+                - `alternate` (List[str]): Alternate CAS Registry Numbers
                 - `dtxsid` (str): DSSTox Substance Identifier
                 - `pcCode` (str): PC code
-                - `deletedCasrn` (List[str]): Deleted CAS Registry Numbers
+                - `deleted` (List[str]): Deleted CAS Registry Numbers
                 - `other` (List[str]): Other synonyms
                 - `valid` (List[str]): Valid synonyms
                 - `good` (List[str]): Good quality synonyms
         
         Raises:
             ValueError: If more than 1000 DTXSIDs provided or request fails
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> synonym_client = ChemSynonym()
@@ -185,7 +164,7 @@ class ChemSynonym(CachedAPIClient):
             >>> 
             >>> # Find chemicals with alternate CAS numbers
             >>> for data in results:
-            ...     alt_cas = data.get("alternateCasrn", [])
+            ...     alt_cas = data.get("alternate", [])
             ...     if alt_cas:
             ...         print(f"{data.get('dtxsid')}: {alt_cas}")
         """

@@ -1,17 +1,13 @@
 """
-Test script for CCCData class.
+Test script for CCDData class.
 
-This script demonstrates basic usage of the CCCData API client
+This script demonstrates basic usage of the CCDData API client
 and tests various methods for retrieving Chemical and Products Categories data.
 """
 
-import sys
-from pathlib import Path
 
-# Add the src directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from pycomptox.exposure import CCCData
+from pycomptox.exposure import CCDData
 
 
 def test_product_use_category():
@@ -22,14 +18,14 @@ def test_product_use_category():
     print("="*70)
     
     try:
-        client = CCCData()
-        print("✓ CCCData client initialized successfully\n")
+        client = CCDData()
+        print("✓ CCDData client initialized successfully\n")
         
         # Test with a common chemical
         dtxsid = "DTXSID7020182"  # Bisphenol A
         print(f"Fetching product use category for {dtxsid}...")
         
-        data = client.product_use_category_by_dtxsid(dtxsid)
+        data = client.get_product_use_category_by_dtxsid(dtxsid)
         
         if data:
             print(f"✓ Retrieved product use category data")
@@ -58,12 +54,12 @@ def test_production_volume():
     print("="*70)
     
     try:
-        client = CCCData()
+        client = CCDData()
         
         dtxsid = "DTXSID7020182"
         print(f"Fetching production volume for {dtxsid}...")
         
-        data = client.production_volume_by_dtxsid(dtxsid)
+        data = client.get_production_volume_by_dtxsid(dtxsid)
         
         if data:
             print(f"✓ Retrieved production volume data")
@@ -87,12 +83,12 @@ def test_input_validation():
     print("="*70)
     
     try:
-        client = CCCData()
+        client = CCDData()
         
         # Test with empty string
         print("Testing with empty DTXSID...")
         try:
-            client.product_use_category_by_dtxsid("")
+            client.get_product_use_category_by_dtxsid("")
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")
@@ -100,7 +96,7 @@ def test_input_validation():
         # Test with None
         print("\nTesting with None DTXSID...")
         try:
-            client.product_use_category_by_dtxsid(None)
+            client.get_product_use_category_by_dtxsid(None)
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")
@@ -116,5 +112,5 @@ if __name__ == "__main__":
     test_production_volume()
     test_input_validation()
     print("\n" + "="*70)
-    print("All CCCData tests completed!")
+    print("All CCDData tests completed!")
     print("="*70)

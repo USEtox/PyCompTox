@@ -26,7 +26,7 @@ summary = client.get_summary_by_dtxsid("DTXSID7020182")
 data = client.get_data_by_aeid(3032)
 
 # Batch retrieve data for multiple chemicals
-batch_data = client.find_bioactivity_data_by_dtxsid_batch([
+batch_data = client.get_bioactivity_data_by_dtxsid_batch([
     "DTXSID7020182", 
     "DTXSID9026974"
 ])
@@ -91,7 +91,7 @@ AED data links activity concentrations to exposure and dose estimates:
 aed_data = client.get_aed_data_by_dtxsid("DTXSID5021209")
 
 # Batch retrieve AED data
-aed_batch = client.find_aed_data_by_dtxsid_batch([
+aed_batch = client.get_aed_data_by_dtxsid_batch([
     "DTXSID5021209",
     "DTXSID7020182"
 ])
@@ -103,25 +103,25 @@ All batch methods accept lists and return data for multiple identifiers:
 
 ```python
 # Batch by sample identifiers
-spid_data = client.find_bioactivity_data_by_spid_batch([
+spid_data = client.get_bioactivity_data_by_spid_batch([
     "EPAPLT0232A03",
     "EPAPLT0232A04"
 ])
 
 # Batch by data identifiers
-m4id_data = client.find_bioactivity_data_by_m4id_batch([
+m4id_data = client.get_bioactivity_data_by_m4id_batch([
     1135145,
     1135146
 ])
 
 # Batch by chemical identifiers
-dtxsid_data = client.find_bioactivity_data_by_dtxsid_batch([
+dtxsid_data = client.get_bioactivity_data_by_dtxsid_batch([
     "DTXSID7020182",
     "DTXSID9026974"
 ])
 
 # Batch by assay endpoint identifiers
-aeid_data = client.find_bioactivity_data_by_aeid_batch([
+aeid_data = client.get_bioactivity_data_by_aeid_batch([
     3032,
     3033,
     3034
@@ -291,10 +291,10 @@ chemicals = [
 ]
 
 # Get bioactivity data
-batch_data = client.find_bioactivity_data_by_dtxsid_batch(chemicals)
+batch_data = client.get_bioactivity_data_by_dtxsid_batch(chemicals)
 
 # Get AED data
-aed_data = client.find_aed_data_by_dtxsid_batch(chemicals)
+aed_data = client.get_aed_data_by_dtxsid_batch(chemicals)
 
 print(f"Retrieved data for {len(chemicals)} chemicals")
 ```

@@ -19,9 +19,8 @@ License: MIT
 import os
 import json
 import hashlib
-import time
 from pathlib import Path
-from typing import Any, Dict, Optional, List
+from typing import Any, Dict, Optional, Union
 from datetime import datetime, timedelta
 import shutil
 
@@ -52,23 +51,20 @@ class CacheManager:
     
     def __init__(
         self,
-        cache_dir: Optional[str] = None,
+        cache_dir: Optional[Union[str, Path]] = None,
         max_age_days: Optional[int] = None,
         enabled: bool = True
     ):
         """Initialize the cache manager."""
         if cache_dir is None:
             # Use default cache directory in user's home
-            home = Path.home()
-            cache_dir = home / ".pycomptox" / "cache"
-        
-        self.cache_dir = Path(cache_dir)
+            self.cache_dir = Path.home() / ".pycomptox" / "cache"
+        else:
+            self.cache_dir = Path(cache_dir)
         self.max_age_days = max_age_days
         self.enabled = enabled
-        
-        # Create cache directory if it doesn't exist
-        if self.enabled:
-            self.cache_dir.mkdir(parents=True, exist_ok=True)
+        # The cache directory is created lazily on first write. Caching is
+        # opt-in, so merely constructing a client must not touch the disk.
     
     def _generate_key(self, endpoint: str, params: Dict[str, Any]) -> str:
         """
@@ -88,21 +84,26 @@ class CacheManager:
         # Generate SHA256 hash
         return hashlib.sha256(key_str.encode()).hexdigest()
     
-    def _get_cache_file(self, endpoint: str, params: Dict[str, Any]) -> Path:
+    def _get_cache_file(
+        self, endpoint: str, params: Dict[str, Any], create_dir: bool = False
+    ) -> Path:
         """
         Get the cache file path for an endpoint and parameters.
-        
+
         Args:
             endpoint: API endpoint identifier
             params: Request parameters
-        
+            create_dir: Whether to create the containing directory. Only needed
+                when the caller is about to write.
+
         Returns:
             Path to the cache file
         """
         # Create subdirectory for endpoint
         endpoint_dir = self.cache_dir / endpoint.replace("/", "_")
-        endpoint_dir.mkdir(parents=True, exist_ok=True)
-        
+        if create_dir:
+            endpoint_dir.mkdir(parents=True, exist_ok=True)
+
         # Generate filename from hash
         key = self._generate_key(endpoint, params)
         return endpoint_dir / f"{key}.json"
@@ -137,14 +138,15 @@ class CacheManager:
                 
                 if datetime.now() - cached_time > max_age:
                     # Cache expired, delete it
-                    cache_file.unlink()
+                    cache_file.unlink(missing_ok=True)
                     return None
             
             return cached_data['response']
-        
-        except (json.JSONDecodeError, KeyError, ValueError) as e:
-            # Corrupted cache file, delete it
-            cache_file.unlink()
+
+        except (json.JSONDecodeError, KeyError, ValueError, OSError):
+            # Corrupted cache file, delete it. missing_ok guards against a
+            # concurrent reader having already removed it.
+            cache_file.unlink(missing_ok=True)
             return None
     
     def set(self, endpoint: str, params: Dict[str, Any], response: Any) -> None:
@@ -158,22 +160,29 @@ class CacheManager:
         """
         if not self.enabled:
             return
-        
-        cache_file = self._get_cache_file(endpoint, params)
-        
+
+        cache_file = self._get_cache_file(endpoint, params, create_dir=True)
+
         cached_data = {
             'timestamp': datetime.now().isoformat(),
             'endpoint': endpoint,
             'params': params,
             'response': response
         }
-        
+
+        # Write to a temporary file and rename, so a crash or a concurrent
+        # reader never observes a half-written cache entry.
+        tmp_file = cache_file.with_suffix(f".{os.getpid()}.tmp")
         try:
-            with open(cache_file, 'w', encoding='utf-8') as f:
+            with open(tmp_file, 'w', encoding='utf-8') as f:
                 json.dump(cached_data, f, indent=2)
-        except (IOError, TypeError) as e:
-            # Silently fail on cache write errors
-            pass
+            os.replace(tmp_file, cache_file)
+        except (IOError, OSError, TypeError):
+            # Caching is best-effort: a write failure must not fail the request.
+            try:
+                tmp_file.unlink(missing_ok=True)
+            except OSError:
+                pass
     
     def clear(self, endpoint: Optional[str] = None) -> int:
         """
@@ -224,7 +233,7 @@ class CacheManager:
                 - oldest_entry: Timestamp of oldest cache entry
                 - newest_entry: Timestamp of newest cache entry
         """
-        status = {
+        status: Dict[str, Any] = {
             'enabled': self.enabled,
             'cache_dir': str(self.cache_dir),
             'max_age_days': self.max_age_days,
@@ -298,7 +307,7 @@ class CacheManager:
         if not self.enabled or not self.cache_dir.exists():
             return {'success': False, 'message': 'Cache is disabled or empty'}
         
-        export_data = {
+        export_data: Dict[str, Any] = {
             'export_timestamp': datetime.now().isoformat(),
             'max_age_days': self.max_age_days,
             'entries': []
@@ -321,17 +330,17 @@ class CacheManager:
                     pass
         
         # Write export file
-        export_path = Path(export_path)
-        export_path.parent.mkdir(parents=True, exist_ok=True)
+        export_file = Path(export_path)
+        export_file.parent.mkdir(parents=True, exist_ok=True)
         
-        with open(export_path, 'w', encoding='utf-8') as f:
+        with open(export_file, 'w', encoding='utf-8') as f:
             json.dump(export_data, f, indent=2)
         
-        file_size = export_path.stat().st_size
+        file_size = export_file.stat().st_size
         
         return {
             'success': True,
-            'export_path': str(export_path),
+            'export_path': str(export_file),
             'entries_exported': entry_count,
             'file_size_bytes': file_size,
             'file_size_mb': round(file_size / (1024 * 1024), 2)
@@ -351,13 +360,13 @@ class CacheManager:
         if not self.enabled:
             return {'success': False, 'message': 'Cache is disabled'}
         
-        import_path = Path(import_path)
+        import_file = Path(import_path)
         
-        if not import_path.exists():
-            return {'success': False, 'message': f'Import file not found: {import_path}'}
+        if not import_file.exists():
+            return {'success': False, 'message': f'Import file not found: {import_file}'}
         
         try:
-            with open(import_path, 'r', encoding='utf-8') as f:
+            with open(import_file, 'r', encoding='utf-8') as f:
                 import_data = json.load(f)
         except json.JSONDecodeError as e:
             return {'success': False, 'message': f'Invalid JSON file: {e}'}
@@ -374,8 +383,8 @@ class CacheManager:
                 skipped += 1
                 continue
             
-            cache_file = self._get_cache_file(endpoint, params)
-            
+            cache_file = self._get_cache_file(endpoint, params, create_dir=True)
+
             # Check if entry already exists
             if cache_file.exists() and not overwrite:
                 skipped += 1
@@ -391,7 +400,7 @@ class CacheManager:
         
         return {
             'success': True,
-            'import_path': str(import_path),
+            'import_path': str(import_file),
             'entries_imported': imported,
             'entries_skipped': skipped,
             'total_entries': len(import_data.get('entries', []))

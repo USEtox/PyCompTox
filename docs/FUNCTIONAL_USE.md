@@ -21,13 +21,13 @@ func_use = FunctionalUse()
 
 # Get functional use data for a chemical
 dtxsid = "DTXSID0020232"
-uses = func_use.functiona_use_by_dtxsid(dtxsid)
+uses = func_use.get_functional_use_by_dtxsid(dtxsid)
 
 # Get predicted probabilities
-probabilities = func_use.functional_use_probability_by_dtxsid(dtxsid)
+probabilities = func_use.get_functional_use_probability_by_dtxsid(dtxsid)
 
 # Get all categories
-categories = func_use.functiona_use_categories()
+categories = func_use.get_functional_use_categories()
 ```
 
 ## API Methods
@@ -36,7 +36,7 @@ categories = func_use.functiona_use_categories()
 
 ```python
 func_use = FunctionalUse()
-uses = func_use.functiona_use_by_dtxsid("DTXSID0020232")
+uses = func_use.get_functional_use_by_dtxsid("DTXSID0020232")
 
 for use in uses:
     print(f"Function: {use.get('harmonizedFunctionalUse')}")
@@ -47,7 +47,7 @@ for use in uses:
 ### Functional Use Probability
 
 ```python
-probabilities = func_use.functional_use_probability_by_dtxsid("DTXSID0020232")
+probabilities = func_use.get_functional_use_probability_by_dtxsid("DTXSID0020232")
 
 for prob in probabilities:
     print(f"{prob.get('functionalUse')}: {prob.get('probability'):.2%}")
@@ -56,7 +56,7 @@ for prob in probabilities:
 ### Functional Use Categories
 
 ```python
-categories = func_use.functiona_use_categories()
+categories = func_use.get_functional_use_categories()
 
 for cat in categories:
     print(f"{cat.get('category')}: {cat.get('description')}")
@@ -66,7 +66,7 @@ for cat in categories:
 
 ```python
 dtxsids = ["DTXSID0020232", "DTXSID7020182"]
-batch_data = func_use.functional_use_by_dtxsid_batch(dtxsids)
+batch_data = func_use.get_functional_use_by_dtxsid_batch(dtxsids)
 ```
 
 ## API Reference

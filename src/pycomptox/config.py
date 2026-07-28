@@ -9,13 +9,18 @@ from pathlib import Path
 from typing import Optional
 
 
-def get_config_dir() -> Path:
+def get_config_dir(create: bool = False) -> Path:
     """
     Get the configuration directory for PyCompTox.
-    
+
+    Args:
+        create (bool): Create the directory if it does not exist. Defaults to
+            False, so simply asking where config lives does not write to disk.
+            Only ``save_api_key()`` needs to create it.
+
     Returns:
         Path: The configuration directory path.
-        
+
     The configuration directory is located at:
     - Windows: %APPDATA%\\PyCompTox
     - macOS/Linux: ~/.pycomptox
@@ -24,20 +29,24 @@ def get_config_dir() -> Path:
         config_dir = Path(os.getenv('APPDATA', Path.home() / 'AppData' / 'Roaming')) / 'PyCompTox'
     else:  # macOS/Linux
         config_dir = Path.home() / '.pycomptox'
-    
-    # Create directory if it doesn't exist
-    config_dir.mkdir(parents=True, exist_ok=True)
+
+    if create:
+        config_dir.mkdir(parents=True, exist_ok=True)
     return config_dir
 
 
-def get_api_key_file() -> Path:
+def get_api_key_file(create_dir: bool = False) -> Path:
     """
     Get the path to the API key file.
-    
+
+    Args:
+        create_dir (bool): Create the containing directory. Only needed by
+            callers that are about to write the file.
+
     Returns:
         Path: The API key file path.
     """
-    return get_config_dir() / 'api_key.txt'
+    return get_config_dir(create=create_dir) / 'api_key.txt'
 
 
 def save_api_key(api_key: str) -> None:
@@ -54,8 +63,8 @@ def save_api_key(api_key: str) -> None:
     """
     if not api_key or not api_key.strip():
         raise ValueError("API key cannot be empty")
-    
-    api_key_file = get_api_key_file()
+
+    api_key_file = get_api_key_file(create_dir=True)
     api_key_file.write_text(api_key.strip(), encoding='utf-8')
     
     # Set file permissions to be readable only by the owner (on Unix-like systems)

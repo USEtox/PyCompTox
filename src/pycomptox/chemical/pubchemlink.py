@@ -9,9 +9,6 @@ Classes:
 """
 
 from typing import List, Dict, Any, Optional
-import requests
-import time
-from pathlib import Path
 
 from ..base import CachedAPIClient
 
@@ -26,7 +23,8 @@ class PubChemLink(CachedAPIClient):
     Attributes:
         base_url (str): Base URL for the CompTox Dashboard API
         api_key (Optional[str]): API key for authentication
-        rate_limit_delay (float): Minimum delay between API calls in seconds
+        time_delay_between_calls (float): Minimum delay between API calls in
+            seconds. Defaults to 0.5 for this client.
         session (requests.Session): HTTP session for making requests
         
     Examples:
@@ -38,40 +36,9 @@ class PubChemLink(CachedAPIClient):
         >>> print(result['safetyUrl'])
         'https://pubchem.ncbi.nlm.nih.gov/compound/DTXSID7020182#section=GHS-Classification'
     """
-    
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        rate_limit_delay: float = 0.5,
-        base_url: str = "https://comptox.epa.gov/ctx-api",
-        **kwargs
-    ):
-        """
-        Initialize the PubChemLink client.
-        
-        Args:
-            api_key: Optional API key for authentication. If not provided,
-                    will attempt to load from saved configuration.
-            rate_limit_delay: Minimum delay between API calls in seconds (default: 0.5)
-            base_url: Base URL for the CompTox Dashboard API
-            **kwargs: Additional arguments for CachedAPIClient
-            
-        Examples:
-            >>> # Initialize with default settings (loads saved API key)
-            >>> client = PubChemLink()
-            
-            >>> # Initialize with custom API key
-            >>> client = PubChemLink(api_key="your-api-key-here")
-            
-            >>> # Initialize with custom rate limiting
-            >>> client = PubChemLink(rate_limit_delay=1.0)
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=rate_limit_delay,
-            **kwargs
-        )
+
+    #: Resolving PubChem links is rate-sensitive; throttle by default.
+    default_time_delay: float = 0.5
     
     def check_existence_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> Dict[str, Any]:
         """
@@ -91,7 +58,10 @@ class PubChemLink(CachedAPIClient):
                 
         Raises:
             ValueError: If dtxsid is empty or invalid format
-            RuntimeError: If the API request fails
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
             
         Examples:
             >>> from pycomptox import PubChemLink
@@ -135,7 +105,10 @@ class PubChemLink(CachedAPIClient):
                 
         Raises:
             ValueError: If dtxsids is empty, not a list, or contains more than 1000 items
-            RuntimeError: If the API request fails
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
             
         Examples:
             >>> from pycomptox import PubChemLink

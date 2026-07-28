@@ -5,11 +5,7 @@ This script demonstrates basic usage of the ListPresence API client
 and tests various methods for retrieving list presence data.
 """
 
-import sys
-from pathlib import Path
 
-# Add the src directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from pycomptox.exposure import ListPresence
 
@@ -27,7 +23,7 @@ def test_list_presence_tags():
         
         print("Fetching all list presence tags...")
         
-        data = client.list_presence_tags()
+        data = client.get_list_presence_tags()
         
         if data:
             print(f"✓ Retrieved tags")
@@ -58,7 +54,7 @@ def test_list_presence_by_dtxsid():
         dtxsid = "DTXSID0020232"
         print(f"Fetching list presence data for {dtxsid}...")
         
-        data = client.list_presence_data_by_dtxsid(dtxsid)
+        data = client.get_list_presence_data_by_dtxsid(dtxsid)
         
         if data:
             print(f"✓ Retrieved list presence data")
@@ -88,7 +84,7 @@ def test_batch_operation():
         dtxsids = ["DTXSID0020232", "DTXSID0020245"]
         print(f"Fetching list presence data for {len(dtxsids)} chemicals...")
         
-        data = client.list_presence_data_by_dtxsid_batch(dtxsids)
+        data = client.get_list_presence_data_by_dtxsid_batch(dtxsids)
         
         if data:
             print(f"✓ Retrieved batch data")
@@ -116,7 +112,7 @@ def test_input_validation():
         # Test with empty string
         print("Testing with empty DTXSID...")
         try:
-            client.list_presence_data_by_dtxsid("")
+            client.get_list_presence_data_by_dtxsid("")
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")
@@ -124,7 +120,7 @@ def test_input_validation():
         # Test batch with empty list
         print("\nTesting batch with empty list...")
         try:
-            client.list_presence_data_by_dtxsid_batch([])
+            client.get_list_presence_data_by_dtxsid_batch([])
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")

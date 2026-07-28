@@ -11,10 +11,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
@@ -48,34 +45,10 @@ class DemographicExposure(CachedAPIClient):
         >>> demo_exp = DemographicExposure()
         >>> 
         >>> # Get demographic exposure predictions for a chemical
-        >>> data = demo_exp.prediction_SEEMs_data_by_dtxsid("DTXSID0020232")
+        >>> data = demo_exp.get_seem_prediction_by_dtxsid("DTXSID0020232")
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0
-    , **kwargs):
-        """
-        Initialize the DemographicExposure client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-    
-    def prediction_SEEMs_data_by_dtxsid(self, dtxsid: str, projection: str = "ccd-demographic", use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_seem_prediction_by_dtxsid(self, dtxsid: str, projection: str = "ccd-demographic", use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get demographic-specific SEEM exposure predictions for a chemical.
         
@@ -104,7 +77,7 @@ class DemographicExposure(CachedAPIClient):
         
         Example:
             >>> demo_exp = DemographicExposure()
-            >>> data = demo_exp.prediction_SEEMs_data_by_dtxsid("DTXSID0020232")
+            >>> data = demo_exp.get_seem_prediction_by_dtxsid("DTXSID0020232")
             >>> for pred in data:
             ...     print(f"{pred.get('demographic')}: {pred.get('medianEstimate')} mg/kg/day")
         """
@@ -118,7 +91,7 @@ class DemographicExposure(CachedAPIClient):
         
         return self._make_cached_request(endpoint, params=params if params else None, use_cache=use_cache)
 
-    def prediction_SEEMs_data_by_dtxsid_batch(self, dtxsid_list: List[str], use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_seem_prediction_by_dtxsid_batch(self, dtxsid_list: List[str], use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get demographic SEEM exposure predictions for multiple chemicals in a single request.
         
@@ -141,7 +114,7 @@ class DemographicExposure(CachedAPIClient):
         Example:
             >>> demo_exp = DemographicExposure()
             >>> dtxsids = ["DTXSID0020232", "DTXSID0020267"]
-            >>> batch_data = demo_exp.prediction_SEEMs_data_by_dtxsid_batch(dtxsids)
+            >>> batch_data = demo_exp.get_seem_prediction_by_dtxsid_batch(dtxsids)
             >>> for result in batch_data:
             ...     print(f"{result.get('dtxsid')}: {result.get('demographic')} - {result.get('medianEstimate')}")
         """
@@ -152,7 +125,9 @@ class DemographicExposure(CachedAPIClient):
             raise ValueError("All elements in dtxsid_list must be strings")
         
         endpoint = "exposure/seem/demographic/search/by-dtxsid/"
-        return self._make_request("POST", endpoint, json_data=dtxsid_list)
+        return self._make_cached_request(
+            endpoint, method='POST', json=dtxsid_list, use_cache=use_cache
+        )
 
 
 

@@ -1,5 +1,3 @@
-import requests
-import time
 from typing import List, Dict, Any, Optional
 from urllib.parse import quote
 from ..base import CachedAPIClient
@@ -20,48 +18,6 @@ class Chemical(CachedAPIClient):
         _last_call_time (float): Timestamp of the last API call.
     """
     
-    def __init__(
-        self, 
-        api_key: Optional[str] = None, 
-        base_url: str = "https://comptox.epa.gov/ctx-api",
-        time_delay_between_calls: float = 0.0,
-        **kwargs
-    ):
-        """
-        Initialize the Chemical search client.
-        
-        Args:
-            api_key (str, optional): The API key for accessing the CompTox Dashboard API.
-                If not provided, the function will attempt to load it from:
-                1. COMPTOX_API_KEY environment variable
-                2. Saved configuration file (use save_api_key() to set)
-            base_url (str, optional): The base URL for the API. 
-                Defaults to "https://comptox.epa.gov/ctx-api".
-            time_delay_between_calls (float, optional): Minimum time delay (in seconds) 
-                between consecutive API calls. Defaults to 0.0 (no delay).
-                Set this to a positive value if rate limiting becomes necessary.
-            **kwargs: Additional arguments for CachedAPIClient (cache_manager, use_cache)
-                
-        Raises:
-            ValueError: If no API key is provided and none can be loaded.
-            
-        Example:
-            >>> # Using a provided API key
-            >>> client = Chemical(api_key="your_api_key")
-            
-            >>> # Using saved API key (after calling save_api_key())
-            >>> client = Chemical()
-            
-            >>> # With rate limiting
-            >>> client = Chemical(time_delay_between_calls=0.5)  # 0.5 second delay
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-
     def search_by_starting_value(self, value: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Search chemicals where name/identifier starts with the given value.
@@ -92,7 +48,10 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If no data is found or the request is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
@@ -100,7 +59,7 @@ class Chemical(CachedAPIClient):
             >>> print(results[0].get("preferredName"))
         """
         encoded_value = quote(value, safe='')
-        endpoint = f"/chemical/search/start-with/{encoded_value}"
+        endpoint = f"chemical/search/start-with/{encoded_value}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
     def search_by_exact_value(self, value: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
@@ -123,7 +82,10 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If no data is found or the request is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
@@ -131,7 +93,7 @@ class Chemical(CachedAPIClient):
             >>> print(results[0].get("dtxsid"))
         """
         encoded_value = quote(value, safe='')
-        endpoint = f"/chemical/search/equal/{encoded_value}"
+        endpoint = f"chemical/search/equal/{encoded_value}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
     def search_by_substring_value(self, value: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
@@ -154,7 +116,10 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If no data is found or the request is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
@@ -163,7 +128,7 @@ class Chemical(CachedAPIClient):
             ...     print(chem['preferredName'])
         """
         encoded_value = quote(value, safe='')
-        endpoint = f"/chemical/search/contain/{encoded_value}"
+        endpoint = f"chemical/search/contain/{encoded_value}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
     def search_by_msready_formula(self, formula: str, use_cache: Optional[bool] = None) -> List[str]:
@@ -185,7 +150,10 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If no data is found or the formula is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
@@ -193,7 +161,7 @@ class Chemical(CachedAPIClient):
             >>> print(f"Found {len(dtxsids)} chemicals with MS-ready formula C15H16O2")
         """
         encoded_formula = quote(formula, safe='')
-        endpoint = f"/chemical/search/by-msready-formula/{encoded_formula}"
+        endpoint = f"chemical/search/by-msready-formula/{encoded_formula}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
     def search_by_exact_formula(self, formula: str, use_cache: Optional[bool] = None) -> List[str]:
@@ -215,7 +183,10 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If no data is found or the formula is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
@@ -223,7 +194,7 @@ class Chemical(CachedAPIClient):
             >>> print(f"Found {len(dtxsids)} chemicals with exact formula C15H16O2")
         """
         encoded_formula = quote(formula, safe='')
-        endpoint = f"/chemical/search/by-formula/{encoded_formula}"
+        endpoint = f"chemical/search/by-exact-formula/{encoded_formula}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
     def search_ms_ready_by_mass_range(self, min_mass: float, max_mass: float, use_cache: Optional[bool] = None) -> List[str]:
@@ -246,15 +217,18 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If the mass range is invalid or no data is found.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
             >>> dtxsids = client.search_ms_ready_by_mass_range(200.9, 200.95)
             >>> print(f"Found {len(dtxsids)} MS-ready chemicals in mass range")
         """
-        endpoint = f"/chemical/msready/search/by-mass/{min_mass}/{max_mass}"
-        return self._make_request(endpoint)
+        endpoint = f"chemical/msready/search/by-mass/{min_mass}/{max_mass}"
+        return self._make_cached_request(endpoint, use_cache=use_cache)
 
     def search_ms_ready_by_formula(self, formula: str, use_cache: Optional[bool] = None) -> List[str]:
         """
@@ -275,7 +249,10 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If the formula is invalid or no data is found.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
@@ -283,8 +260,8 @@ class Chemical(CachedAPIClient):
             >>> print(f"Found {len(dtxsids)} MS-ready chemicals")
         """
         encoded_formula = quote(formula, safe='')
-        endpoint = f"/chemical/msready/search/by-formula/{encoded_formula}"
-        return self._make_request(endpoint)
+        endpoint = f"chemical/msready/search/by-formula/{encoded_formula}"
+        return self._make_cached_request(endpoint, use_cache=use_cache)
 
     def search_ms_ready_by_dtxcid(self, dtxcid: str, use_cache: Optional[bool] = None) -> List[str]:
         """
@@ -305,14 +282,17 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If the DTXCID is invalid or no data is found.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
             >>> dtxsids = client.search_ms_ready_by_dtxcid("DTXCID30182")
             >>> print(f"Found {len(dtxsids)} MS-ready forms")
         """
-        endpoint = f"/chemical/msready/search/by-dtxcid/{dtxcid}"
+        endpoint = f"chemical/msready/search/by-dtxcid/{dtxcid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
     def search_chemical_count_by_ms_ready_formula(self, formula: str, use_cache: Optional[bool] = None) -> int:
@@ -334,7 +314,10 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If the formula is invalid or no data is found.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
@@ -342,7 +325,7 @@ class Chemical(CachedAPIClient):
             >>> print(f"There are {count} chemicals with MS-ready formula C15H16O2")
         """
         encoded_formula = quote(formula, safe='')
-        endpoint = f"/chemical/count/by-msready-formula/{encoded_formula}"
+        endpoint = f"chemical/count/by-msready-formula/{encoded_formula}"
         result = self._make_cached_request(endpoint, use_cache=use_cache)
         # The API might return a dict with a count field or just a number
         return result if isinstance(result, int) else result.get('count', 0)
@@ -366,7 +349,10 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If the formula is invalid or no data is found.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
@@ -374,7 +360,7 @@ class Chemical(CachedAPIClient):
             >>> print(f"There are {count} chemicals with exact formula C15H16O2")
         """
         encoded_formula = quote(formula, safe='')
-        endpoint = f"/chemical/count/by-exact-formula/{encoded_formula}"
+        endpoint = f"chemical/count/by-exact-formula/{encoded_formula}"
         result = self._make_cached_request(endpoint, use_cache=use_cache)
         # The API might return a dict with a count field or just a number
         return result if isinstance(result, int) else result.get('count', 0)
@@ -410,7 +396,10 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If more than 200 values are provided, or no data is found.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
@@ -481,7 +470,10 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If no masses are provided or the request is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
@@ -498,7 +490,7 @@ class Chemical(CachedAPIClient):
             "error": error
         }
         
-        endpoint = "/chemical/msready/search/by-mass/"
+        endpoint = "chemical/msready/search/by-mass/"
         return self._make_cached_request(endpoint, method='POST', json=request_body, use_cache=use_cache)
 
     def search_ms_ready_by_dtxcid_batch(self, dtxcids: List[str], use_cache: Optional[bool] = None) -> Any:
@@ -525,7 +517,10 @@ class Chemical(CachedAPIClient):
         
         Raises:
             ValueError: If no DTXCIDs are provided or the request is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> client = Chemical(api_key="your_api_key")
@@ -537,5 +532,5 @@ class Chemical(CachedAPIClient):
         if not dtxcids:
             raise ValueError("At least one DTXCID must be provided")
         
-        endpoint = "/chemical/msready/search/by-dtxcid/"
+        endpoint = "chemical/msready/search/by-dtxcid/"
         return self._make_cached_request(endpoint, method='POST', json=dtxcids, use_cache=use_cache)

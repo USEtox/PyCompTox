@@ -104,13 +104,13 @@ class TestClientFunctionality:
     
     def test_rate_limiting(self, qc_client):
         """Test that rate limiting is applied between requests."""
-        start_time = time.time()
+        start_time = time.monotonic()
         
         # Make multiple requests with cache disabled to test rate limiting
         qc_client.get_analytical_qc_data_by_dtxsid("DTXSID7020182", use_cache=False)
         qc_client.get_analytical_qc_data_by_dtxsid("DTXSID5020064", use_cache=False)
         
-        elapsed = time.time() - start_time
+        elapsed = time.monotonic() - start_time
         
         # Should take at least min_request_interval between requests
         assert elapsed >= 0.1

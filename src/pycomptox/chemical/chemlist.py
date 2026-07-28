@@ -4,9 +4,7 @@ Chemical Lists Module
 This module provides access to the CompTox Dashboard Chemical Lists API.
 """
 
-from typing import List, Dict, Any, Optional, Literal
-import requests
-import time
+from typing import Optional, Literal
 from ..base import CachedAPIClient
 
 
@@ -20,24 +18,10 @@ ProjectionType = Literal[
 
 class ChemicalList(CachedAPIClient):
     """Client for accessing Chemical List information from the CompTox Dashboard API."""
-    
-    def __init__(self, api_key=None, time_delay_between_calls=0.5, base_url="https://comptox.epa.gov/ctx-api", **kwargs):
-        """
-        Initialize the ChemicalList client.
-        
-        Args:
-            api_key (str, optional): API key for CompTox API access
-            time_delay_between_calls (float): Delay between API calls in seconds
-            base_url (str): Base URL for the CompTox API
-            **kwargs: Additional arguments for CachedAPIClient (cache_manager, use_cache)
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
 
+    #: List endpoints return large payloads; throttle by default.
+    default_time_delay: float = 0.5
+    
     def get_all_list_types(self, use_cache: Optional[bool] = None):
         return self._make_cached_request("chemical/list/type", use_cache=use_cache)
 

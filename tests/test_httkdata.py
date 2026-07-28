@@ -5,11 +5,7 @@ This script demonstrates basic usage of the HTTKData API client
 and tests various methods for retrieving HTTK data.
 """
 
-import sys
-from pathlib import Path
 
-# Add the src directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from pycomptox.exposure import HTTKData
 
@@ -29,7 +25,7 @@ def test_httk_data_by_dtxsid():
         dtxsid = "DTXSID0020232"
         print(f"Fetching HTTK data for {dtxsid}...")
         
-        data = client.httk_data_by_dtxsid(dtxsid)
+        data = client.get_httk_data_by_dtxsid(dtxsid)
         
         if data:
             print(f"✓ Retrieved HTTK data")
@@ -61,7 +57,7 @@ def test_batch_operation():
         dtxsid_list = ["DTXSID0020232", "DTXSID7020182"]
         print(f"Fetching HTTK data for {len(dtxsid_list)} chemicals...")
         
-        data = client.httk_data_by_dtxsid_batch(dtxsid_list)
+        data = client.get_httk_data_by_dtxsid_batch(dtxsid_list)
         
         if data:
             print(f"✓ Retrieved batch data")
@@ -89,7 +85,7 @@ def test_input_validation():
         # Test with empty string
         print("Testing with empty DTXSID...")
         try:
-            client.httk_data_by_dtxsid("")
+            client.get_httk_data_by_dtxsid("")
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")
@@ -97,7 +93,7 @@ def test_input_validation():
         # Test batch with empty list
         print("\nTesting batch with empty list...")
         try:
-            client.httk_data_by_dtxsid_batch([])
+            client.get_httk_data_by_dtxsid_batch([])
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")

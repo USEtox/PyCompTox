@@ -1,33 +1,53 @@
 # Caching System
 
-PyCompTox includes a comprehensive caching system to reduce network traffic, improve performance, and minimize load on EPA's servers.
+PyCompTox includes an optional caching system to reduce network traffic, improve performance, and minimize load on EPA's servers.
+
+!!! note "Caching is off by default"
+    Since 0.7.0 caching is **opt-in**. Clients make live requests unless you
+    enable it, and the cache directory is not created until something is
+    actually written. Enable it per client (`use_cache=True` on the
+    constructor) or per call (`use_cache=True` on any method).
+
+    Before 0.7.0 caching was on by default, which meant results could be
+    served from disk indefinitely — stale data was easy to get without
+    realising it, since the default had no expiry.
 
 ## Overview
 
 The caching system provides:
 
-- **Automatic caching** of all API responses
-- **Unlimited cache size** by default
+- **Opt-in caching** of API responses, per client or per call
+- **Unlimited cache size** and no expiry by default (set `max_age_days` to bound it)
 - **Export/import** functionality for cache portability
 - **Cache statistics** and management
-- **Per-request control** via `use_cache` parameter
+- **Per-request control** via the `use_cache` parameter
 - **Configurable expiration** for cache entries
 
 ## Quick Start
 
 ### Basic Usage
 
-Caching is enabled by default and works automatically:
+Enable caching on the client, and repeat calls are served from disk:
 
 ```python
 from pycomptox import chemical
 
+# Enable caching for every call made through this client
+chem = chemical.Chemical(use_cache=True)
+
 # First call - fetches from API and caches the response
-chem = chemical.Chemical()
 results1 = chem.search_by_starting_value("caffeine")  # API call + cache
 
 # Second call - returns cached response (no API call)
 results2 = chem.search_by_starting_value("caffeine")  # from cache
+```
+
+Or enable it for a single call, leaving the rest live:
+
+```python
+chem = chemical.Chemical()                                    # caching off
+fresh = chem.search_by_starting_value("caffeine")             # live
+cached = chem.search_by_starting_value("caffeine", use_cache=True)  # cached
 ```
 
 ### Bypassing Cache

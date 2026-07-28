@@ -5,11 +5,7 @@ This script demonstrates basic usage of the FunctionalUse API client
 and tests various methods for retrieving functional use data.
 """
 
-import sys
-from pathlib import Path
 
-# Add the src directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from pycomptox.exposure import FunctionalUse
 
@@ -29,7 +25,7 @@ def test_functional_use_by_dtxsid():
         dtxsid = "DTXSID0020232"
         print(f"Fetching functional use data for {dtxsid}...")
         
-        data = client.functiona_use_by_dtxsid(dtxsid)
+        data = client.get_functional_use_by_dtxsid(dtxsid)
         
         if data:
             print(f"✓ Retrieved functional use data")
@@ -61,7 +57,7 @@ def test_functional_use_probability():
         dtxsid = "DTXSID0020232"
         print(f"Fetching functional use probability for {dtxsid}...")
         
-        data = client.functional_use_probability_by_dtxsid(dtxsid)
+        data = client.get_functional_use_probability_by_dtxsid(dtxsid)
         
         if data:
             print(f"✓ Retrieved probability data")
@@ -88,7 +84,7 @@ def test_functional_use_categories():
         
         print("Fetching all functional use categories...")
         
-        data = client.functiona_use_categories()
+        data = client.get_functional_use_categories()
         
         if data:
             print(f"✓ Retrieved categories")
@@ -116,7 +112,7 @@ def test_batch_operation():
         dtxsids = ["DTXSID0020232", "DTXSID7020182"]
         print(f"Fetching functional use data for {len(dtxsids)} chemicals...")
         
-        data = client.functional_use_by_dtxsid_batch(dtxsids)
+        data = client.get_functional_use_by_dtxsid_batch(dtxsids)
         
         if data:
             print(f"✓ Retrieved batch data")
@@ -144,7 +140,7 @@ def test_input_validation():
         # Test with empty string
         print("Testing with empty DTXSID...")
         try:
-            client.functiona_use_by_dtxsid("")
+            client.get_functional_use_by_dtxsid("")
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")
@@ -152,7 +148,7 @@ def test_input_validation():
         # Test batch with empty list
         print("\nTesting batch with empty list...")
         try:
-            client.functional_use_by_dtxsid_batch([])
+            client.get_functional_use_by_dtxsid_batch([])
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")

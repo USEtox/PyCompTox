@@ -41,10 +41,10 @@ chem = Chemical(api_key="hardcoded-key-123")  # Don't do this!
 ```python
 # ✅ Good - Use batch methods
 dtxsids = ["DTXSID7020182", "DTXSID2021315", "DTXSID5020001"]
-results = chem.get_chemical_by_dtxsid_batch(dtxsids)
+results = chem.get_data_by_dtxsid_batch(dtxsids)
 
 # ❌ Bad - Individual requests
-results = [chem.get_chemical_by_dtxsid(d) for d in dtxsids]
+results = [chem.get_data_by_dtxsid(d) for d in dtxsids]
 ```
 
 ## Batch Operations
@@ -62,7 +62,7 @@ def process_large_dataset(dtxsids, batch_size=500):
     for i in range(0, len(dtxsids), batch_size):
         batch = dtxsids[i:i + batch_size]
         # API max is 1000, but smaller batches are more reliable
-        results = chem.get_chemical_by_dtxsid_batch(batch[:1000])
+        results = chem.get_data_by_dtxsid_batch(batch[:1000])
         all_results.extend(results)
     
     return all_results
@@ -85,7 +85,7 @@ def safe_search(name):
     """Safely search for a chemical."""
     try:
         chem = Chemical()
-        results = chem.search_by_name(name)
+        results = chem.search_by_exact_value(name)
         return results
     except ValueError as e:
         logger.warning(f"Chemical not found: {name}")
@@ -104,7 +104,7 @@ def safe_search(name):
 ```python
 # ❌ Bad
 try:
-    results = chem.search_by_name(name)
+    results = chem.search_by_exact_value(name)
 except:  # Too broad!
     pass  # Silent failure!
 ```
@@ -121,13 +121,13 @@ from pycomptox.chemical import ChemicalDetails
 details = ChemicalDetails()
 
 # ✅ Good - Request only what you need
-info = details.get_chemical_by_dtxsid(
+info = details.get_data_by_dtxsid(
     "DTXSID7020182",
     projection="chemicalidentifier"  # Minimal data
 )
 
 # ⚠️ Less efficient - Gets everything
-info = details.get_chemical_by_dtxsid(
+info = details.get_data_by_dtxsid(
     "DTXSID7020182",
     projection="chemicaldetailall"  # All data
 )
@@ -144,7 +144,7 @@ from functools import lru_cache
 def get_chemical_cached(dtxsid):
     """Get chemical with caching."""
     details = ChemicalDetails()
-    return details.get_chemical_by_dtxsid(dtxsid)
+    return details.get_data_by_dtxsid(dtxsid)
 
 # First call - fetches from API
 data1 = get_chemical_cached("DTXSID7020182")
@@ -161,12 +161,12 @@ Reuse client instances to benefit from connection pooling:
 # ✅ Good - Reuse client
 chem = Chemical()
 for name in chemical_names:
-    results = chem.search_by_name(name)
+    results = chem.search_by_exact_value(name)
 
 # ❌ Bad - New client each time
 for name in chemical_names:
     chem = Chemical()  # Wasteful!
-    results = chem.search_by_name(name)
+    results = chem.search_by_exact_value(name)
 ```
 
 ## Data Validation
@@ -182,14 +182,14 @@ def is_valid_dtxsid(dtxsid):
 
 # Use before API calls
 if is_valid_dtxsid(dtxsid):
-    data = chem.get_chemical_by_dtxsid(dtxsid)
+    data = chem.get_data_by_dtxsid(dtxsid)
 ```
 
 ### Handle Missing Data
 
 ```python
 # ✅ Good - Check for None/missing values
-result = chem.search_by_name("chemical")
+result = chem.search_by_exact_value("chemical")
 if result and result[0].get('casrn'):
     casrn = result[0]['casrn']
 else:
@@ -217,9 +217,9 @@ class ChemicalAnalyzer:
         """Complete chemical analysis."""
         # Search
         if id_type == 'name':
-            results = self.search.search_by_name(identifier)
+            results = self.search.search_by_exact_value(identifier)
         elif id_type == 'casrn':
-            results = self.search.search_by_casrn(identifier)
+            results = self.search.search_by_exact_value(identifier)
         
         if not results:
             return None
@@ -229,7 +229,7 @@ class ChemicalAnalyzer:
         # Gather all data
         return {
             'basic': results[0],
-            'details': self.details.get_chemical_by_dtxsid(dtxsid),
+            'details': self.details.get_data_by_dtxsid(dtxsid),
             'properties': self.properties.get_property_summary_by_dtxsid(dtxsid),
             'references': self.extra.get_data_by_dtxsid(dtxsid)
         }
@@ -248,12 +248,12 @@ def chem_client():
     return Chemical()
 
 def test_search_by_name(chem_client):
-    results = chem_client.search_by_name("caffeine")
+    results = chem_client.search_by_exact_value("caffeine")
     assert len(results) > 0
     assert 'dtxsid' in results[0]
 
 def test_invalid_search(chem_client):
-    results = chem_client.search_by_name("xyz123notachemical")
+    results = chem_client.search_by_exact_value("xyz123notachemical")
     # Should return empty list, not raise error
     assert results == [] or len(results) == 0
 ```
@@ -270,7 +270,7 @@ def test_with_mock():
         ]
         
         chem = Chemical()
-        results = chem.search_by_name("test")
+        results = chem.search_by_exact_value("test")
         
         assert len(results) == 1
         assert results[0]['dtxsid'] == 'DTXSID123'

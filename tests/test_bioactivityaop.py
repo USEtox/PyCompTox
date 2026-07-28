@@ -5,11 +5,7 @@ This script demonstrates basic usage of the BioactivityAOP API client
 and tests methods for retrieving Adverse Outcome Pathway (AOP) data.
 """
 
-import sys
-from pathlib import Path
 
-# Add the src directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from pycomptox.bioactivity import BioactivityAOP
 
@@ -304,14 +300,14 @@ def test_rate_limiting():
         aeids = [63, 100]
         print(f"Making {len(aeids)} requests with rate limiting...")
         
-        start_time = time.time()
+        start_time = time.monotonic()
         for aeid in aeids:
             try:
                 client.get_aop_data_by_toxcast_aeid(aeid)
             except Exception:
                 pass  # Ignore errors, just testing rate limiting
         
-        elapsed = time.time() - start_time
+        elapsed = time.monotonic() - start_time
         expected_min = delay * (len(aeids) - 1)
         
         print(f"  Elapsed time: {elapsed:.2f}s")

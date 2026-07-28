@@ -13,7 +13,7 @@ def test_direct_imports():
     # Import individual classes from their modules
     from pycomptox.chemical import Chemical, ChemicalProperties
     from pycomptox.bioactivity import AssaySearch, BioactivityData
-    from pycomptox.exposure import ExposurePrediction, FunctionalUse, CCCData
+    from pycomptox.exposure import ExposurePrediction, FunctionalUse, CCDData
     
     # Verify classes can be instantiated
     chem = Chemical()
@@ -22,7 +22,7 @@ def test_direct_imports():
     bio = BioactivityData()
     exp = ExposurePrediction()
     func = FunctionalUse()
-    ccc = CCCData()
+    ccc = CCDData()
     
     print("✓ Direct imports work correctly")
 
@@ -45,7 +45,7 @@ def test_category_imports():
     
     assert hasattr(exposure, 'ExposurePrediction')
     assert hasattr(exposure, 'FunctionalUse')
-    assert hasattr(exposure, 'CCCData')
+    assert hasattr(exposure, 'CCDData')
     assert hasattr(exposure, 'MMDB')
     
     # Verify classes can be instantiated via category access
@@ -120,7 +120,7 @@ def test_all_exposure_classes():
     print("\nTesting all exposure classes...")
     from pycomptox import exposure
     
-    classes = ['CCCData', 'MMDB', 'FunctionalUse', 'ProductData',
+    classes = ['CCDData', 'MMDB', 'FunctionalUse', 'ProductData',
                'HTTKData', 'ListPresence', 'ExposurePrediction',
                'DemographicExposure']
     

@@ -1,8 +1,4 @@
-import requests
-import time
 from typing import List, Dict, Any, Optional, Literal
-from urllib.parse import quote
-from ..config import load_api_key
 from ..base import CachedAPIClient
 
 
@@ -39,48 +35,7 @@ class ChemicalDetails(CachedAPIClient):
         use_cache (bool): Whether to use caching by default.
     """
     
-    def __init__(
-        self, 
-        api_key: Optional[str] = None, 
-        base_url: str = "https://comptox.epa.gov/ctx-api",
-        time_delay_between_calls: float = 0.0,
-        **kwargs
-    ):
-        """
-        Initialize the ChemicalDetails client.
-        
-        Args:
-            api_key (str, optional): The API key for accessing the CompTox Dashboard API.
-                If not provided, the function will attempt to load it from:
-                1. COMPTOX_API_KEY environment variable
-                2. Saved configuration file (use save_api_key() to set)
-            base_url (str, optional): The base URL for the API. 
-                Defaults to "https://comptox.epa.gov/ctx-api".
-            time_delay_between_calls (float, optional): Minimum time delay (in seconds) 
-                between consecutive API calls. Defaults to 0.0 (no delay).
-            **kwargs: Additional arguments for CachedAPIClient (cache_manager, use_cache)
-                
-        Raises:
-            ValueError: If no API key is provided and none can be loaded.
-            
-        Example:
-            >>> # Using saved API key
-            >>> client = ChemicalDetails()
-            
-            >>> # With explicit API key
-            >>> client = ChemicalDetails(api_key="your_api_key")
-            
-            >>> # With rate limiting
-            >>> client = ChemicalDetails(time_delay_between_calls=0.5)
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-
-    def data_by_dtxsid_batch(
+    def get_data_by_dtxsid_batch(
         self, 
         dtxsids: List[str],
         projection: Optional[ProjectionType] = None,
@@ -123,17 +78,20 @@ class ChemicalDetails(CachedAPIClient):
         
         Raises:
             ValueError: If more than 1000 DTXSIDs provided or request is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> details = ChemicalDetails()
             >>> dtxsids = ["DTXSID7020182", "DTXSID2021315"]
-            >>> results = details.data_by_dtxsid_batch(dtxsids)
+            >>> results = details.get_data_by_dtxsid_batch(dtxsids)
             >>> for chem in results:
             ...     print(f"{chem['preferredName']}: {chem['casrn']}")
             
             >>> # With specific projection
-            >>> results = details.data_by_dtxsid_batch(dtxsids, projection="chemicalidentifier")
+            >>> results = details.get_data_by_dtxsid_batch(dtxsids, projection="chemicalidentifier")
         """
         if len(dtxsids) > 1000:
             raise ValueError("Maximum 1000 DTXSIDs are allowed per batch request")
@@ -141,14 +99,14 @@ class ChemicalDetails(CachedAPIClient):
         if not dtxsids:
             raise ValueError("At least one DTXSID must be provided")
         
-        endpoint = "/chemical/detail/search/by-dtxsid/"
+        endpoint = "chemical/detail/search/by-dtxsid/"
         params = {}
         if projection:
             params['projection'] = projection
         
         return self._make_cached_request(endpoint, method='POST', json=dtxsids, params=params, use_cache=use_cache)
 
-    def data_by_dtxcid_batch(
+    def get_data_by_dtxcid_batch(
         self, 
         dtxcids: List[str],
         projection: Optional[ProjectionType] = None,
@@ -212,19 +170,22 @@ class ChemicalDetails(CachedAPIClient):
         
         Args:
             dtxcids (List[str]): List of DSSTox Compound Identifiers. Maximum 1000 per request.
-            projection (ProjectionType, optional): Set of attributes to return. Same options as data_by_dtxsid_batch.
+            projection (ProjectionType, optional): Set of attributes to return. Same options as get_data_by_dtxsid_batch.
         
         Returns:
-            List[Dict[str, Any]]: List of chemical detail records with same structure as data_by_dtxsid_batch.
+            List[Dict[str, Any]]: List of chemical detail records with same structure as get_data_by_dtxsid_batch.
         
         Raises:
             ValueError: If more than 1000 DTXCIDs provided or request is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> details = ChemicalDetails()
             >>> dtxcids = ["DTXCID505", "DTXCID30182"]
-            >>> results = details.data_by_dtxcid_batch(dtxcids)
+            >>> results = details.get_data_by_dtxcid_batch(dtxcids)
             >>> for chem in results:
             ...     print(f"{chem['preferredName']}: {chem['molFormula']}")
         """
@@ -234,14 +195,14 @@ class ChemicalDetails(CachedAPIClient):
         if not dtxcids:
             raise ValueError("At least one DTXCID must be provided")
         
-        endpoint = "/chemical/detail/search/by-dtxcid/"
+        endpoint = "chemical/detail/search/by-dtxcid/"
         params = {}
         if projection:
             params['projection'] = projection
         
         return self._make_cached_request(endpoint, method='POST', json=dtxcids, params=params, use_cache=use_cache)
 
-    def data_by_dtxsid(self, dtxsid: str, projection: Optional[ProjectionType] = None, use_cache: Optional[bool] = None) -> Dict[str, Any]:
+    def get_data_by_dtxsid(self, dtxsid: str, projection: Optional[ProjectionType] = None, use_cache: Optional[bool] = None) -> Dict[str, Any]:
         """
         Get detailed data by DTXSID.
         
@@ -333,28 +294,31 @@ class ChemicalDetails(CachedAPIClient):
         
         Raises:
             ValueError: If DTXSID is not found or request is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> details = ChemicalDetails()
             >>> # Get all details
-            >>> data = details.data_by_dtxsid("DTXSID7020182")
+            >>> data = details.get_data_by_dtxsid("DTXSID7020182")
             >>> print(f"{data['preferredName']}: {data['casrn']}")
             >>> print(f"Formula: {data['molFormula']}")
             >>> print(f"SMILES: {data['smiles']}")
             
             >>> # Get only identifiers
-            >>> data = details.data_by_dtxsid("DTXSID7020182", projection="chemicalidentifier")
+            >>> data = details.get_data_by_dtxsid("DTXSID7020182", projection="chemicalidentifier")
             >>> print(f"{data['preferredName']}: {data['dtxcid']}")
         """
-        endpoint = f"/chemical/detail/search/by-dtxsid/{dtxsid}"
+        endpoint = f"chemical/detail/search/by-dtxsid/{dtxsid}"
         params = {}
         if projection:
             params['projection'] = projection
         
         return self._make_cached_request(endpoint, params=params, use_cache=use_cache)
 
-    def data_by_dtxcid(self, dtxcid: str, projection: Optional[ProjectionType] = None, use_cache: Optional[bool] = None) -> Dict[str, Any]:
+    def get_data_by_dtxcid(self, dtxcid: str, projection: Optional[ProjectionType] = None, use_cache: Optional[bool] = None) -> Dict[str, Any]:
         """
         Get data by dtxcid
         get /chemical/detail/search/by-dtxcid/{dtxcid}
@@ -530,31 +494,34 @@ class ChemicalDetails(CachedAPIClient):
         
         Args:
             dtxcid (str): DSSTox Compound Identifier (e.g., "DTXCID505").
-            projection (ProjectionType, optional): Set of attributes to return. Same options as data_by_dtxsid.
+            projection (ProjectionType, optional): Set of attributes to return. Same options as get_data_by_dtxsid.
         
         Returns:
             Dict[str, Any]: Chemical detail record with fields depending on projection.
         
         Raises:
             ValueError: If DTXCID is not found or request is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> details = ChemicalDetails()
             >>> # Get all details including predicted properties
-            >>> data = details.data_by_dtxcid("DTXCID505", projection="ccdchemicaldetails")
+            >>> data = details.get_data_by_dtxcid("DTXCID505", projection="ccdchemicaldetails")
             >>> print(f"{data['preferredName']}")
             >>> print(f"Boiling Point: {data.get('boilingPointDegcOperaPred', 'N/A')}")
             >>> print(f"Water Solubility: {data.get('waterSolubilityOpera', 'N/A')}")
         """
-        endpoint = f"/chemical/detail/search/by-dtxcid/{dtxcid}"
+        endpoint = f"chemical/detail/search/by-dtxcid/{dtxcid}"
         params = {}
         if projection:
             params['projection'] = projection
         
         return self._make_cached_request(endpoint, params=params, use_cache=use_cache)
 
-    def find_all_chemical_details(
+    def get_all_chemical_details(
         self,
         next_page: int = 1,
         projection: Optional[str] = None,
@@ -588,7 +555,10 @@ class ChemicalDetails(CachedAPIClient):
         
         Raises:
             ValueError: If request is invalid.
-            RuntimeError: If the API request fails.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Warning:
             This endpoint returns large amounts of data. Use with caution and consider
@@ -597,16 +567,16 @@ class ChemicalDetails(CachedAPIClient):
         Example:
             >>> details = ChemicalDetails()
             >>> # Get first page of all chemicals
-            >>> chemicals = details.find_all_chemical_details(next_page=1)
+            >>> chemicals = details.get_all_chemical_details(next_page=1)
             >>> print(f"Retrieved {len(chemicals)} chemicals")
             
             >>> # Get only IDs (lighter payload)
-            >>> ids = details.find_all_chemical_details(projection="all-ids")
+            >>> ids = details.get_all_chemical_details(projection="all-ids")
             >>> for chem in ids[:10]:
             ...     print(f"{chem['dtxsid']}: {chem['dtxcid']}")
         """
-        endpoint = "/chemical/all"
-        params = {'next': next_page}
+        endpoint = "chemical/all"
+        params: Dict[str, Any] = {'next': next_page}
         if projection:
             params['projection'] = projection
         

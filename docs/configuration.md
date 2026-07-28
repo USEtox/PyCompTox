@@ -77,7 +77,7 @@ chem = Chemical(time_delay_between_calls=0.5)
 
 # Make multiple requests - automatically rate limited
 for name in ["caffeine", "aspirin", "ibuprofen"]:
-    results = chem.search_by_name(name)
+    results = chem.search_by_exact_value(name)
 ```
 
 ### Recommended Settings
@@ -128,7 +128,7 @@ def process_in_batches(dtxsids, batch_size=100):
     for i in range(0, len(dtxsids), batch_size):
         batch = dtxsids[i:i + batch_size]
         # Process batch (max 1000 per API)
-        results = chem.get_chemical_by_dtxsid_batch(batch[:1000])
+        results = chem.get_data_by_dtxsid_batch(batch[:1000])
         yield results
 ```
 
@@ -143,7 +143,7 @@ import requests
 chem = Chemical()
 
 try:
-    results = chem.search_by_name("caffeine")
+    results = chem.search_by_exact_value("caffeine")
 except ValueError as e:
     # Handle not found errors
     print(f"Not found: {e}")
@@ -177,7 +177,7 @@ chem = Chemical()
 # Log API calls
 def logged_search(name):
     logger.info(f"Searching for: {name}")
-    results = chem.search_by_name(name)
+    results = chem.search_by_exact_value(name)
     logger.info(f"Found {len(results)} results")
     return results
 
@@ -236,7 +236,7 @@ class CompToxClient:
         logger.info(f"Fetching complete profile for {dtxsid}")
         
         return {
-            'details': self.details.get_chemical_by_dtxsid(
+            'details': self.details.get_data_by_dtxsid(
                 dtxsid, 
                 projection='chemicaldetailall'
             ),
@@ -286,7 +286,7 @@ def test_client():
     return Chemical(time_delay_between_calls=2.0)
 
 def test_search(test_client):
-    results = test_client.search_by_name("caffeine")
+    results = test_client.search_by_exact_value("caffeine")
     assert len(results) > 0
 ```
 

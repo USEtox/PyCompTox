@@ -52,32 +52,6 @@ class ToxRefDBData(CachedAPIClient):
         >>> print(f"Found {len(dev_data['content'])} records on this page")
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0,
-        **kwargs: Any
-    ):
-        """
-        Initialize the ToxRefDBData client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-            kwargs: Additional arguments for CachedAPIClient (cache_manager, use_cache)
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-
     def get_data_by_study_type(
         self,
         study_type: str,
@@ -126,8 +100,10 @@ class ToxRefDBData(CachedAPIClient):
         
         Raises:
             ValueError: If study_type is not a valid non-empty string or page_number < 1
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox.hazard import ToxRefDBData
@@ -141,7 +117,8 @@ class ToxRefDBData(CachedAPIClient):
             >>> print(f"Total records: {len(dev_data['data'])}")
             >>> 
             >>> # Process records
-            >>> for record in dev_data['data'][:5]:  # First 5 records
+            >>> records = dev_data['data']
+            >>> for record in records[:5]:  # First 5 records
             ...     print(f"\nStudy ID: {record.get('studyId')}")
             ...     print(f"Chemical: {record.get('dtxsid')}")
             ...     print(f"Effect: {record.get('effect', 'N/A')}")
@@ -208,8 +185,10 @@ class ToxRefDBData(CachedAPIClient):
         
         Raises:
             ValueError: If study_id is not a positive integer
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox.hazard import ToxRefDBData
@@ -244,7 +223,8 @@ class ToxRefDBData(CachedAPIClient):
             ...     # Show LOAELs
             ...     if 'LOAEL' in by_level:
             ...         print(f"\nLOAEL values:")
-            ...         for rec in by_level['LOAEL'][:3]:
+            ...         loael_records = by_level['LOAEL']
+            ...         for rec in loael_records[:3]:
             ...             print(f"  {rec.get('dose')} {rec.get('doseUnits')} - {rec.get('effect')}")
         
         Note:
@@ -295,8 +275,10 @@ class ToxRefDBData(CachedAPIClient):
         
         Raises:
             ValueError: If dtxsid is not a valid non-empty string
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox.hazard import ToxRefDBData

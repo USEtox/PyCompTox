@@ -11,10 +11,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
@@ -38,34 +35,10 @@ class FunctionalUse(CachedAPIClient):
         >>> func_use = FunctionalUse()
         >>> 
         >>> # Get functional use data for a chemical
-        >>> data = func_use.functiona_use_by_dtxsid("DTXSID0020232")
+        >>> data = func_use.get_functional_use_by_dtxsid("DTXSID0020232")
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0
-    , **kwargs):
-        """
-        Initialize the FunctionalUse client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-    
-    def functiona_use_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_functional_use_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get functional use data for a chemical.
         
@@ -85,7 +58,7 @@ class FunctionalUse(CachedAPIClient):
         
         Example:
             >>> func_use = FunctionalUse()
-            >>> data = func_use.functiona_use_by_dtxsid("DTXSID0020232")
+            >>> data = func_use.get_functional_use_by_dtxsid("DTXSID0020232")
             >>> for use in data:
             ...     print(f"{use.get('harmonizedFunctionalUse', 'N/A')}")
         """
@@ -95,7 +68,7 @@ class FunctionalUse(CachedAPIClient):
         endpoint = f"exposure/functional-use/search/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def functional_use_probability_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_functional_use_probability_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get predicted functional use probabilities for a chemical.
         
@@ -115,7 +88,7 @@ class FunctionalUse(CachedAPIClient):
         
         Example:
             >>> func_use = FunctionalUse()
-            >>> probs = func_use.functional_use_probability_by_dtxsid("DTXSID0020232")
+            >>> probs = func_use.get_functional_use_probability_by_dtxsid("DTXSID0020232")
             >>> for pred in probs:
             ...     print(f"{pred.get('functionalUse')}: {pred.get('probability')}")
         """
@@ -125,7 +98,7 @@ class FunctionalUse(CachedAPIClient):
         endpoint = f"exposure/functional-use/probability/search/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def functiona_use_categories(self, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_functional_use_categories(self, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get all functional use categories.
         
@@ -139,14 +112,14 @@ class FunctionalUse(CachedAPIClient):
         
         Example:
             >>> func_use = FunctionalUse()
-            >>> categories = func_use.functiona_use_categories()
+            >>> categories = func_use.get_functional_use_categories()
             >>> for cat in categories:
             ...     print(f"{cat.get('category', 'N/A')}: {cat.get('description', '')}")
         """
         endpoint = "exposure/functional-use/category"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def functional_use_by_dtxsid_batch(self, dtxsids: List[str], use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_functional_use_by_dtxsid_batch(self, dtxsids: List[str], use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get functional use data for multiple chemicals in a single request.
         
@@ -168,7 +141,7 @@ class FunctionalUse(CachedAPIClient):
         Example:
             >>> func_use = FunctionalUse()
             >>> dtxsids = ["DTXSID0020232", "DTXSID7020182"]
-            >>> batch_data = func_use.functional_use_by_dtxsid_batch(dtxsids)
+            >>> batch_data = func_use.get_functional_use_by_dtxsid_batch(dtxsids)
             >>> for result in batch_data:
             ...     print(f"{result.get('dtxsid')}: {result.get('harmonizedFunctionalUse')}")
         """
@@ -179,4 +152,6 @@ class FunctionalUse(CachedAPIClient):
             raise ValueError("All elements in dtxsids must be strings")
         
         endpoint = "exposure/functional-use/search/by-dtxsid/"
-        return self._make_request("POST", endpoint, json_data=dtxsids)
+        return self._make_cached_request(
+            endpoint, method='POST', json=dtxsids, use_cache=use_cache
+        )

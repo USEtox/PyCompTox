@@ -89,7 +89,7 @@ black src/ tests/
 
 ```toml
 [tool.mypy]
-python_version = "3.8"
+# python_version pin omitted: recent mypy requires >=3.10 targets
 check_untyped_defs = true
 ignore_missing_imports = true
 ```

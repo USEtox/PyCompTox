@@ -163,7 +163,7 @@ from pycomptox.extra import ExtraData
 
 # Search for chemicals
 chem = Chemical()
-results = chem.search_by_name("benzene")
+results = chem.search_by_exact_value("benzene")
 
 # Get reference data for search results
 extra = ExtraData()

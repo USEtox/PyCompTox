@@ -12,10 +12,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
@@ -52,34 +49,10 @@ class HTTKData(CachedAPIClient):
         >>> httk = HTTKData()
         >>> 
         >>> # Get HTTK data for a chemical
-        >>> data = httk.httk_data_by_dtxsid("DTXSID0020232")
+        >>> data = httk.get_httk_data_by_dtxsid("DTXSID0020232")
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0
-    , **kwargs):
-        """
-        Initialize the HTTKData client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-    
-    def httk_data_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_httk_data_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get high-throughput toxicokinetics (HTTK) data for a chemical.
         
@@ -106,7 +79,7 @@ class HTTKData(CachedAPIClient):
         
         Example:
             >>> httk = HTTKData()
-            >>> data = httk.httk_data_by_dtxsid("DTXSID0020232")
+            >>> data = httk.get_httk_data_by_dtxsid("DTXSID0020232")
             >>> for param in data:
             ...     print(f"{param.get('parameter')}: {param.get('value')} {param.get('units')}")
         """
@@ -116,7 +89,7 @@ class HTTKData(CachedAPIClient):
         endpoint = f"exposure/httk/search/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def httk_data_by_dtxsid_batch(self, dtxsid_list: List[str], use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_httk_data_by_dtxsid_batch(self, dtxsid_list: List[str], use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get HTTK data for multiple chemicals in a single request.
         
@@ -137,7 +110,7 @@ class HTTKData(CachedAPIClient):
         Example:
             >>> httk = HTTKData()
             >>> dtxsids = ["DTXSID0020232", "DTXSID7020182"]
-            >>> batch_data = httk.httk_data_by_dtxsid_batch(dtxsids)
+            >>> batch_data = httk.get_httk_data_by_dtxsid_batch(dtxsids)
             >>> for result in batch_data:
             ...     print(f"{result.get('dtxsid')}: {result.get('parameter')} = {result.get('value')}")
         """
@@ -148,4 +121,6 @@ class HTTKData(CachedAPIClient):
             raise ValueError("All elements in dtxsid_list must be strings")
         
         endpoint = "exposure/httk/search/by-dtxsid/"
-        return self._make_request("POST", endpoint, json_data=dtxsid_list)
+        return self._make_cached_request(
+            endpoint, method='POST', json=dtxsid_list, use_cache=use_cache
+        )

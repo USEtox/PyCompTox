@@ -40,7 +40,7 @@ data = client.get_data_by_aeid(3032)
 aed = client.get_aed_data_by_dtxsid("DTXSID5021209")
 
 # Batch operations
-batch = client.find_bioactivity_data_by_dtxsid_batch(["DTXSID7020182", "DTXSID9026974"])
+batch = client.get_bioactivity_data_by_dtxsid_batch(["DTXSID7020182", "DTXSID9026974"])
 ```
 
 ### BioactivityAOP Class

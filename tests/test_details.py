@@ -6,11 +6,7 @@ This script demonstrates the complete workflow:
 2. Use ChemicalDetails class to retrieve detailed information
 """
 
-import sys
-from pathlib import Path
 
-# Add the src directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from pycomptox.chemical import Chemical, ChemicalDetails
 
@@ -55,7 +51,7 @@ def test_search_and_details_workflow():
             print(f"     CAS RN: {casrn}")
             
             print(f"\n2. Getting detailed information for {dtxsid}...")
-            details = details_client.data_by_dtxsid(dtxsid)
+            details = details_client.get_data_by_dtxsid(dtxsid)
             print(f"   ✓ Retrieved detailed data")
             print(f"     Preferred Name: {details.get('preferredName', 'N/A')}")
             iupac_name = details.get('iupacName') or 'N/A'
@@ -83,7 +79,7 @@ def test_search_and_details_workflow():
             print(f"   ✓ Found: {chem['preferredName']} ({dtxsid})")
             
             print(f"\n2. Getting structure details...")
-            details = details_client.data_by_dtxsid(dtxsid, projection="chemicalstructure")
+            details = details_client.get_data_by_dtxsid(dtxsid, projection="chemicalstructure")
             print(f"   ✓ Retrieved structure data")
             print(f"     SMILES: {details.get('smiles', 'N/A')}")
             print(f"     MS-Ready SMILES: {details.get('msReadySmiles', 'N/A')}")
@@ -113,7 +109,7 @@ def test_search_and_details_workflow():
         
         if dtxsids:
             print(f"\n2. Getting batch details for {len(dtxsids)} chemicals...")
-            batch_details = details_client.data_by_dtxsid_batch(
+            batch_details = details_client.get_data_by_dtxsid_batch(
                 dtxsids, 
                 projection="chemicalidentifier"
             )
@@ -135,7 +131,7 @@ def test_search_and_details_workflow():
         dtxcid = "DTXCID505"
         print(f"Getting details for DTXCID: {dtxcid}...")
         
-        details = details_client.data_by_dtxcid(dtxcid, projection="compact")
+        details = details_client.get_data_by_dtxcid(dtxcid, projection="compact")
         print(f"✓ Retrieved details")
         print(f"  Preferred Name: {details.get('preferredName', 'N/A')}")
         print(f"  DTXSID: {details.get('dtxsid', 'N/A')}")
@@ -166,7 +162,7 @@ def test_projections():
         print(f"\nProjection: {projection} ({description})")
         print("-" * 70)
         try:
-            details = details_client.data_by_dtxsid(dtxsid, projection=projection)
+            details = details_client.get_data_by_dtxsid(dtxsid, projection=projection)
             print(f"✓ Retrieved data with {len(details)} fields")
             print(f"  Fields: {', '.join(list(details.keys())[:10])}...")
         except Exception as e:
@@ -194,7 +190,7 @@ def test_batch_operations():
         ]
         print(f"Retrieving details for {len(dtxsids)} DTXSIDs...")
         
-        results = details_client.data_by_dtxsid_batch(dtxsids)
+        results = details_client.get_data_by_dtxsid_batch(dtxsids)
         print(f"✓ Retrieved {len(results)} chemical details")
         
         for result in results:
@@ -212,7 +208,7 @@ def test_batch_operations():
         dtxcids = ["DTXCID505", "DTXCID30182", "DTXCID20182"]
         print(f"Retrieving details for {len(dtxcids)} DTXCIDs...")
         
-        results = details_client.data_by_dtxcid_batch(
+        results = details_client.get_data_by_dtxcid_batch(
             dtxcids,
             projection="chemicalidentifier"
         )

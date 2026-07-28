@@ -5,11 +5,7 @@ This script demonstrates basic usage of the BioactivityData API client
 and tests various methods for retrieving bioactivity data.
 """
 
-import sys
-from pathlib import Path
 
-# Add the src directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from pycomptox.bioactivity import BioactivityData
 
@@ -267,7 +263,7 @@ def test_batch_operations():
         dtxsids = ["DTXSID7020182", "DTXSID9026974"]
         print(f"Fetching bioactivity data for {len(dtxsids)} DTXSIDs (batch)...")
         
-        data = client.find_bioactivity_data_by_dtxsid_batch(dtxsids)
+        data = client.get_bioactivity_data_by_dtxsid_batch(dtxsids)
         
         if data:
             print(f"✓ Retrieved batch data")
@@ -300,7 +296,7 @@ def test_batch_aeid():
         aeids = [3032, 3033]
         print(f"Fetching bioactivity data for {len(aeids)} AEIDs (batch)...")
         
-        data = client.find_bioactivity_data_by_aeid_batch(aeids)
+        data = client.get_bioactivity_data_by_aeid_batch(aeids)
         
         if data:
             print(f"✓ Retrieved batch AEID data")
@@ -348,7 +344,7 @@ def test_input_validation():
         # Test batch with non-list
         print("\nTesting batch with non-list...")
         try:
-            client.find_bioactivity_data_by_dtxsid_batch("DTXSID7020182")
+            client.get_bioactivity_data_by_dtxsid_batch("DTXSID7020182")
             print("✗ Should have raised ValueError for non-list")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")
@@ -356,7 +352,7 @@ def test_input_validation():
         # Test batch with empty list
         print("\nTesting batch with empty list...")
         try:
-            client.find_bioactivity_data_by_dtxsid_batch([])
+            client.get_bioactivity_data_by_dtxsid_batch([])
             print("✗ Should have raised ValueError for empty list")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")

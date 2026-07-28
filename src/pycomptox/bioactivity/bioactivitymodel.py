@@ -9,10 +9,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
@@ -46,30 +43,10 @@ class BioactivityModel(CachedAPIClient):
         ...     "DTXSID7020182", "CERAPP"
         ... )
     """
-    
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.1,
-        **kwargs
-    ):
-        """
-        Initialize the BioactivityModel client.
-        
-        Args:
-            api_key: API key for CompTox API access
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-            **kwargs: Additional arguments for CachedAPIClient
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
 
+    #: Model predictions are rate-sensitive; throttle by default.
+    default_time_delay: float = 0.1
+    
     def get_toxcast_model_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Retrieve all ToxCast model predictions for a given chemical.
@@ -93,8 +70,10 @@ class BioactivityModel(CachedAPIClient):
                 - modelDesc: Detailed model description
         
         Raises:
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import BioactivityModel
@@ -124,7 +103,7 @@ class BioactivityModel(CachedAPIClient):
             bioactivity and prioritize chemicals for further testing. See EPA's
             ToxCast dashboard for model details and validation metrics.
         """
-        endpoint = f"bioactivity/models/by-dtxsid/{dtxsid}"
+        endpoint = f"bioactivity/models/search/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
     def get_toxcast_model_by_dtxsid_and_model(
@@ -152,8 +131,10 @@ class BioactivityModel(CachedAPIClient):
                 - modelDesc: Detailed model description
         
         Raises:
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import BioactivityModel
@@ -188,6 +169,6 @@ class BioactivityModel(CachedAPIClient):
             collaborative efforts. They integrate predictions from multiple
             QSAR models to provide robust bioactivity predictions.
         """
-        endpoint = "bioactivity/models/search"
+        endpoint = "bioactivity/models/search/"
         params = {"dtxsid": dtxsid, "model": model}
         return self._make_cached_request(endpoint, params=params, use_cache=use_cache)

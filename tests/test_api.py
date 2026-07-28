@@ -4,10 +4,7 @@ This script demonstrates basic functionality and automatic API key loading.
 """
 
 import sys
-from pathlib import Path
 
-# Add the src directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from pycomptox.chemical import Chemical
 
@@ -78,19 +75,19 @@ def test_rate_limiting():
     client = Chemical(time_delay_between_calls=0.5)
     
     import time
-    start_time = time.time()
+    start_time = time.monotonic()
     
     print("Making 3 consecutive API calls...")
     for i in range(3):
-        call_start = time.time()
+        call_start = time.monotonic()
         try:
             client.search_by_exact_value(f"DTXSID702018{i}")
         except:
             pass  # Ignore errors for this test
-        elapsed = time.time() - call_start
+        elapsed = time.monotonic() - call_start
         print(f"  Call {i+1}: {elapsed:.3f} seconds")
     
-    total_time = time.time() - start_time
+    total_time = time.monotonic() - start_time
     print(f"\nTotal time for 3 calls: {total_time:.3f} seconds")
     print(f"Expected minimum time: ~1.0 seconds (2 delays of 0.5s)")
     

@@ -50,7 +50,7 @@ data = synonym_client.get_synonyms_by_dtxsid("DTXSID7020182")
 print(f"DTXSID: {data['dtxsid']}")
 print(f"Valid synonyms: {data['valid']}")
 print(f"Good quality: {data['good']}")
-print(f"Alternate CAS: {data['alternateCasrn']}")
+print(f"Alternate CAS: {data['alternate']}")
 print(f"Beilstein numbers: {data['beilstein']}")
 ```
 
@@ -112,8 +112,8 @@ for data in results:
     ],
     "other": ["..."],
     "beilstein": ["..."],
-    "alternateCasrn": ["..."],
-    "deletedCasrn": ["..."]
+    "alternate": ["..."],
+    "deleted": ["..."]
 }
 ```
 
@@ -123,8 +123,8 @@ for data in results:
 - `good` - List of good quality names
 - `other` - Other synonyms
 - `beilstein` - Beilstein registry numbers
-- `alternateCasrn` - Alternate CAS Registry Numbers
-- `deletedCasrn` - Deleted CAS numbers
+- `alternate` - Alternate CAS Registry Numbers
+- `deleted` - Deleted CAS numbers
 - `pcCode` - PC code
 
 ### CCD Projection (Flat List)
@@ -155,7 +155,7 @@ dtxsids = ["DTXSID7020182", "DTXSID2021315", "DTXSID5020001"]
 results = synonym_client.get_synonyms_by_dtxsid_batch(dtxsids)
 
 for data in results:
-    alt_cas = data.get('alternateCasrn', [])
+    alt_cas = data.get('alternate', [])
     if alt_cas:
         print(f"{data['dtxsid']}:")
         print(f"  Alternate CAS: {alt_cas}")
@@ -209,7 +209,7 @@ search_client = Chemical()
 synonym_client = ChemSynonym()
 
 # Search for a chemical
-results = search_client.search_by_name("Bisphenol")
+results = search_client.search_by_exact_value("Bisphenol")
 dtxsid = results[0]['dtxsid']
 
 # Get all its synonyms
@@ -358,7 +358,7 @@ with open('synonym_database.json', 'w') as f:
 
 ```python
 data = synonym_client.get_synonyms_by_dtxsid(dtxsid)
-for category in ['valid', 'good', 'other', 'beilstein', 'alternateCasrn']:
+for category in ['valid', 'good', 'other', 'beilstein', 'alternate']:
     synonyms = data.get(category, [])
     if synonyms:
         print(f"{category}: {len(synonyms)} items")

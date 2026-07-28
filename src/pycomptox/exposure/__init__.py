@@ -9,7 +9,7 @@ Available Classes:
     - DemographicExposure: Get demographic-specific exposure predictions
     - FunctionalUse: Access functional use categories and probabilities
     - ProductData: Get consumer product composition data
-    - CCCData: Access Chemical and Products Categories data
+    - CCDData: Access Chemical and Products Categories data
     - ListPresence: Check chemical presence in regulatory/screening lists
     - HTTKData: Get High-Throughput Toxicokinetics parameters
     - MMDB: Access Molecular Modeling Database (environmental monitoring)
@@ -18,18 +18,18 @@ Example:
     >>> from pycomptox import exposure
     >>> # Get exposure predictions
     >>> exp_pred = exposure.ExposurePrediction()
-    >>> predictions = exp_pred.general_prediction_SEEMs_by_dtxsid("DTXSID0020232")
+    >>> predictions = exp_pred.get_general_seem_prediction_by_dtxsid("DTXSID0020232")
     >>> 
     >>> # Get functional use data
     >>> func_use = exposure.FunctionalUse()
-    >>> uses = func_use.functiona_use_by_dtxsid("DTXSID0020232")
+    >>> uses = func_use.get_functional_use_by_dtxsid("DTXSID0020232")
     >>> 
     >>> # Check list presence
     >>> lists = exposure.ListPresence()
-    >>> presence = lists.list_presence_data_by_dtxsid("DTXSID0020232")
+    >>> presence = lists.get_list_presence_data_by_dtxsid("DTXSID0020232")
 """
 
-from .ccddata import CCCData
+from .ccddata import CCDData
 from .mmdb import MMDB
 from .functionaluse import FunctionalUse
 from .productdata import ProductData
@@ -39,7 +39,7 @@ from .exposureprediction import ExposurePrediction
 from .demographicexposure import DemographicExposure
 
 __all__ = [
-    "CCCData",
+    "CCDData",
     "MMDB",
     "FunctionalUse",
     "ProductData",

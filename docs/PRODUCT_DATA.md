@@ -21,14 +21,14 @@ prod_data = ProductData()
 
 # Get product data for a chemical
 dtxsid = "DTXSID0020232"
-products = prod_data.products_data_by_dtxsid(dtxsid)
+products = prod_data.get_product_data_by_dtxsid(dtxsid)
 
 # Get all PUC categories
-puc_list = prod_data.list_all_puc_product()
+puc_list = prod_data.get_all_puc_products()
 
 # Batch operation
 dtxsids = ["DTXSID0020232", "DTXSID7020182"]
-batch_data = prod_data.product_data_by_dtxsid_batch(dtxsids)
+batch_data = prod_data.get_product_data_by_dtxsid_batch(dtxsids)
 ```
 
 ## API Methods
@@ -37,7 +37,7 @@ batch_data = prod_data.product_data_by_dtxsid_batch(dtxsids)
 
 ```python
 prod_data = ProductData()
-products = prod_data.products_data_by_dtxsid("DTXSID0020232")
+products = prod_data.get_product_data_by_dtxsid("DTXSID0020232")
 
 for product in products:
     print(f"Product: {product.get('productName')}")
@@ -48,7 +48,7 @@ for product in products:
 ### List All PUC Products
 
 ```python
-puc_list = prod_data.list_all_puc_product()
+puc_list = prod_data.get_all_puc_products()
 
 for puc in puc_list:
     print(f"{puc.get('pucCode')}: {puc.get('pucDescription')}")
@@ -58,7 +58,7 @@ for puc in puc_list:
 
 ```python
 dtxsids = ["DTXSID0020232", "DTXSID7020182"]
-batch_data = prod_data.product_data_by_dtxsid_batch(dtxsids)
+batch_data = prod_data.get_product_data_by_dtxsid_batch(dtxsids)
 
 for result in batch_data:
     print(f"{result.get('dtxsid')}: {result.get('productName')}")

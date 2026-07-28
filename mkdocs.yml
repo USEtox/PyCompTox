@@ -81,6 +81,7 @@ nav:
   - User Guide:
     - Setup & Configuration: MODERN_SETUP.md
     - API Key & Rate Limiting: API_KEY_AND_RATE_LIMITING.md
+    - Error Handling: ERROR_HANDLING.md
     - Batch Methods: BATCH_METHODS.md
     - Best Practices: best_practices.md
     - Examples: examples.md
@@ -99,7 +100,7 @@ nav:
   - Hazard Module:
     - Hazard Overview: HAZARD_MODULE.md
   - Additional Data:
-    - CCC Data: CCC_DATA.md
+    - CCD Data: CCD_DATA.md
     - MMDB Data: MMDB_DATA.md
     - Functional Use: FUNCTIONAL_USE.md
     - Product Data: PRODUCT_DATA.md
@@ -107,6 +108,7 @@ nav:
     - List Presence: LIST_PRESENCE.md
   - API Documentation:
     - Configuration: api/config.md
+    - Exceptions: api/exceptions.md
     - Cache: api/cache.md
     - Chemical: api/chemical.md
     - ChemicalDetails: api/details.md
@@ -117,7 +119,7 @@ nav:
     - ExtraData: api/extradata.md
     - WikiLink: api/wikilink.md
     - PubChemLink: api/pubchemlink.md
-    - CCCData: api/cccdata.md
+    - CCDData: api/ccddata.md
     - MMDB: api/mmdb.md
     - FunctionalUse: api/functionaluse.md
     - ProductData: api/productdata.md

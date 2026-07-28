@@ -5,11 +5,7 @@ This script demonstrates basic usage of the ExposurePrediction API client
 and tests various methods for retrieving exposure prediction data.
 """
 
-import sys
-from pathlib import Path
 
-# Add the src directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from pycomptox.exposure import ExposurePrediction
 
@@ -29,7 +25,7 @@ def test_general_prediction_by_dtxsid():
         dtxsid = "DTXSID0020232"
         print(f"Fetching general SEEM prediction for {dtxsid}...")
         
-        data = client.general_prediction_SEEMs_by_dtxsid(dtxsid)
+        data = client.get_general_seem_prediction_by_dtxsid(dtxsid)
         
         if data:
             print(f"✓ Retrieved prediction data")
@@ -62,7 +58,7 @@ def test_with_projection():
         projection = "ccd-general"
         print(f"Fetching prediction for {dtxsid} with projection: {projection}...")
         
-        data = client.general_prediction_SEEMs_by_dtxsid(dtxsid, projection=projection)
+        data = client.get_general_seem_prediction_by_dtxsid(dtxsid, projection=projection)
         
         if data:
             print(f"✓ Retrieved prediction data with projection")
@@ -90,7 +86,7 @@ def test_batch_operation():
         dtxsid_list = ["DTXSID0020232", "DTXSID0020245"]
         print(f"Fetching predictions for {len(dtxsid_list)} chemicals...")
         
-        data = client.general_prediction_SEEMs_by_dtxsid_batch(dtxsid_list)
+        data = client.get_general_seem_prediction_by_dtxsid_batch(dtxsid_list)
         
         if data:
             print(f"✓ Retrieved batch data")
@@ -118,7 +114,7 @@ def test_input_validation():
         # Test with empty string
         print("Testing with empty DTXSID...")
         try:
-            client.general_prediction_SEEMs_by_dtxsid("")
+            client.get_general_seem_prediction_by_dtxsid("")
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")
@@ -126,7 +122,7 @@ def test_input_validation():
         # Test batch with empty list
         print("\nTesting batch with empty list...")
         try:
-            client.general_prediction_SEEMs_by_dtxsid_batch([])
+            client.get_general_seem_prediction_by_dtxsid_batch([])
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")

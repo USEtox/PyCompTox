@@ -226,7 +226,7 @@ def test_rate_limiting():
     """Test that rate limiting works correctly."""
     client_with_delay = AssayBioactivity(time_delay_between_calls=0.5)
     
-    start_time = time.time()
+    start_time = time.monotonic()
     
     # Make two consecutive calls with cache disabled
     try:
@@ -236,7 +236,7 @@ def test_rate_limiting():
         # Ignore data errors, we're testing rate limiting
         pass
     
-    elapsed_time = time.time() - start_time
+    elapsed_time = time.monotonic() - start_time
     
     # Should take at least 0.5 seconds due to rate limiting
     assert elapsed_time >= 0.5
@@ -316,7 +316,7 @@ if __name__ == "__main__":
         print(f"   Genes: {[g.get('geneSymbol', 'N/A') for g in gene_data[:3]]}")
     
     print("\n5. Testing batch annotations:")
-    batch_results = client.find_assay_annotations_by_aeid_batch([3032, 3033])
+    batch_results = client.get_assay_annotations_by_aeid_batch([3032, 3033])
     print(f"   Retrieved {len(batch_results)} annotations")
     if batch_results:
         print(f"   First: {batch_results[0]['assayComponentEndpointName']}")
@@ -327,7 +327,7 @@ if __name__ == "__main__":
 def test_find_assay_annotations_by_aeid_batch(assay_client):
     """Test batch retrieval of assay annotations."""
     aeids = [3032, 3033]
-    result = assay_client.find_assay_annotations_by_aeid_batch(aeids)
+    result = assay_client.get_assay_annotations_by_aeid_batch(aeids)
     
     # Should return a list
     assert isinstance(result, list)
@@ -343,18 +343,18 @@ def test_find_assay_annotations_by_aeid_batch(assay_client):
 def test_find_assay_annotations_batch_empty_list(assay_client):
     """Test that empty AEID list raises ValueError."""
     with pytest.raises(ValueError, match="cannot be empty"):
-        assay_client.find_assay_annotations_by_aeid_batch([])
+        assay_client.get_assay_annotations_by_aeid_batch([])
 
 
 def test_find_assay_annotations_batch_invalid_aeid(assay_client):
     """Test that invalid AEIDs raise ValueError."""
     with pytest.raises(ValueError, match="valid integers"):
-        assay_client.find_assay_annotations_by_aeid_batch(["invalid"])
+        assay_client.get_assay_annotations_by_aeid_batch(["invalid"])
 
 
 def test_find_assay_annotations_batch_single_aeid(assay_client):
     """Test batch method with single AEID."""
-    result = assay_client.find_assay_annotations_by_aeid_batch([3032])
+    result = assay_client.get_assay_annotations_by_aeid_batch([3032])
     
     assert isinstance(result, list)
     assert len(result) > 0

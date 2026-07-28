@@ -19,6 +19,7 @@ def test_initialization():
     assert isinstance(client, ToxRefDBObservation)
 
 
+@pytest.mark.slow
 def test_get_observations_by_study_type_dev(obs_client):
     """Test retrieving observations for developmental toxicity studies."""
     result = obs_client.get_observations_by_study_type("DEV", page_number=1)
@@ -31,6 +32,7 @@ def test_get_observations_by_study_type_dev(obs_client):
     assert isinstance(result['data'], list)
 
 
+@pytest.mark.slow
 def test_get_observations_by_study_type_pagination(obs_client):
     """Test pagination for study type observations."""
     # Get first page
@@ -58,6 +60,7 @@ def test_get_observations_by_study_type_invalid_input(obs_client):
         obs_client.get_observations_by_study_type("DEV", page_number=-1)
 
 
+@pytest.mark.slow
 def test_get_observations_by_study_id(obs_client):
     """Test retrieving observations for a specific study."""
     result = obs_client.get_observations_by_study_id(63)
@@ -118,6 +121,7 @@ def test_get_observations_by_dtxsid_invalid_input(obs_client):
         obs_client.get_observations_by_dtxsid(123)
 
 
+@pytest.mark.slow
 def test_different_study_types(obs_client):
     """Test retrieving observations for different study types."""
     study_types = ["DEV", "REP", "ACUTE"]
@@ -133,6 +137,7 @@ def test_different_study_types(obs_client):
             pass
 
 
+@pytest.mark.slow
 def test_caching_enabled(obs_client):
     """Test that caching works correctly."""
     # First call
@@ -145,6 +150,7 @@ def test_caching_enabled(obs_client):
     assert result1 == result2
 
 
+@pytest.mark.slow
 def test_observation_data_structure(obs_client):
     """Test that returned observation data has expected structure."""
     result = obs_client.get_observations_by_study_id(63)
@@ -157,6 +163,7 @@ def test_observation_data_structure(obs_client):
                 assert field in record, f"Record missing field: {field}"
 
 
+@pytest.mark.slow
 def test_study_type_data_structure(obs_client):
     """Test that paginated data has expected structure."""
     result = obs_client.get_observations_by_study_type("DEV", page_number=1)
@@ -177,6 +184,7 @@ def test_multiple_dtxsids(obs_client):
         assert isinstance(result, list)
 
 
+@pytest.mark.slow
 def test_observation_status_fields(obs_client):
     """Test that observation status fields are present."""
     result = obs_client.get_observations_by_study_id(63)

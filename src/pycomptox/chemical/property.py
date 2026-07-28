@@ -11,11 +11,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import os
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
@@ -47,21 +43,6 @@ class ChemicalProperties(CachedAPIClient):
         >>> # Get experimental properties
         >>> exp_props = props.get_experimental_properties_by_dtxsid("DTXSID7020182")
     """
-    
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api",
-        time_delay_between_calls: float = 0.0,
-        **kwargs
-    ):
-        """Initialize the ChemicalProperties client."""
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
     
     def get_property_summary_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
@@ -96,8 +77,9 @@ class ChemicalProperties(CachedAPIClient):
     def get_summary_by_dtxsid_and_property(
         self, 
         dtxsid: str, 
-        property_name: str
-    , use_cache: Optional[bool] = None) -> Dict[str, Any]:
+        property_name: str,
+        use_cache: Optional[bool] = None,
+    ) -> Dict[str, Any]:
         """
         Get physicochemical property summary for a specific property and chemical.
         
@@ -135,8 +117,9 @@ class ChemicalProperties(CachedAPIClient):
         self, 
         property_name: str, 
         min_value: float, 
-        max_value: float
-    , use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+        max_value: float,
+        use_cache: Optional[bool] = None,
+    ) -> List[Dict[str, Any]]:
         """
         Get chemicals with predicted property values within a specified range.
         
@@ -236,8 +219,9 @@ class ChemicalProperties(CachedAPIClient):
         self, 
         property_name: str, 
         min_value: float, 
-        max_value: float
-    , use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+        max_value: float,
+        use_cache: Optional[bool] = None,
+    ) -> List[Dict[str, Any]]:
         """
         Get chemicals with experimental property values within a specified range.
         
@@ -366,8 +350,9 @@ class ChemicalProperties(CachedAPIClient):
     def get_fate_summary_by_dtxsid_and_property(
         self, 
         dtxsid: str, 
-        property_name: str
-    , use_cache: Optional[bool] = None) -> Dict[str, Any]:
+        property_name: str,
+        use_cache: Optional[bool] = None,
+    ) -> Dict[str, Any]:
         """
         Get environmental fate property summary for a specific property and chemical.
         
@@ -403,8 +388,9 @@ class ChemicalProperties(CachedAPIClient):
 
     def get_predicted_properties_by_dtxsid_batch(
         self, 
-        dtxsids: List[str]
-    , use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+        dtxsids: List[str],
+        use_cache: Optional[bool] = None,
+    ) -> List[Dict[str, Any]]:
         """
         Get predicted properties for multiple chemicals in a single request.
         
@@ -446,8 +432,9 @@ class ChemicalProperties(CachedAPIClient):
 
     def get_experimental_properties_by_dtxsid_batch(
         self, 
-        dtxsids: List[str]
-    , use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+        dtxsids: List[str],
+        use_cache: Optional[bool] = None,
+    ) -> List[Dict[str, Any]]:
         """
         Get experimental properties for multiple chemicals in a single request.
         
@@ -489,8 +476,9 @@ class ChemicalProperties(CachedAPIClient):
 
     def get_fate_by_dtxsid_batch(
         self, 
-        dtxsids: List[str]
-    , use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+        dtxsids: List[str],
+        use_cache: Optional[bool] = None,
+    ) -> List[Dict[str, Any]]:
         """
         Get environmental fate properties for multiple chemicals in a single request.
         

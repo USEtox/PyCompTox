@@ -1,6 +1,6 @@
 # Chemical and Products Categories (CCC) Data
 
-The `CCCData` class provides access to Chemical and Products Categories data from the EPA CompTox Dashboard, including Product Use Categories (PUC), production volume data, biomonitoring information, and functional use details.
+The `CCDData` class provides access to Chemical and Products Categories data from the EPA CompTox Dashboard, including Product Use Categories (PUC), production volume data, biomonitoring information, and functional use details.
 
 ## Overview
 
@@ -16,20 +16,20 @@ Chemical and Products Categories data helps understand how chemicals are used in
 ## Quick Start
 
 ```python
-from pycomptox import CCCData
+from pycomptox import CCDData
 
 # Initialize the client
-ccc = CCCData()
+ccc = CCDData()
 
 # Get product use categories for a chemical
 dtxsid = "DTXSID7020182"  # Bisphenol A
-puc_data = ccc.product_use_category_by_dtxsid(dtxsid)
+puc_data = ccc.get_product_use_category_by_dtxsid(dtxsid)
 
 # Get production volume data
-volume_data = ccc.production_volume_by_dtxsid(dtxsid)
+volume_data = ccc.get_production_volume_by_dtxsid(dtxsid)
 
 # Get biomonitoring data for a specific CCD
-biomonitoring = ccc.biomonitoring_data_by_dtxsid_and_ccd(
+biomonitoring = ccc.get_biomonitoring_data_by_dtxsid(
     dtxsid, 
     ccd="NHANES"
 )
@@ -42,8 +42,8 @@ biomonitoring = ccc.biomonitoring_data_by_dtxsid_and_ccd(
 Get Product Use Category (PUC) classifications for a chemical:
 
 ```python
-ccc = CCCData()
-puc_data = ccc.product_use_category_by_dtxsid("DTXSID7020182")
+ccc = CCDData()
+puc_data = ccc.get_product_use_category_by_dtxsid("DTXSID7020182")
 
 for puc in puc_data:
     print(f"PUC Code: {puc.get('pucCode')}")
@@ -58,7 +58,7 @@ for puc in puc_data:
 Retrieve manufacturing and import volume data:
 
 ```python
-volume_data = ccc.production_volume_by_dtxsid("DTXSID0020232")
+volume_data = ccc.get_production_volume_by_dtxsid("DTXSID0020232")
 
 for record in volume_data:
     print(f"Year: {record.get('year')}")
@@ -74,7 +74,7 @@ Get biomonitoring data for a chemical from a specific Chemical Categories Databa
 
 ```python
 # Get NHANES biomonitoring data
-nhanes_data = ccc.biomonitoring_data_by_dtxsid_and_ccd(
+nhanes_data = ccc.get_biomonitoring_data_by_dtxsid(
     "DTXSID7020182",
     ccd="NHANES"
 )
@@ -96,7 +96,7 @@ for sample in nhanes_data:
 Retrieve descriptive keywords for chemical uses:
 
 ```python
-keywords = ccc.general_use_keywords_by_dtxsid("DTXSID0020232")
+keywords = ccc.get_general_use_keywords_by_dtxsid("DTXSID0020232")
 
 for keyword in keywords:
     print(f"Keyword: {keyword.get('keyword')}")
@@ -110,7 +110,7 @@ for keyword in keywords:
 Get reported functional applications for a chemical:
 
 ```python
-functional_use = ccc.reported_functional_use_by_dtxsid("DTXSID7020182")
+functional_use = ccc.get_reported_functional_use_by_dtxsid("DTXSID7020182")
 
 for use in functional_use:
     print(f"Function: {use.get('function')}")
@@ -125,7 +125,7 @@ for use in functional_use:
 Retrieve chemical concentration data in products:
 
 ```python
-weight_fractions = ccc.chemical_weight_fraction_by_dtxsid("DTXSID0020232")
+weight_fractions = ccc.get_chemical_weight_fractions_by_dtxsid("DTXSID0020232")
 
 for fraction in weight_fractions:
     print(f"Product: {fraction.get('product')}")
@@ -140,13 +140,13 @@ for fraction in weight_fractions:
 ### API Key Setup
 
 ```python
-from pycomptox import save_api_key, CCCData
+from pycomptox import save_api_key, CCDData
 
 # Save your API key (one-time setup)
 save_api_key("your-api-key-here")
 
 # Or provide at initialization
-ccc = CCCData(api_key="your-api-key-here")
+ccc = CCDData(api_key="your-api-key-here")
 ```
 
 ### Rate Limiting
@@ -155,7 +155,7 @@ Add delays between API calls to avoid rate limiting:
 
 ```python
 # Add 1-second delay between requests
-ccc = CCCData(time_delay_between_calls=1.0)
+ccc = CCDData(time_delay_between_calls=1.0)
 ```
 
 ### Custom Base URL
@@ -163,7 +163,7 @@ ccc = CCCData(time_delay_between_calls=1.0)
 Use a different API endpoint:
 
 ```python
-ccc = CCCData(base_url="https://custom-api-endpoint.gov/")
+ccc = CCDData(base_url="https://custom-api-endpoint.gov/")
 ```
 
 ## Data Structure Examples
@@ -200,12 +200,12 @@ ccc = CCCData(base_url="https://custom-api-endpoint.gov/")
 ## Error Handling
 
 ```python
-from pycomptox import CCCData
+from pycomptox import CCDData
 
-ccc = CCCData()
+ccc = CCDData()
 
 try:
-    data = ccc.product_use_category_by_dtxsid("DTXSID7020182")
+    data = ccc.get_product_use_category_by_dtxsid("DTXSID7020182")
 except PermissionError as e:
     print(f"Invalid API key: {e}")
 except ValueError as e:
@@ -226,15 +226,15 @@ except RuntimeError as e:
 ### Product Safety Assessment
 
 ```python
-ccc = CCCData()
+ccc = CCDData()
 dtxsid = "DTXSID7020182"
 
 # Get product categories
-products = ccc.product_use_category_by_dtxsid(dtxsid)
+products = ccc.get_product_use_category_by_dtxsid(dtxsid)
 print(f"Found in {len(products)} product categories")
 
 # Get weight fractions
-concentrations = ccc.chemical_weight_fraction_by_dtxsid(dtxsid)
+concentrations = ccc.get_chemical_weight_fractions_by_dtxsid(dtxsid)
 max_concentration = max(c.get('maxWeightPercent', 0) for c in concentrations)
 print(f"Maximum concentration: {max_concentration}%")
 ```
@@ -243,13 +243,13 @@ print(f"Maximum concentration: {max_concentration}%")
 
 ```python
 # Get biomonitoring data
-biodata = ccc.biomonitoring_data_by_dtxsid_and_ccd(
+biodata = ccc.get_biomonitoring_data_by_dtxsid(
     "DTXSID7020182",
     ccd="NHANES"
 )
 
 # Get production volume
-volume = ccc.production_volume_by_dtxsid("DTXSID7020182")
+volume = ccc.get_production_volume_by_dtxsid("DTXSID7020182")
 
 # Combined analysis for exposure potential
 print(f"Detection frequency: {biodata[0].get('detectionFrequency')}")
@@ -264,4 +264,4 @@ print(f"Production volume: {volume[0].get('volumeRange')}")
 
 ## API Reference
 
-For complete API details, see [CCCData API Reference](api/cccdata.md).
+For complete API details, see [CCDData API Reference](api/ccddata.md).

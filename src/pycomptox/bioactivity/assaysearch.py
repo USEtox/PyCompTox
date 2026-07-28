@@ -10,10 +10,8 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin, quote
+from urllib.parse import quote
 
 from ..base import CachedAPIClient
 
@@ -51,33 +49,6 @@ class AssaySearch(CachedAPIClient):
         >>> contains = search_client.search_by_substring_value("AT3_CIS", top=100)
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0,
-        **kwargs
-    ):
-        """
-        Initialize the AssaySearch client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-            **kwargs: Additional arguments for CachedAPIClient (cache_manager, use_cache)
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-    
-
     def search_by_starting_value(self, value: str, top: int = 500, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Search for bioactivity assays that start with the specified value.
@@ -100,8 +71,10 @@ class AssaySearch(CachedAPIClient):
         
         Raises:
             ValueError: If no data is found or value is invalid
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import AssaySearch
@@ -142,8 +115,10 @@ class AssaySearch(CachedAPIClient):
         
         Raises:
             ValueError: If no data is found or value is invalid
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import AssaySearch
@@ -184,8 +159,10 @@ class AssaySearch(CachedAPIClient):
         
         Raises:
             ValueError: If no data is found or value is invalid
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import AssaySearch

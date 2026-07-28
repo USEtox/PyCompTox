@@ -20,7 +20,7 @@ The recommended workflow is to:
 
 ## Methods Overview
 
-### 1. `data_by_dtxsid(dtxsid, projection=None)`
+### 1. `get_data_by_dtxsid(dtxsid, projection=None)`
 Retrieve detailed information for a single chemical by DTXSID.
 
 **Parameters:**
@@ -48,7 +48,7 @@ dtxsid = results[0]['dtxsid']  # DTXSID7020182
 
 # Step 2: Get detailed information
 details_client = ChemicalDetails()
-details = details_client.data_by_dtxsid(dtxsid)
+details = details_client.get_data_by_dtxsid(dtxsid)
 
 print(f"Name: {details['preferredName']}")
 print(f"Formula: {details['molFormula']}")
@@ -57,19 +57,19 @@ print(f"Molecular Weight: {details['monoisotopicMass']}")
 print(f"Active Assays: {details['activeAssays']}")
 ```
 
-### 2. `data_by_dtxcid(dtxcid, projection=None)`
+### 2. `get_data_by_dtxcid(dtxcid, projection=None)`
 Retrieve detailed information for a single chemical by DTXCID.
 
 **Parameters:**
 - `dtxcid` (str): The DTXCID identifier (e.g., "DTXCID30182")
-- `projection` (str, optional): Same projection options as `data_by_dtxsid`
+- `projection` (str, optional): Same projection options as `get_data_by_dtxsid`
 
 **Returns:** Dictionary containing chemical details
 
 **Example:**
 ```python
 # Get structure details for a chemical by DTXCID
-details = details_client.data_by_dtxcid(
+details = details_client.get_data_by_dtxcid(
     "DTXCID30182", 
     projection="chemicalstructure"
 )
@@ -79,7 +79,7 @@ print(f"InChI: {details['inchiString']}")
 print(f"MS-Ready SMILES: {details['msReadySmiles']}")
 ```
 
-### 3. `data_by_dtxsid_batch(dtxsids, projection=None)`
+### 3. `get_data_by_dtxsid_batch(dtxsids, projection=None)`
 Retrieve details for multiple chemicals by DTXSIDs in a single request.
 
 **Parameters:**
@@ -99,13 +99,13 @@ for name in names:
         dtxsids.append(results[0]['dtxsid'])
 
 # Step 2: Get batch details
-batch_details = details_client.data_by_dtxsid_batch(dtxsids)
+batch_details = details_client.get_data_by_dtxsid_batch(dtxsids)
 
 for chem in batch_details:
     print(f"{chem['preferredName']}: {chem.get('casrn', 'N/A')}")
 ```
 
-### 4. `data_by_dtxcid_batch(dtxcids, projection=None)`
+### 4. `get_data_by_dtxcid_batch(dtxcids, projection=None)`
 Retrieve details for multiple chemicals by DTXCIDs in a single request.
 
 **Parameters:**
@@ -117,13 +117,13 @@ Retrieve details for multiple chemicals by DTXCIDs in a single request.
 **Example:**
 ```python
 dtxcids = ["DTXCID30182", "DTXCID505"]
-batch_details = details_client.data_by_dtxcid_batch(
+batch_details = details_client.get_data_by_dtxcid_batch(
     dtxcids,
     projection="chemicalidentifier"
 )
 ```
 
-### 5. `find_all_chemical_details(next_page=1, projection=None)`
+### 5. `get_all_chemical_details(next_page=1, projection=None)`
 Retrieve detailed information for all chemicals in the database (paginated).
 
 **Parameters:**
@@ -137,12 +137,12 @@ Retrieve detailed information for all chemicals in the database (paginated).
 **Example:**
 ```python
 # Get first page of all chemicals
-page1 = details_client.find_all_chemical_details(next_page=1)
+page1 = details_client.get_all_chemical_details(next_page=1)
 print(f"Found {len(page1['data'])} chemicals")
 
 # Get next page if available
 if page1['nextPage']:
-    page2 = details_client.find_all_chemical_details(next_page=page1['nextPage'])
+    page2 = details_client.get_all_chemical_details(next_page=page1['nextPage'])
 ```
 
 ## Projection Types
@@ -201,7 +201,7 @@ if search_results:
     print(f"DTXSID: {chemical['dtxsid']}")
     
     # Get comprehensive details
-    details = details_client.data_by_dtxsid(
+    details = details_client.get_data_by_dtxsid(
         chemical['dtxsid'],
         projection="chemicaldetailall"
     )
@@ -233,7 +233,7 @@ The class includes comprehensive error handling:
 
 ```python
 try:
-    details = details_client.data_by_dtxsid("INVALID_ID")
+    details = details_client.get_data_by_dtxsid("INVALID_ID")
 except Exception as e:
     print(f"Error: {e}")
 ```
@@ -249,16 +249,16 @@ Common errors:
 1. **Use batch methods** when retrieving details for multiple chemicals:
    ```python
    # Good - single request
-   details = details_client.data_by_dtxsid_batch(dtxsids)
+   details = details_client.get_data_by_dtxsid_batch(dtxsids)
    
    # Less efficient - multiple requests
-   details = [details_client.data_by_dtxsid(id) for id in dtxsids]
+   details = [details_client.get_data_by_dtxsid(id) for id in dtxsids]
    ```
 
 2. **Use projections** to limit data transfer:
    ```python
    # Only get identifiers if that's all you need
-   details = details_client.data_by_dtxsid(
+   details = details_client.get_data_by_dtxsid(
        dtxsid,
        projection="chemicalidentifier"
    )
@@ -270,7 +270,7 @@ Common errors:
    
    def get_cached_details(dtxsid):
        if dtxsid not in cache:
-           cache[dtxsid] = details_client.data_by_dtxsid(dtxsid)
+           cache[dtxsid] = details_client.get_data_by_dtxsid(dtxsid)
        return cache[dtxsid]
    ```
 

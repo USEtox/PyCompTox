@@ -44,11 +44,11 @@ data = props.retrieve_properties_by_dtxsid(results[0]['dtxsid'])
 
 # Bioactivity operations
 assay = bioactivity.AssaySearch()
-assay_data = assay.search_by_chemical(results[0]['dtxsid'])
+assay_data = assay.search_by_exact_value(results[0]['dtxsid'])
 
 # Exposure operations
 exp = exposure.ExposurePrediction()
-predictions = exp.general_prediction_SEEMs_by_dtxsid(results[0]['dtxsid'])
+predictions = exp.get_general_seem_prediction_by_dtxsid(results[0]['dtxsid'])
 ```
 
 **Benefits:**
@@ -66,7 +66,7 @@ import pycomptox as pct
 
 # Access via categories
 chem = pct.chemical.Chemical()
-results = chem.search_by_name("caffeine")
+results = chem.search_by_exact_value("caffeine")
 
 assay = pct.bioactivity.AssaySearch()
 exp = pct.exposure.ExposurePrediction()
@@ -137,15 +137,16 @@ from pycomptox import bioactivity
 
 # Search for assays
 assay = bioactivity.AssaySearch()
-assays = assay.search_by_chemical("DTXSID0020232")
+assays = assay.search_by_exact_value("DTXSID0020232")
 
 # Get bioactivity data
 bio_data = bioactivity.BioactivityData()
-data = bio_data.get_bioactivity_summary("DTXSID0020232")
+data = bio_data.get_summary_by_dtxsid("DTXSID0020232")
 
-# Check AOP linkages
+# Check AOP linkages. AOP data is keyed by assay endpoint, event, or gene -
+# not by chemical - so go via an assay endpoint id (aeid).
 aop = bioactivity.BioactivityAOP()
-pathways = aop.get_aop_by_dtxsid("DTXSID0020232")
+pathways = aop.get_aop_data_by_toxcast_aeid(3032)
 ```
 
 ### Exposure Category
@@ -160,7 +161,7 @@ exposure.ExposurePrediction    # General exposure predictions (SEEM)
 exposure.DemographicExposure   # Demographic-specific predictions
 exposure.FunctionalUse         # Functional use categories
 exposure.ProductData           # Consumer product data
-exposure.CCCData              # Chemical Categories data
+exposure.CCDData              # Chemical Categories data
 exposure.ListPresence         # Regulatory/screening lists
 exposure.HTTKData             # Toxicokinetics parameters
 exposure.MMDB                 # Environmental monitoring
@@ -172,19 +173,19 @@ from pycomptox import exposure
 
 # Get exposure predictions
 exp_pred = exposure.ExposurePrediction()
-predictions = exp_pred.general_prediction_SEEMs_by_dtxsid("DTXSID0020232")
+predictions = exp_pred.get_general_seem_prediction_by_dtxsid("DTXSID0020232")
 
 # Check functional use
 func_use = exposure.FunctionalUse()
-uses = func_use.functiona_use_by_dtxsid("DTXSID0020232")
+uses = func_use.get_functional_use_by_dtxsid("DTXSID0020232")
 
 # Get product data
 products = exposure.ProductData()
-prod_data = products.products_data_by_dtxsid("DTXSID0020232")
+prod_data = products.get_product_data_by_dtxsid("DTXSID0020232")
 
 # Check list presence
 lists = exposure.ListPresence()
-presence = lists.list_presence_data_by_dtxsid("DTXSID0020232")
+presence = lists.get_list_presence_data_by_dtxsid("DTXSID0020232")
 ```
 
 ### Hazard Category
@@ -214,22 +215,22 @@ print(f"LogP: {prop_data['logP']}")
 
 # 3. Check bioactivity
 bio_data = bioactivity.BioactivityData()
-bio_summary = bio_data.get_bioactivity_summary(dtxsid)
+bio_summary = bio_data.get_summary_by_dtxsid(dtxsid)
 print(f"Active assays: {len(bio_summary)}")
 
 # 4. Get exposure predictions
 exp_pred = exposure.ExposurePrediction()
-predictions = exp_pred.general_prediction_SEEMs_by_dtxsid(dtxsid)
+predictions = exp_pred.get_general_seem_prediction_by_dtxsid(dtxsid)
 print(f"Exposure pathways: {len(predictions)}")
 
 # 5. Check functional use
 func_use = exposure.FunctionalUse()
-uses = func_use.functiona_use_by_dtxsid(dtxsid)
+uses = func_use.get_functional_use_by_dtxsid(dtxsid)
 print(f"Functional uses: {', '.join([u['functionName'] for u in uses])}")
 
 # 6. Check regulatory status
 lists = exposure.ListPresence()
-presence = lists.list_presence_data_by_dtxsid(dtxsid)
+presence = lists.get_list_presence_data_by_dtxsid(dtxsid)
 regulatory = [p['listName'] for p in presence if p['isPresent']]
 print(f"On lists: {', '.join(regulatory)}")
 ```

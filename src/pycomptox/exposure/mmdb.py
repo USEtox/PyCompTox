@@ -9,10 +9,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
@@ -36,34 +33,10 @@ class MMDB(CachedAPIClient):
         >>> mmdb = MMDB()
         >>> 
         >>> # Get single-sample records for surface water
-        >>> data = mmdb.harmonized_single_sample_by_medium("surface water")
+        >>> data = mmdb.get_harmonized_single_sample_by_medium("surface water")
     """
 
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0
-    , **kwargs):
-        """
-        Initialize the MMDB client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-    
-    def harmonized_single_sample_by_medium(self, medium: str, page_number: int = 1, use_cache: Optional[bool] = None) -> Dict[str, Any]:
+    def get_harmonized_single_sample_by_medium(self, medium: str, page_number: int = 1, use_cache: Optional[bool] = None) -> Dict[str, Any]:
         """
         Get harmonized single-sample records by environmental medium.
         
@@ -88,10 +61,10 @@ class MMDB(CachedAPIClient):
         Example:
             >>> mmdb = MMDB()
             >>> # Get first page of surface water samples
-            >>> data = mmdb.harmonized_single_sample_by_medium("surface water")
+            >>> data = mmdb.get_harmonized_single_sample_by_medium("surface water")
             >>> 
             >>> # Get second page
-            >>> data_page2 = mmdb.harmonized_single_sample_by_medium("surface water", page_number=2)
+            >>> data_page2 = mmdb.get_harmonized_single_sample_by_medium("surface water", page_number=2)
         """
         if not medium or not isinstance(medium, str):
             raise ValueError("medium must be a non-empty string")
@@ -106,7 +79,7 @@ class MMDB(CachedAPIClient):
         }
         return self._make_cached_request(endpoint, params=params, use_cache=use_cache)
     
-    def harmonized_single_sample_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> Dict[str, Any]:
+    def get_harmonized_single_sample_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> Dict[str, Any]:
         """
         Get harmonized single-sample records for a chemical.
         
@@ -126,7 +99,7 @@ class MMDB(CachedAPIClient):
         
         Example:
             >>> mmdb = MMDB()
-            >>> samples = mmdb.harmonized_single_sample_by_dtxsid("DTXSID7020182")
+            >>> samples = mmdb.get_harmonized_single_sample_by_dtxsid("DTXSID7020182")
         """
         if not dtxsid or not isinstance(dtxsid, str):
             raise ValueError("dtxsid must be a non-empty string")
@@ -134,7 +107,7 @@ class MMDB(CachedAPIClient):
         endpoint = f"exposure/mmdb/single-sample/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def searchable_harmonized_medium_categories(self, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_harmonized_medium_categories(self, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get all searchable harmonized medium categories.
         
@@ -148,14 +121,14 @@ class MMDB(CachedAPIClient):
         
         Example:
             >>> mmdb = MMDB()
-            >>> mediums = mmdb.searchable_harmonized_medium_categories()
+            >>> mediums = mmdb.get_harmonized_medium_categories()
             >>> for medium in mediums:
             ...     print(f"{medium['name']}: {medium.get('definition', '')}")
         """
         endpoint = "exposure/mmdb/mediums"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def harmonized_aggregate_records_by_medium(self, medium: str, page_number: int = 1, use_cache: Optional[bool] = None) -> Dict[str, Any]:
+    def get_harmonized_aggregate_records_by_medium(self, medium: str, page_number: int = 1, use_cache: Optional[bool] = None) -> Dict[str, Any]:
         """
         Get harmonized aggregate records by environmental medium.
         
@@ -179,10 +152,10 @@ class MMDB(CachedAPIClient):
         Example:
             >>> mmdb = MMDB()
             >>> # Get first page of surface water aggregates
-            >>> agg_data = mmdb.harmonized_aggregate_records_by_medium("surface water")
+            >>> agg_data = mmdb.get_harmonized_aggregate_records_by_medium("surface water")
             >>> 
             >>> # Get second page
-            >>> agg_page2 = mmdb.harmonized_aggregate_records_by_medium("surface water", page_number=2)
+            >>> agg_page2 = mmdb.get_harmonized_aggregate_records_by_medium("surface water", page_number=2)
         """
         if not medium or not isinstance(medium, str):
             raise ValueError("medium must be a non-empty string")

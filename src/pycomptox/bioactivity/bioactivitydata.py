@@ -11,10 +11,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
-from typing import List, Dict, Any, Optional, Union
-import requests
-from urllib.parse import urljoin
+from typing import Optional
 
 from ..base import CachedAPIClient
 
@@ -47,32 +44,6 @@ class BioactivityData(CachedAPIClient):
         >>> data = client.get_data_by_aeid(3032)
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0,
-        **kwargs
-    ):
-        """
-        Initialize the BioactivityData client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-            **kwargs: Additional arguments for CachedAPIClient (cache_manager, use_cache)
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-
     def get_summary_by_dtxsid_and_tissue(self, dtxsid: str, tissue: str, use_cache: Optional[bool] = None) -> dict:
         """
         Get bioactivity summary data for a chemical filtered by tissue type.
@@ -306,7 +277,7 @@ class BioactivityData(CachedAPIClient):
         endpoint = f"bioactivity/data/aed/search/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def find_bioactivity_data_by_spid_batch(self, spids: list, use_cache: Optional[bool] = None) -> dict:
+    def get_bioactivity_data_by_spid_batch(self, spids: list, use_cache: Optional[bool] = None) -> dict:
         """
         Batch retrieve bioactivity data by sample identifiers.
         
@@ -323,7 +294,7 @@ class BioactivityData(CachedAPIClient):
         
         Example:
             >>> client = BioactivityData()
-            >>> data = client.find_bioactivity_data_by_spid_batch(
+            >>> data = client.get_bioactivity_data_by_spid_batch(
             ...     ['EPAPLT0232A03', 'EPAPLT0232A04'])
         """
         if not spids or not isinstance(spids, list):
@@ -332,14 +303,11 @@ class BioactivityData(CachedAPIClient):
             raise ValueError("All spids must be strings")
         
         endpoint = "bioactivity/data/search/by-spid/"
-        # Note: Batch POST requests bypass cache since they're not typically cacheable
-        self._enforce_rate_limit()
-        url = f"{self.base_url}{endpoint}"
-        response = self.session.post(url, json=spids)
-        response.raise_for_status()
-        return response.json()
+        return self._make_cached_request(
+            endpoint, method='POST', json=spids, use_cache=use_cache
+        )
 
-    def find_bioactivity_data_by_m4id_batch(self, m4ids: list, use_cache: Optional[bool] = None) -> dict:
+    def get_bioactivity_data_by_m4id_batch(self, m4ids: list, use_cache: Optional[bool] = None) -> dict:
         """
         Batch retrieve bioactivity data by data identifiers.
         
@@ -356,7 +324,7 @@ class BioactivityData(CachedAPIClient):
         
         Example:
             >>> client = BioactivityData()
-            >>> data = client.find_bioactivity_data_by_m4id_batch([1135145, 1135146])
+            >>> data = client.get_bioactivity_data_by_m4id_batch([1135145, 1135146])
         """
         if not m4ids or not isinstance(m4ids, list):
             raise ValueError("m4ids must be a non-empty list")
@@ -364,14 +332,11 @@ class BioactivityData(CachedAPIClient):
             raise ValueError("All m4ids must be integers or strings")
         
         endpoint = "bioactivity/data/search/by-m4id/"
-        # Note: Batch POST requests bypass cache since they're not typically cacheable
-        self._enforce_rate_limit()
-        url = f"{self.base_url}{endpoint}"
-        response = self.session.post(url, json=m4ids)
-        response.raise_for_status()
-        return response.json()
+        return self._make_cached_request(
+            endpoint, method='POST', json=m4ids, use_cache=use_cache
+        )
 
-    def find_bioactivity_data_by_dtxsid_batch(self, dtxsids: list, use_cache: Optional[bool] = None) -> dict:
+    def get_bioactivity_data_by_dtxsid_batch(self, dtxsids: list, use_cache: Optional[bool] = None) -> dict:
         """
         Batch retrieve bioactivity data by chemical identifiers.
         
@@ -390,7 +355,7 @@ class BioactivityData(CachedAPIClient):
         
         Example:
             >>> client = BioactivityData()
-            >>> data = client.find_bioactivity_data_by_dtxsid_batch(
+            >>> data = client.get_bioactivity_data_by_dtxsid_batch(
             ...     ['DTXSID7020182', 'DTXSID9026974'])
         """
         if not dtxsids or not isinstance(dtxsids, list):
@@ -399,14 +364,11 @@ class BioactivityData(CachedAPIClient):
             raise ValueError("All dtxsids must be strings")
         
         endpoint = "bioactivity/data/search/by-dtxsid/"
-        # Note: Batch POST requests bypass cache since they're not typically cacheable
-        self._enforce_rate_limit()
-        url = f"{self.base_url}{endpoint}"
-        response = self.session.post(url, json=dtxsids)
-        response.raise_for_status()
-        return response.json()
+        return self._make_cached_request(
+            endpoint, method='POST', json=dtxsids, use_cache=use_cache
+        )
 
-    def find_bioactivity_data_by_aeid_batch(self, aeids: list, use_cache: Optional[bool] = None) -> dict:
+    def get_bioactivity_data_by_aeid_batch(self, aeids: list, use_cache: Optional[bool] = None) -> dict:
         """
         Batch retrieve bioactivity data by assay endpoint identifiers.
         
@@ -423,7 +385,7 @@ class BioactivityData(CachedAPIClient):
         
         Example:
             >>> client = BioactivityData()
-            >>> data = client.find_bioactivity_data_by_aeid_batch([3032, 3033])
+            >>> data = client.get_bioactivity_data_by_aeid_batch([3032, 3033])
         """
         if not aeids or not isinstance(aeids, list):
             raise ValueError("aeids must be a non-empty list")
@@ -431,14 +393,11 @@ class BioactivityData(CachedAPIClient):
             raise ValueError("All aeids must be positive integers")
         
         endpoint = "bioactivity/data/search/by-aeid/"
-        # Note: Batch POST requests bypass cache since they're not typically cacheable
-        self._enforce_rate_limit()
-        url = f"{self.base_url}{endpoint}"
-        response = self.session.post(url, json=aeids)
-        response.raise_for_status()
-        return response.json()
+        return self._make_cached_request(
+            endpoint, method='POST', json=aeids, use_cache=use_cache
+        )
 
-    def find_aed_data_by_dtxsid_batch(self, dtxsids: list, use_cache: Optional[bool] = None) -> dict:
+    def get_aed_data_by_dtxsid_batch(self, dtxsids: list, use_cache: Optional[bool] = None) -> dict:
         """
         Batch retrieve Activity-Exposure-Dose (AED) data by chemical identifiers.
         
@@ -457,7 +416,7 @@ class BioactivityData(CachedAPIClient):
         
         Example:
             >>> client = BioactivityData()
-            >>> aed_data = client.find_aed_data_by_dtxsid_batch(
+            >>> aed_data = client.get_aed_data_by_dtxsid_batch(
             ...     ['DTXSID5021209', 'DTXSID7020182'])
         """
         if not dtxsids or not isinstance(dtxsids, list):
@@ -465,10 +424,7 @@ class BioactivityData(CachedAPIClient):
         if not all(isinstance(dtxsid, str) for dtxsid in dtxsids):
             raise ValueError("All dtxsids must be strings")
         
-        endpoint = "bioactivity/data/aed/search/by-dtxsid"
-        # Note: Batch POST requests bypass cache since they're not typically cacheable
-        self._enforce_rate_limit()
-        url = f"{self.base_url}{endpoint}"
-        response = self.session.post(url, json=dtxsids)
-        response.raise_for_status()
-        return response.json()
+        endpoint = "bioactivity/data/aed/search/by-dtxsid/"
+        return self._make_cached_request(
+            endpoint, method='POST', json=dtxsids, use_cache=use_cache
+        )

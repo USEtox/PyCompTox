@@ -2,7 +2,7 @@
 
 A comprehensive Python interface to the EPA CompTox Dashboard Chemical API.
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
@@ -57,7 +57,7 @@ from pycomptox.chemical import Chemical
 chem = Chemical()
 
 # Search for a chemical by name
-results = chem.search_by_name("caffeine")
+results = chem.search_by_exact_value("caffeine")
 
 # Get the first result
 if results:
@@ -75,7 +75,7 @@ from pycomptox.chemical import ChemicalDetails
 details = ChemicalDetails()
 
 # Get comprehensive information
-info = details.get_chemical_by_dtxsid(
+info = details.get_data_by_dtxsid(
     "DTXSID7020182",
     projection="chemicaldetailall"
 )
@@ -281,7 +281,7 @@ See the `tests/` directory for comprehensive examples:
 
 ## Requirements
 
-- Python 3.8 or higher
+- Python 3.9 or higher
 - `requests` library
 - CompTox Dashboard API key
 

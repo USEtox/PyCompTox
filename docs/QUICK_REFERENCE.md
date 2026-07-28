@@ -69,21 +69,21 @@ client = ChemicalDetails(api_key=None, base_url="...", time_delay_between_calls=
 
 | Method | Description | Example |
 |--------|-------------|---------|
-| `data_by_dtxsid(dtxsid, projection=None)` | Get by DTXSID | `client.data_by_dtxsid("DTXSID7020182")` |
-| `data_by_dtxcid(dtxcid, projection=None)` | Get by DTXCID | `client.data_by_dtxcid("DTXCID30182")` |
+| `get_data_by_dtxsid(dtxsid, projection=None)` | Get by DTXSID | `client.get_data_by_dtxsid("DTXSID7020182")` |
+| `get_data_by_dtxcid(dtxcid, projection=None)` | Get by DTXCID | `client.get_data_by_dtxcid("DTXCID30182")` |
 
 ### Batch Retrieval Methods (Return List[Dict])
 
 | Method | Max | Description | Example |
 |--------|-----|-------------|---------|
-| `data_by_dtxsid_batch(dtxsids, projection=None)` | 1000 | Batch by DTXSIDs | `client.data_by_dtxsid_batch(["DTXSID7020182", "DTXSID0020232"])` |
-| `data_by_dtxcid_batch(dtxcids, projection=None)` | 1000 | Batch by DTXCIDs | `client.data_by_dtxcid_batch(["DTXCID30182", "DTXCID505"])` |
+| `get_data_by_dtxsid_batch(dtxsids, projection=None)` | 1000 | Batch by DTXSIDs | `client.get_data_by_dtxsid_batch(["DTXSID7020182", "DTXSID0020232"])` |
+| `get_data_by_dtxcid_batch(dtxcids, projection=None)` | 1000 | Batch by DTXCIDs | `client.get_data_by_dtxcid_batch(["DTXCID30182", "DTXCID505"])` |
 
 ### Paginated Method
 
 | Method | Description | Example |
 |--------|-------------|---------|
-| `find_all_chemical_details(next_page=1, projection=None)` | Get all (paginated) | `client.find_all_chemical_details(next_page=1)` |
+| `get_all_chemical_details(next_page=1, projection=None)` | Get all (paginated) | `client.get_all_chemical_details(next_page=1)` |
 
 Returns: `{"data": [list of dicts], "nextPage": int or None}`
 
@@ -164,7 +164,7 @@ for name in chemical_names:
         dtxsids.append(results[0]['dtxsid'])
 
 # Step 2: Get batch details
-batch_details = details_client.data_by_dtxsid_batch(dtxsids)
+batch_details = details_client.get_data_by_dtxsid_batch(dtxsids)
 
 # Step 3: Process results
 for chem in batch_details:
@@ -186,13 +186,13 @@ for chem in batch_details:
 cas_rn = "80-05-7"
 results = searcher.search_by_exact_value("rn", cas_rn)
 dtxsid = results[0]['dtxsid']
-details = details_client.data_by_dtxsid(dtxsid)
+details = details_client.get_data_by_dtxsid(dtxsid)
 ```
 
 ### Get Structure Information
 
 ```python
-structure = details_client.data_by_dtxsid(
+structure = details_client.get_data_by_dtxsid(
     dtxsid,
     projection="chemicalstructure"
 )
@@ -207,7 +207,7 @@ inchi = structure['inchiString']
 dtxsids = searcher.search_ms_ready_by_mass_range(228.0, 228.2)
 
 # Get details for all
-details_list = details_client.data_by_dtxsid_batch(dtxsids[:100])  # First 100
+details_list = details_client.get_data_by_dtxsid_batch(dtxsids[:100])  # First 100
 ```
 
 ### Multiple Searches to Batch Details
@@ -229,7 +229,7 @@ for cas in ["58-08-2", "50-78-2"]:
         dtxsids.add(results[0]['dtxsid'])
 
 # Get all details at once
-details_list = details_client.data_by_dtxsid_batch(list(dtxsids))
+details_list = details_client.get_data_by_dtxsid_batch(list(dtxsids))
 ```
 
 ---
@@ -269,11 +269,11 @@ client = BioactivityData(api_key=None, base_url="...", time_delay_between_calls=
 
 | Method | Returns | Example |
 |--------|---------|---------|
-| `find_bioactivity_data_by_spid_batch(spids)` | List[Dict] | `client.find_bioactivity_data_by_spid_batch(["EPAPLT0232A03", "EPAPLT0232A04"])` |
-| `find_bioactivity_data_by_m4id_batch(m4ids)` | List[Dict] | `client.find_bioactivity_data_by_m4id_batch([1135145, 1135146])` |
-| `find_bioactivity_data_by_dtxsid_batch(dtxsids)` | List[Dict] | `client.find_bioactivity_data_by_dtxsid_batch(["DTXSID7020182", "DTXSID9026974"])` |
-| `find_bioactivity_data_by_aeid_batch(aeids)` | List[Dict] | `client.find_bioactivity_data_by_aeid_batch([3032, 3033])` |
-| `find_aed_data_by_dtxsid_batch(dtxsids)` | List[Dict] | `client.find_aed_data_by_dtxsid_batch(["DTXSID5021209", "DTXSID7020182"])` |
+| `get_bioactivity_data_by_spid_batch(spids)` | List[Dict] | `client.get_bioactivity_data_by_spid_batch(["EPAPLT0232A03", "EPAPLT0232A04"])` |
+| `get_bioactivity_data_by_m4id_batch(m4ids)` | List[Dict] | `client.get_bioactivity_data_by_m4id_batch([1135145, 1135146])` |
+| `get_bioactivity_data_by_dtxsid_batch(dtxsids)` | List[Dict] | `client.get_bioactivity_data_by_dtxsid_batch(["DTXSID7020182", "DTXSID9026974"])` |
+| `get_bioactivity_data_by_aeid_batch(aeids)` | List[Dict] | `client.get_bioactivity_data_by_aeid_batch([3032, 3033])` |
+| `get_aed_data_by_dtxsid_batch(dtxsids)` | List[Dict] | `client.get_aed_data_by_dtxsid_batch(["DTXSID5021209", "DTXSID7020182"])` |
 
 ---
 
@@ -323,7 +323,7 @@ aop = BioactivityAOP(time_delay_between_calls=0.5)
 try:
     results = searcher.search_by_exact_value("name", "Some Chemical")
     if results:
-        details = details_client.data_by_dtxsid(results[0]['dtxsid'])
+        details = details_client.get_data_by_dtxsid(results[0]['dtxsid'])
 except ValueError as e:
     print(f"Invalid data: {e}")
 except PermissionError as e:

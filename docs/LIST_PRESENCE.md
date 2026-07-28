@@ -21,15 +21,15 @@ from pycomptox import ListPresence
 list_presence = ListPresence()
 
 # Get available list tags
-tags = list_presence.list_presence_tags()
+tags = list_presence.get_list_presence_tags()
 
 # Get list presence for a chemical
 dtxsid = "DTXSID0020232"
-presence = list_presence.list_presence_data_by_dtxsid(dtxsid)
+presence = list_presence.get_list_presence_data_by_dtxsid(dtxsid)
 
 # Batch operation
 dtxsids = ["DTXSID0020232", "DTXSID7020182"]
-batch_data = list_presence.list_presence_data_by_dtxsid_batch(dtxsids)
+batch_data = list_presence.get_list_presence_data_by_dtxsid_batch(dtxsids)
 ```
 
 ## API Methods
@@ -38,7 +38,7 @@ batch_data = list_presence.list_presence_data_by_dtxsid_batch(dtxsids)
 
 ```python
 list_presence = ListPresence()
-tags = list_presence.list_presence_tags()
+tags = list_presence.get_list_presence_tags()
 
 for tag in tags:
     print(f"{tag.get('listName')}: {tag.get('listDescription')}")
@@ -47,7 +47,7 @@ for tag in tags:
 ### List Presence Data by DTXSID
 
 ```python
-presence = list_presence.list_presence_data_by_dtxsid("DTXSID0020232")
+presence = list_presence.get_list_presence_data_by_dtxsid("DTXSID0020232")
 
 for item in presence:
     print(f"List: {item.get('listName')}")
@@ -59,7 +59,7 @@ for item in presence:
 
 ```python
 dtxsids = ["DTXSID0020232", "DTXSID7020182"]
-batch_data = list_presence.list_presence_data_by_dtxsid_batch(dtxsids)
+batch_data = list_presence.get_list_presence_data_by_dtxsid_batch(dtxsids)
 
 for result in batch_data:
     print(f"{result.get('dtxsid')}: {result.get('listName')}")
@@ -73,7 +73,7 @@ for result in batch_data:
 # Check if chemicals are on regulatory lists
 list_presence = ListPresence()
 dtxsid = "DTXSID0020232"
-presence = list_presence.list_presence_data_by_dtxsid(dtxsid)
+presence = list_presence.get_list_presence_data_by_dtxsid(dtxsid)
 
 regulatory_lists = ["TSCA", "REACH", "DSL"]
 for item in presence:
@@ -86,7 +86,7 @@ for item in presence:
 ```python
 # Check which screening programs have data
 screening_lists = ["ToxCast", "Tox21", "ECOTOX"]
-presence = list_presence.list_presence_data_by_dtxsid("DTXSID0020232")
+presence = list_presence.get_list_presence_data_by_dtxsid("DTXSID0020232")
 
 available_data = [
     item.get('listName') for item in presence
@@ -100,7 +100,7 @@ print(f"Data available in: {', '.join(available_data)}")
 ```python
 # Analyze list presence for multiple chemicals
 chemicals = ["DTXSID0020232", "DTXSID7020182", "DTXSID3020268"]
-batch_data = list_presence.list_presence_data_by_dtxsid_batch(chemicals)
+batch_data = list_presence.get_list_presence_data_by_dtxsid_batch(chemicals)
 
 # Group by list
 from collections import defaultdict

@@ -8,12 +8,10 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
-from typing import Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
+from typing import Optional
 
 from ..base import CachedAPIClient
+from ..exceptions import NotFoundError
 
 
 class AnalyticalQC(CachedAPIClient):
@@ -43,29 +41,6 @@ class AnalyticalQC(CachedAPIClient):
         >>> print(f"Quality Call: {qc_data['call']}")
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0,
-        **kwargs
-    ):
-        """
-        Initialize the AnalyticalQC client.
-        
-        Args:
-            api_key (str, optional): API key for CompTox API access
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-            **kwargs: Additional arguments for CachedAPIClient (cache_manager, use_cache)
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-
     def get_analytical_qc_data_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> Optional[list]:
         """
         Retrieve analytical quality control data for a chemical.
@@ -78,8 +53,8 @@ class AnalyticalQC(CachedAPIClient):
             dtxsid: DSSTox Substance Identifier for the chemical (e.g., "DTXSID7020182")
         
         Returns:
-            List of QC data dictionaries, empty list if not found, or None on error.
-            Each dictionary contains:
+            List of QC data dictionaries, or an empty list if the chemical has
+            no QC record. Each dictionary contains:
                 - analyticalQcId: Unique identifier for QC record
                 - dtxsid: Chemical identifier
                 - chnm: Chemical name
@@ -98,9 +73,14 @@ class AnalyticalQC(CachedAPIClient):
                 - porCaution: Persistent/bioaccumulative/toxic (PBT) caution flag
         
         Raises:
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
-        
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
+
+        Note:
+            A chemical with no QC record returns an empty list rather than
+            raising NotFoundError.
+
         Example:
             >>> from pycomptox import AnalyticalQC
             >>> qc_client = AnalyticalQC()
@@ -141,12 +121,11 @@ class AnalyticalQC(CachedAPIClient):
             quality. QC data includes sample preparation verification, stability
             testing, and analytical method performance validation.
         """
-        import requests
-        
         endpoint = f"bioactivity/analyticalqc/search/by-dtxsid/{dtxsid}"
         try:
             result = self._make_cached_request(endpoint, use_cache=use_cache)
             return result if result is not None else []
-        except requests.exceptions.HTTPError as e:
-            # Return empty list for 404 or other HTTP errors
+        except NotFoundError:
+            # Chemicals with no analytical QC record answer 404; an absent
+            # record is a normal result here, not an error.
             return []

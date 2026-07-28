@@ -10,10 +10,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
 from typing import List, Dict, Any, Optional, Union
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
@@ -52,32 +49,6 @@ class AssayBioactivity(CachedAPIClient):
         ... )
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0,
-        **kwargs
-    ):
-        """
-        Initialize the AssayBioactivity client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-            **kwargs: Additional arguments for CachedAPIClient (cache_manager, use_cache)
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-
     def get_single_concentration_by_aeid(
         self, 
         aeid: int,
@@ -108,8 +79,10 @@ class AssayBioactivity(CachedAPIClient):
         
         Raises:
             ValueError: If AEID is invalid or no data found
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import AssayBioactivity
@@ -156,8 +129,10 @@ class AssayBioactivity(CachedAPIClient):
         
         Raises:
             ValueError: If gene symbol is invalid or no data found
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import AssayBioactivity
@@ -221,8 +196,10 @@ class AssayBioactivity(CachedAPIClient):
         
         Raises:
             ValueError: If AEID is invalid, projection type is invalid, or no data found
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import AssayBioactivity
@@ -269,8 +246,10 @@ class AssayBioactivity(CachedAPIClient):
             Integer count of available assays
         
         Raises:
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import AssayBioactivity
@@ -306,8 +285,10 @@ class AssayBioactivity(CachedAPIClient):
         
         Raises:
             ValueError: If AEID is invalid or no data found
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import AssayBioactivity
@@ -341,8 +322,10 @@ class AssayBioactivity(CachedAPIClient):
             List of assay dictionaries with extensive metadata
         
         Raises:
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import AssayBioactivity
@@ -355,7 +338,7 @@ class AssayBioactivity(CachedAPIClient):
         
         return self._make_cached_request(endpoint, params=params, use_cache=use_cache)
     
-    def find_assay_annotations_by_aeid_batch(
+    def get_assay_annotations_by_aeid_batch(
         self, 
         aeids: List[int],
         use_cache: Optional[bool] = None
@@ -399,8 +382,10 @@ class AssayBioactivity(CachedAPIClient):
         
         Raises:
             ValueError: If AEIDs list is empty or invalid
-            PermissionError: If API key is invalid
-            RuntimeError: For other API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
         
         Example:
             >>> from pycomptox import AssayBioactivity
@@ -408,7 +393,7 @@ class AssayBioactivity(CachedAPIClient):
             >>> 
             >>> # Get annotations for multiple assays
             >>> aeids = [3032, 3033, 3034]
-            >>> annotations = assay_client.find_assay_annotations_by_aeid_batch(aeids)
+            >>> annotations = assay_client.get_assay_annotations_by_aeid_batch(aeids)
             >>> 
             >>> # Process each assay
             >>> for assay in annotations:

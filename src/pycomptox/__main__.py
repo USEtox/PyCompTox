@@ -65,7 +65,7 @@ For more information, visit: https://github.com/USEtox/PyCompTox
             
             save_api_key(args.api_key)
             config_info = get_config_info()
-            print(f"✓ API key saved successfully")
+            print("✓ API key saved successfully")
             print(f"  Location: {config_info['api_key_file']}")
             return 0
         
@@ -127,7 +127,13 @@ For more information, visit: https://github.com/USEtox/PyCompTox
             except Exception as e:
                 print(f"✗ Connection test failed: {e}")
                 return 1
-    
+
+        else:
+            # argparse `choices` makes this unreachable, but an explicit branch
+            # means main() always returns an exit code rather than None.
+            parser.print_help()
+            return 2
+
     except KeyboardInterrupt:
         print("\nOperation cancelled by user")
         return 130

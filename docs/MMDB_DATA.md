@@ -20,16 +20,16 @@ from pycomptox import MMDB
 mmdb = MMDB()
 
 # Get single-sample data for surface water
-water_samples = mmdb.harmonized_single_sample_by_medium("surface water")
+water_samples = mmdb.get_harmonized_single_sample_by_medium("surface water")
 
 # Get data for a specific chemical
-chemical_data = mmdb.harmonized_single_sample_by_dtxsid("DTXSID7020182")
+chemical_data = mmdb.get_harmonized_single_sample_by_dtxsid("DTXSID7020182")
 
 # Get available medium categories
-mediums = mmdb.searchable_harmonized_medium_categories()
+mediums = mmdb.get_harmonized_medium_categories()
 
 # Get aggregate records
-aggregates = mmdb.harmonized_aggregate_records_by_medium("surface water")
+aggregates = mmdb.get_harmonized_aggregate_records_by_medium("surface water")
 ```
 
 ## API Methods
@@ -42,7 +42,7 @@ Retrieve individual environmental sample measurements filtered by medium type:
 mmdb = MMDB()
 
 # Get surface water samples (page 1)
-samples = mmdb.harmonized_single_sample_by_medium("surface water")
+samples = mmdb.get_harmonized_single_sample_by_medium("surface water")
 
 print(f"Total samples: {samples.get('totalRecords')}")
 print(f"Current page: {samples.get('pageNumber')}")
@@ -70,13 +70,13 @@ medium = "surface water"
 all_samples = []
 
 # Get first page
-page_1 = mmdb.harmonized_single_sample_by_medium(medium, page_number=1)
+page_1 = mmdb.get_harmonized_single_sample_by_medium(medium, page_number=1)
 all_samples.extend(page_1.get('data', []))
 
 # Get additional pages
 total_pages = page_1.get('totalPages', 1)
 for page in range(2, total_pages + 1):
-    page_data = mmdb.harmonized_single_sample_by_medium(medium, page_number=page)
+    page_data = mmdb.get_harmonized_single_sample_by_medium(medium, page_number=page)
     all_samples.extend(page_data.get('data', []))
 
 print(f"Retrieved {len(all_samples)} total samples")
@@ -88,7 +88,7 @@ Get all environmental samples for a specific chemical:
 
 ```python
 # Get samples for Bisphenol A
-bpa_samples = mmdb.harmonized_single_sample_by_dtxsid("DTXSID7020182")
+bpa_samples = mmdb.get_harmonized_single_sample_by_dtxsid("DTXSID7020182")
 
 # Analyze by medium
 from collections import Counter
@@ -106,7 +106,7 @@ Get all available medium types and their definitions:
 
 ```python
 mmdb = MMDB()
-mediums = mmdb.searchable_harmonized_medium_categories()
+mediums = mmdb.get_harmonized_medium_categories()
 
 print("Available environmental media:")
 for medium in mediums:
@@ -131,7 +131,7 @@ Retrieve summary statistics aggregated across multiple samples:
 mmdb = MMDB()
 
 # Get aggregate data for surface water
-aggregates = mmdb.harmonized_aggregate_records_by_medium("surface water")
+aggregates = mmdb.get_harmonized_aggregate_records_by_medium("surface water")
 
 for agg in aggregates.get('data', []):
     print(f"Chemical: {agg.get('chemicalName')}")
@@ -231,7 +231,7 @@ from pycomptox import MMDB
 mmdb = MMDB()
 
 try:
-    data = mmdb.harmonized_single_sample_by_medium("surface water")
+    data = mmdb.get_harmonized_single_sample_by_medium("surface water")
 except PermissionError as e:
     print(f"Invalid API key: {e}")
 except ValueError as e:
@@ -249,7 +249,7 @@ mmdb = MMDB()
 dtxsid = "DTXSID7020182"
 
 # Get all samples
-samples = mmdb.harmonized_single_sample_by_dtxsid(dtxsid)
+samples = mmdb.get_harmonized_single_sample_by_dtxsid(dtxsid)
 
 # Calculate detection statistics
 detected = [s for s in samples if s.get('detectionStatus') == 'detected']
@@ -269,7 +269,7 @@ results = {}
 
 for medium in mediums:
     try:
-        data = mmdb.harmonized_aggregate_records_by_medium(medium)
+        data = mmdb.get_harmonized_aggregate_records_by_medium(medium)
         results[medium] = len(data.get('data', []))
     except Exception as e:
         results[medium] = 0
@@ -283,7 +283,7 @@ for medium, count in results.items():
 
 ```python
 # Analyze concentration trends over time
-samples = mmdb.harmonized_single_sample_by_dtxsid("DTXSID7020182")
+samples = mmdb.get_harmonized_single_sample_by_dtxsid("DTXSID7020182")
 
 # Filter to detected samples with dates
 detected_samples = [
@@ -312,7 +312,7 @@ for year, concentrations in sorted(yearly_data.items()):
 
 ```python
 # Map detection locations
-samples = mmdb.harmonized_single_sample_by_medium("surface water", page_number=1)
+samples = mmdb.get_harmonized_single_sample_by_medium("surface water", page_number=1)
 
 locations = []
 for sample in samples.get('data', []):

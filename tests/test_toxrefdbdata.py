@@ -19,6 +19,7 @@ def test_initialization():
     assert isinstance(client, ToxRefDBData)
 
 
+@pytest.mark.slow
 def test_get_data_by_study_type_dev(toxref_client):
     """Test retrieving data for developmental toxicity studies."""
     result = toxref_client.get_data_by_study_type("DEV", page_number=1)
@@ -34,6 +35,7 @@ def test_get_data_by_study_type_dev(toxref_client):
     assert isinstance(result['data'], list)
 
 
+@pytest.mark.slow
 def test_get_data_by_study_type_pagination(toxref_client):
     """Test pagination for study type data."""
     # Get first page
@@ -63,6 +65,7 @@ def test_get_data_by_study_type_invalid_input(toxref_client):
         toxref_client.get_data_by_study_type("DEV", page_number=-1)
 
 
+@pytest.mark.slow
 def test_get_data_by_study_id(toxref_client):
     """Test retrieving data for a specific study."""
     result = toxref_client.get_data_by_study_id(63)
@@ -123,6 +126,7 @@ def test_get_data_by_dtxsid_invalid_input(toxref_client):
         toxref_client.get_data_by_dtxsid(123)
 
 
+@pytest.mark.slow
 def test_different_study_types(toxref_client):
     """Test retrieving data for different study types."""
     study_types = ["DEV", "REP", "ACUTE"]
@@ -139,6 +143,7 @@ def test_different_study_types(toxref_client):
             pass
 
 
+@pytest.mark.slow
 def test_caching_enabled(toxref_client):
     """Test that caching works correctly."""
     # First call
@@ -151,6 +156,7 @@ def test_caching_enabled(toxref_client):
     assert result1 == result2
 
 
+@pytest.mark.slow
 def test_study_data_structure(toxref_client):
     """Test that returned study data has expected structure."""
     result = toxref_client.get_data_by_study_id(63)
@@ -163,6 +169,7 @@ def test_study_data_structure(toxref_client):
                 assert field in record, f"Record missing field: {field}"
 
 
+@pytest.mark.slow
 def test_study_type_data_structure(toxref_client):
     """Test that paginated data has expected structure."""
     result = toxref_client.get_data_by_study_type("DEV", page_number=1)

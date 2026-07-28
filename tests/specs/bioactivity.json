@@ -1,0 +1,158 @@
+{
+ "info": {
+  "title": "Computational Toxicology and Exposure (CTX) APIs - CTX Bioactivity API",
+  "version": "1.1.1"
+ },
+ "paths": {
+  "/bioactivity/analyticalqc/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get analytical QC data by DTXSID"
+   }
+  },
+  "/bioactivity/aop/search/by-entrez-gene-id/{entrezGeneId}": {
+   "get": {
+    "summary": "Get AOP data by Entrez Gene ID"
+   }
+  },
+  "/bioactivity/aop/search/by-event-number/{eventNumber}": {
+   "get": {
+    "summary": "Get AOP data by Key Event"
+   }
+  },
+  "/bioactivity/aop/search/by-toxcast-aeid/{toxcastAeid}": {
+   "get": {
+    "summary": "Get AOP data by ToxCast AEID"
+   }
+  },
+  "/bioactivity/assay/": {
+   "get": {
+    "summary": "Get all assay annotations"
+   }
+  },
+  "/bioactivity/assay/chemicals/search/by-aeid/{aeid}": {
+   "get": {
+    "summary": "Get DTXSID list by AEID"
+   }
+  },
+  "/bioactivity/assay/count": {
+   "get": {
+    "summary": "Get total assay count"
+   }
+  },
+  "/bioactivity/assay/search/by-aeid/": {
+   "post": {
+    "summary": "Get assay annotations for a batch of AEIDs"
+   }
+  },
+  "/bioactivity/assay/search/by-aeid/{aeid}": {
+   "get": {
+    "summary": "Get assay annotations by AEID"
+   }
+  },
+  "/bioactivity/assay/search/by-endpoint/": {
+   "get": {
+    "summary": "Get AEID by assay component endpoint name"
+   }
+  },
+  "/bioactivity/assay/search/by-gene/{geneSymbol}": {
+   "get": {
+    "summary": "Get assay summary by gene symbol"
+   }
+  },
+  "/bioactivity/assay/single-conc/search/by-aeid/{aeid}": {
+   "get": {
+    "summary": "Get single conc data by AEID"
+   }
+  },
+  "/bioactivity/data/aed/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get AED data for a batch of DTXSIDs"
+   }
+  },
+  "/bioactivity/data/aed/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get AED data by DTXSID"
+   }
+  },
+  "/bioactivity/data/search/by-aeid/": {
+   "post": {
+    "summary": "Get data for a batch of AEIDs"
+   }
+  },
+  "/bioactivity/data/search/by-aeid/{aeid}": {
+   "get": {
+    "summary": "Get data by AEID"
+   }
+  },
+  "/bioactivity/data/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get bioactivity data for a batch of DTXSIDs"
+   }
+  },
+  "/bioactivity/data/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get data by DTXSID"
+   }
+  },
+  "/bioactivity/data/search/by-m4id/": {
+   "post": {
+    "summary": "Get data for a batch of M4IDs"
+   }
+  },
+  "/bioactivity/data/search/by-m4id/{m4id}": {
+   "get": {
+    "summary": "Get data by M4ID"
+   }
+  },
+  "/bioactivity/data/search/by-spid/": {
+   "post": {
+    "summary": "Get data for a batch of SPIDs"
+   }
+  },
+  "/bioactivity/data/search/by-spid/{spid}": {
+   "get": {
+    "summary": "Get data by SPID"
+   }
+  },
+  "/bioactivity/data/summary/search/by-aeid/{aeid}": {
+   "get": {
+    "summary": "Get summary data by AEID"
+   }
+  },
+  "/bioactivity/data/summary/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get summary data by DTXSID"
+   }
+  },
+  "/bioactivity/data/summary/search/by-tissue/": {
+   "get": {
+    "summary": "Get summary data by DTXSID and assay tissue origin"
+   }
+  },
+  "/bioactivity/models/search/": {
+   "get": {
+    "summary": "Get predictions by DTXSID and model"
+   }
+  },
+  "/bioactivity/models/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get predictions by DTXSID"
+   }
+  },
+  "/bioactivity/search/contain/{value}": {
+   "get": {
+    "summary": "Search by substring value"
+   }
+  },
+  "/bioactivity/search/equal/{value}": {
+   "get": {
+    "summary": "Search by exact value"
+   }
+  },
+  "/bioactivity/search/start-with/{value}": {
+   "get": {
+    "summary": "Search by starting value"
+   }
+  }
+ }
+}

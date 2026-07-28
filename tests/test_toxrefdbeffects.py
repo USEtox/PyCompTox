@@ -29,6 +29,7 @@ def test_client_initialization(toxref_client):
     assert hasattr(toxref_client, 'get_data_by_dtxsid')
 
 
+@pytest.mark.slow
 def test_get_data_by_study_type_dev(toxref_client):
     """Test retrieving effects data by study type (DEV)."""
     study_type = "DEV"
@@ -42,6 +43,7 @@ def test_get_data_by_study_type_dev(toxref_client):
         assert isinstance(data['data'], list)
 
 
+@pytest.mark.slow
 def test_get_data_by_study_type_with_page(toxref_client):
     """Test retrieving effects data with specific page number."""
     study_type = "DEV"
@@ -51,6 +53,7 @@ def test_get_data_by_study_type_with_page(toxref_client):
     assert isinstance(data, dict)
 
 
+@pytest.mark.slow
 def test_get_data_by_study_id(toxref_client):
     """Test retrieving effects data by study ID."""
     study_id = 63
@@ -134,6 +137,7 @@ def test_get_data_by_dtxsid_wrong_type(toxref_client):
         toxref_client.get_data_by_dtxsid(12345)
 
 
+@pytest.mark.slow
 def test_caching_study_type(toxref_client):
     """Test that caching works for study type requests."""
     study_type = "DEV"
@@ -148,6 +152,7 @@ def test_caching_study_type(toxref_client):
     assert data1 == data2
 
 
+@pytest.mark.slow
 def test_caching_study_id(toxref_client):
     """Test that caching works for study ID requests."""
     study_id = 63

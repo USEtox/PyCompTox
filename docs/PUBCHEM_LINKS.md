@@ -313,10 +313,10 @@ from pycomptox import PubChemLink
 client = PubChemLink()
 
 # Custom rate limit: 1 second between calls
-client = PubChemLink(rate_limit_delay=1.0)
+client = PubChemLink(time_delay_between_calls=1.0)
 
 # Disable rate limiting (not recommended)
-client = PubChemLink(rate_limit_delay=0)
+client = PubChemLink(time_delay_between_calls=0)
 ```
 
 ## Response Structure

@@ -1,6 +1,6 @@
 # PyCompTox
 
-[![Python Version](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
 [![PyPI version](https://img.shields.io/pypi/v/comptox-python.svg)](https://pypi.org/project/comptox-python/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://github.com/USEtox/PyCompTox/workflows/CI/badge.svg)](https://github.com/USEtox/PyCompTox/actions/workflows/ci.yml)
@@ -12,6 +12,20 @@ A Python interface for the EPA CompTox Dashboard Chemical API.
 ## Overview
 
 PyCompTox provides a simple and intuitive Python interface to interact with the EPA's [CompTox Dashboard](https://comptox.epa.gov/) Chemical, Bioactivity, Exposure, and Hazard API. This package allows you to search for chemicals by name, identifiers (DTXSID, DTXCID, CAS numbers), molecular formulas, mass ranges, and much more.
+
+```python
+from pycomptox import Chemical
+
+client = Chemical()
+results = client.search_by_exact_value("Bisphenol A")
+print(results[0]["dtxsid"])   # DTXSID7020182
+```
+
+> **Upgrading to 0.7.0?** This release fixes 16 methods that could not work at
+> all, and contains breaking changes: caching is now opt-in rather than on by
+> default, `CCCData` is renamed `CCDData`, several methods were renamed for
+> consistency, and API failures now raise `pycomptox.exceptions` types instead
+> of `ValueError`. See the [changelog](CHANGELOG.md) for the full rename table.
 
 ## Installation
 

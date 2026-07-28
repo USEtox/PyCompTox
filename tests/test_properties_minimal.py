@@ -6,8 +6,6 @@ API version or if they require special access. This script tests the basic
 implementation and API connectivity.
 """
 
-import sys
-sys.path.insert(0, '../src')
 
 from pycomptox.chemical import Chemical, ChemicalProperties
 

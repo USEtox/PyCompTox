@@ -10,10 +10,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
@@ -45,32 +42,6 @@ class BioactivityAOP(CachedAPIClient):
         >>> events = client.get_aop_data_by_event_number(18)
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0,
-        **kwargs
-    ):
-        """
-        Initialize the BioactivityAOP client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-            **kwargs: Additional arguments for CachedAPIClient (cache_manager, use_cache)
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-
     def get_aop_data_by_toxcast_aeid(self, toxcast_aeid: int, use_cache: Optional[bool] = None) -> Optional[List[Dict[str, Any]]]:
         """
         Get AOP data by ToxCast assay endpoint ID.

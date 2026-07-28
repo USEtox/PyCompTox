@@ -57,28 +57,67 @@ mypy src/
 
 ## Testing
 
-### Run All Tests
+The suite is split along two axes: whether a test needs the live API, and
+whether it is slow.
+
+| Marker | Meaning | Needs an API key |
+| --- | --- | --- |
+| `unit` | Runs entirely offline | No |
+| `integration` | Calls the live CompTox API | Yes |
+| `slow` | Hits ToxRefDB bulk endpoints (15–50s each) | Yes |
+
+Markers are applied automatically by `tests/conftest.py` — you do not need to
+add `unit` or `integration` to new tests. `integration` tests **skip** rather
+than fail when no key is available, so a checkout with no key still gives a
+clean run.
+
+### Without an API key
+
+This is the fastest useful check and needs no configuration:
 
 ```bash
-pytest
+pytest -m "not integration"
 ```
 
-### Run Specific Test File
+It covers the OpenAPI spec-conformance suite, the HTTP layer (against a local
+test server), the cache, and the public import surface — a few hundred tests in
+around ten seconds.
+
+### With an API key
+
+```bash
+pytest                  # everything except the slow bulk endpoints
+pytest --run-slow       # everything, several minutes longer
+pytest -m slow --run-slow   # only the slow bulk endpoints
+```
+
+`slow` tests are excluded by default because the ToxRefDB
+`by-study-type`/`by-study-id` endpoints are unfiltered scans that take 15–50
+seconds each. Including them both dominates the runtime and pushes a full run
+into the API's rate limiting. CI runs them on a weekly schedule instead.
+
+Set a key with `pycomptox-setup set YOUR_API_KEY` or `export COMPTOX_API_KEY=...`.
+
+### Run a specific file or test
 
 ```bash
 pytest tests/test_search.py
+pytest tests/test_search.py::TestChemicalSearch::test_search_by_starting_value
 ```
 
-### Run with Coverage
+### Run with coverage
 
 ```bash
-pytest --cov=pycomptox --cov-report=html
+pytest -m "not integration" --cov=pycomptox --cov-report=html
 ```
 
-### Run Specific Test
+### Refresh the vendored API specs
+
+`tests/test_spec_conformance.py` checks every endpoint the library calls against
+vendored copies of EPA's OpenAPI specs. If EPA changes the API, refresh them:
 
 ```bash
-pytest tests/test_search.py::TestChemicalSearch::test_search_by_name
+python tests/specs/refresh.py
 ```
 
 ## Writing Tests
@@ -105,7 +144,7 @@ class TestChemicalSearch:
     
     def test_search_by_name(self, chem_client):
         """Test name-based chemical search."""
-        results = chem_client.search_by_name("caffeine")
+        results = chem_client.search_by_exact_value("caffeine")
         assert len(results) > 0
         assert 'dtxsid' in results[0]
 ```
@@ -152,7 +191,7 @@ def search_by_name(self, name: str) -> List[Dict[str, Any]]:
         
     Example:
         >>> chem = Chemical()
-        >>> results = chem.search_by_name("caffeine")
+        >>> results = chem.search_by_exact_value("caffeine")
         >>> print(results[0]['dtxsid'])
         DTXSID2021315
     """

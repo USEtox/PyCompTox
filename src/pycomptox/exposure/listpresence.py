@@ -10,10 +10,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
-from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
+from typing import List, Dict, Optional
 
 from ..base import CachedAPIClient
 
@@ -38,34 +35,10 @@ class ListPresence(CachedAPIClient):
         >>> list_pres = ListPresence()
         >>> 
         >>> # Get list presence data for a chemical
-        >>> data = list_pres.list_presence_data_by_dtxsid("DTXSID0020232")
+        >>> data = list_pres.get_list_presence_data_by_dtxsid("DTXSID0020232")
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0
-    , **kwargs):
-        """
-        Initialize the ListPresence client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-    
-    def list_presence_tags(self, use_cache: Optional[bool] = None) -> List[Dict[str, str]]:
+    def get_list_presence_tags(self, use_cache: Optional[bool] = None) -> List[Dict[str, str]]:
         """
         Get all available list presence tags.
         
@@ -80,14 +53,14 @@ class ListPresence(CachedAPIClient):
         
         Example:
             >>> list_pres = ListPresence()
-            >>> tags = list_pres.list_presence_tags()
+            >>> tags = list_pres.get_list_presence_tags()
             >>> for tag in tags:
             ...     print(f"{tag.get('tag', 'N/A')}: {tag.get('description', '')}")
         """
         endpoint = "exposure/list-presence/tags"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def list_presence_data_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, str]]:
+    def get_list_presence_data_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, str]]:
         """
         Get list presence data for a chemical.
         
@@ -108,7 +81,7 @@ class ListPresence(CachedAPIClient):
         
         Example:
             >>> list_pres = ListPresence()
-            >>> data = list_pres.list_presence_data_by_dtxsid("DTXSID0020232")
+            >>> data = list_pres.get_list_presence_data_by_dtxsid("DTXSID0020232")
             >>> for item in data:
             ...     print(f"{item.get('listName', 'N/A')}: {item.get('presenceStatus', 'N/A')}")
         """
@@ -118,7 +91,7 @@ class ListPresence(CachedAPIClient):
         endpoint = f"exposure/list-presence/search/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
         
-    def list_presence_data_by_dtxsid_batch(self, dtxsids: List[str], use_cache: Optional[bool] = None) -> List[Dict[str, str]]:
+    def get_list_presence_data_by_dtxsid_batch(self, dtxsids: List[str], use_cache: Optional[bool] = None) -> List[Dict[str, str]]:
         """
         Get list presence data for multiple chemicals in a single request.
         
@@ -140,7 +113,7 @@ class ListPresence(CachedAPIClient):
         Example:
             >>> list_pres = ListPresence()
             >>> dtxsids = ["DTXSID0020232", "DTXSID0020245"]
-            >>> batch_data = list_pres.list_presence_data_by_dtxsid_batch(dtxsids)
+            >>> batch_data = list_pres.get_list_presence_data_by_dtxsid_batch(dtxsids)
             >>> for result in batch_data:
             ...     print(f"{result.get('dtxsid')}: {result.get('listName')}")
         """
@@ -151,4 +124,6 @@ class ListPresence(CachedAPIClient):
             raise ValueError("All elements in dtxsids must be strings")
         
         endpoint = "exposure/list-presence/search/by-dtxsid/"
-        return self._make_request("POST", endpoint, json_data=dtxsids)
+        return self._make_cached_request(
+            endpoint, method='POST', json=dtxsids, use_cache=use_cache
+        )

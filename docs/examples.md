@@ -11,7 +11,7 @@ from pycomptox import Chemical, ChemicalDetails
 
 # Search for a chemical
 chem = Chemical()
-results = chem.search_by_name("aspirin")
+results = chem.search_by_exact_value("aspirin")
 
 if results:
     chemical = results[0]
@@ -21,7 +21,7 @@ if results:
     
     # Get detailed information
     details = ChemicalDetails()
-    info = details.get_chemical_by_dtxsid(
+    info = details.get_data_by_dtxsid(
         chemical['dtxsid'],
         projection="chemicaldetailall"
     )
@@ -65,7 +65,7 @@ chemicals = ["caffeine", "aspirin", "ibuprofen"]
 # Search for all
 dtxsids = []
 for name in chemicals:
-    results = chem.search_by_name(name)
+    results = chem.search_by_exact_value(name)
     if results:
         dtxsids.append(results[0]['dtxsid'])
 
@@ -90,9 +90,9 @@ def get_chemical_profile(identifier, id_type='name'):
     # Search
     chem = Chemical()
     if id_type == 'name':
-        results = chem.search_by_name(identifier)
+        results = chem.search_by_exact_value(identifier)
     elif id_type == 'casrn':
-        results = chem.search_by_casrn(identifier)
+        results = chem.search_by_exact_value(identifier)
     elif id_type == 'dtxsid':
         results = [{'dtxsid': identifier}]
     else:
@@ -110,7 +110,7 @@ def get_chemical_profile(identifier, id_type='name'):
     
     return {
         'search_result': results[0],
-        'details': details.get_chemical_by_dtxsid(
+        'details': details.get_data_by_dtxsid(
             dtxsid,
             projection='chemicaldetailall'
         ),
@@ -142,7 +142,7 @@ def compare_properties(dtxsids, property_names):
     props = ChemicalProperties()
     
     # Get property data
-    all_data = props.get_property_summary_by_dtxsid_batch(dtxsids)
+    all_data = props.get_predicted_properties_by_dtxsid_batch(dtxsids)
     
     # Extract specific properties
     results = []
@@ -193,7 +193,7 @@ def analyze_chemical_class(search_term, top_n=10):
     """Analyze literature coverage for a chemical class."""
     # Search for chemicals
     chem = Chemical()
-    results = chem.search_by_name(search_term)
+    results = chem.search_by_exact_value(search_term)
     
     if not results:
         return None
@@ -245,7 +245,7 @@ class CachedChemicalClient:
     @lru_cache(maxsize=256)
     def get_chemical_cached(self, dtxsid, projection='chemicalidentifier'):
         """Get chemical with caching."""
-        return self.details.get_chemical_by_dtxsid(dtxsid, projection)
+        return self.details.get_data_by_dtxsid(dtxsid, projection)
     
     def clear_cache(self):
         """Clear the cache."""
@@ -284,14 +284,14 @@ def create_chemical_dataframe(chemical_names):
     
     for name in chemical_names:
         # Search
-        results = chem.search_by_name(name)
+        results = chem.search_by_exact_value(name)
         if not results:
             continue
         
         dtxsid = results[0]['dtxsid']
         
         # Get details
-        info = details.get_chemical_by_dtxsid(dtxsid)
+        info = details.get_data_by_dtxsid(dtxsid)
         refs = extra.get_data_by_dtxsid(dtxsid)
         
         # Combine
@@ -338,9 +338,9 @@ def robust_batch_search(identifiers, id_type='name'):
     for identifier in identifiers:
         try:
             if id_type == 'name':
-                res = chem.search_by_name(identifier)
+                res = chem.search_by_exact_value(identifier)
             elif id_type == 'casrn':
-                res = chem.search_by_casrn(identifier)
+                res = chem.search_by_exact_value(identifier)
             else:
                 logger.warning(f"Unknown id_type: {id_type}")
                 continue

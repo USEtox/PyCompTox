@@ -84,10 +84,10 @@ class TestChemicalList:
         # Bisphenol A should appear in multiple lists
         assert len(lists) > 0
         
-        # API returns list of lists, not list of dicts
-        # Just verify we got some data back
+        # Each entry is a list record: {id, listName, label, chemicalCount, ...}
         first_item = lists[0]
-        assert isinstance(first_item, list)
+        assert isinstance(first_item, dict)
+        assert "listName" in first_item
     
     def test_get_public_lists_by_dtxsid_empty(self):
         """Test that empty DTXSID raises ValueError"""
@@ -119,11 +119,11 @@ class TestChemicalList:
         """Test that rate limiting is enforced"""
         client = ChemicalList(time_delay_between_calls=0.5)
         
-        start_time = time.time()
+        start_time = time.monotonic()
         # Disable cache to ensure rate limiting is tested
         client.get_all_list_types(use_cache=False)
         client.get_all_list_types(use_cache=False)
-        elapsed = time.time() - start_time
+        elapsed = time.monotonic() - start_time
         
         # Should take at least 0.5 seconds due to rate limiting
         assert elapsed >= 0.5

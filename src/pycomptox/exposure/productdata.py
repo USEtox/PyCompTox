@@ -11,10 +11,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
@@ -38,34 +35,10 @@ class ProductData(CachedAPIClient):
         >>> prod_data = ProductData()
         >>> 
         >>> # Get product data for a chemical
-        >>> products = prod_data.products_data_by_dtxsid("DTXSID0020232")
+        >>> products = prod_data.get_product_data_by_dtxsid("DTXSID0020232")
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api/",
-        time_delay_between_calls: float = 0.0
-    , **kwargs):
-        """
-        Initialize the ProductData client.
-        
-        Args:
-            api_key: CompTox API key (optional, will be loaded from config if not provided)
-            base_url: Base URL for the CompTox API
-            time_delay_between_calls: Delay between API calls in seconds
-        
-        Raises:
-            ValueError: If no API key is provided or found in configuration
-        """
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-    
-    def products_data_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_product_data_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get product data for a chemical.
         
@@ -86,7 +59,7 @@ class ProductData(CachedAPIClient):
         
         Example:
             >>> prod_data = ProductData()
-            >>> products = prod_data.products_data_by_dtxsid("DTXSID0020232")
+            >>> products = prod_data.get_product_data_by_dtxsid("DTXSID0020232")
             >>> for product in products:
             ...     print(f"{product.get('productName', 'N/A')}: {product.get('pucCode', 'N/A')}")
         """
@@ -96,7 +69,7 @@ class ProductData(CachedAPIClient):
         endpoint = f"exposure/product-data/search/by-dtxsid/{dtxsid}"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def list_all_puc_product(self, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_all_puc_products(self, use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get all Product Use Category (PUC) classifications.
         
@@ -110,14 +83,14 @@ class ProductData(CachedAPIClient):
         
         Example:
             >>> prod_data = ProductData()
-            >>> pucs = prod_data.list_all_puc_product()
+            >>> pucs = prod_data.get_all_puc_products()
             >>> for puc in pucs:
             ...     print(f"{puc.get('pucCode', 'N/A')}: {puc.get('pucDescription', '')}")
         """
         endpoint = "exposure/product-data/puc"
         return self._make_cached_request(endpoint, use_cache=use_cache)
 
-    def product_data_by_dtxsid_batch(self, dtxsid_list: List[str], use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
+    def get_product_data_by_dtxsid_batch(self, dtxsid_list: List[str], use_cache: Optional[bool] = None) -> List[Dict[str, Any]]:
         """
         Get product data for multiple chemicals in a single request.
         
@@ -139,7 +112,7 @@ class ProductData(CachedAPIClient):
         Example:
             >>> prod_data = ProductData()
             >>> dtxsids = ["DTXSID0020232", "DTXSID7020182"]
-            >>> batch_results = prod_data.product_data_by_dtxsid_batch(dtxsids)
+            >>> batch_results = prod_data.get_product_data_by_dtxsid_batch(dtxsids)
             >>> for result in batch_results:
             ...     print(f"{result.get('dtxsid')}: {result.get('productName')}")
         """
@@ -150,4 +123,6 @@ class ProductData(CachedAPIClient):
             raise ValueError("All elements in dtxsid_list must be strings")
         
         endpoint = "exposure/product-data/search/by-dtxsid/"
-        return self._make_request("POST", endpoint, json_data=dtxsid_list)
+        return self._make_cached_request(
+            endpoint, method='POST', json=dtxsid_list, use_cache=use_cache
+        )

@@ -114,14 +114,14 @@ class TestWikiLink:
         wiki_with_delay = WikiLink(time_delay_between_calls=0.5, use_cache=False)
         
         import time
-        start_time = time.time()
+        start_time = time.monotonic()
         
         try:
             # Make two requests
             wiki_with_delay.check_existence_by_dtxsid("DTXSID7020182")
             wiki_with_delay.check_existence_by_dtxsid("DTXSID2021315")
             
-            elapsed = time.time() - start_time
+            elapsed = time.monotonic() - start_time
             
             # Should take at least 0.5 seconds due to rate limiting
             assert elapsed >= 0.5, f"Rate limiting not working: {elapsed}s"

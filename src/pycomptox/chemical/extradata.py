@@ -11,11 +11,7 @@ Author: PyCompTox Contributors
 License: MIT
 """
 
-import os
-import time
 from typing import List, Dict, Any, Optional
-import requests
-from urllib.parse import urljoin
 
 from ..base import CachedAPIClient
 
@@ -48,21 +44,6 @@ class ExtraData(CachedAPIClient):
         >>> print(f"Patents: {data['googlePatent']}")
     """
     
-    def __init__(
-        self,
-        api_key: Optional[str] = None,
-        base_url: str = "https://comptox.epa.gov/ctx-api",
-        time_delay_between_calls: float = 0.0,
-        **kwargs
-    ):
-        """Initialize the ExtraData client."""
-        super().__init__(
-            api_key=api_key,
-            base_url=base_url,
-            time_delay_between_calls=time_delay_between_calls,
-            **kwargs
-        )
-    
     def get_data_by_dtxsid(self, dtxsid: str, use_cache: Optional[bool] = None) -> Dict[str, Any]:
         """
         Get extra reference data for a chemical by DTXSID.
@@ -83,8 +64,12 @@ class ExtraData(CachedAPIClient):
                 - pubmed: Number of PubMed citations
                 
         Raises:
-            ValueError: If chemical not found or invalid DTXSID
-            requests.exceptions.RequestException: For API errors
+            NotFoundError: If the chemical is not found.
+            ValueError: If the DTXSID is not a valid non-empty string.
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
             
         Example:
             >>> extra = ExtraData()
@@ -124,7 +109,10 @@ class ExtraData(CachedAPIClient):
                 
         Raises:
             ValueError: If more than 1000 DTXSIDs provided
-            requests.exceptions.RequestException: For API errors
+            AuthenticationError: If the API key is missing, invalid, or lacks access.
+            NotFoundError: If the requested identifier does not exist.
+            RateLimitError: If the API rate limit is exceeded.
+            APIError: For any other unsuccessful API response.
             
         Example:
             >>> extra = ExtraData()

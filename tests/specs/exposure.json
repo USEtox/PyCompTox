@@ -1,0 +1,143 @@
+{
+ "info": {
+  "title": "Computational Toxicology and Exposure (CTX) APIs - CTX Exposure API",
+  "version": "1.1.1"
+ },
+ "paths": {
+  "/exposure/ccd/chem-weight-fractions/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get Chemical Weight Fractions data by DTXSID"
+   }
+  },
+  "/exposure/ccd/functional-use/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get Reported Functional Use data by DTXSID"
+   }
+  },
+  "/exposure/ccd/keywords/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get General Use Keywords data by DTXSID"
+   }
+  },
+  "/exposure/ccd/monitoring-data/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get Biomonitoring data by DTXSID with CCD projection"
+   }
+  },
+  "/exposure/ccd/production-volume/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get Production Volume data by DTXSID"
+   }
+  },
+  "/exposure/ccd/puc/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get Product Use Category data by DTXSID"
+   }
+  },
+  "/exposure/functional-use/category": {
+   "get": {
+    "summary": "Get functional use categories"
+   }
+  },
+  "/exposure/functional-use/probability/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get functional use probability by DTXSID"
+   }
+  },
+  "/exposure/functional-use/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get functional-use data for a batch of DTXSIDs"
+   }
+  },
+  "/exposure/functional-use/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get functional use data by DTXSID"
+   }
+  },
+  "/exposure/httk/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get httk data for a batch of DTXSIDs"
+   }
+  },
+  "/exposure/httk/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get httk data by DTXSID"
+   }
+  },
+  "/exposure/list-presence/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get List Presence data for a batch of DTXSIDs"
+   }
+  },
+  "/exposure/list-presence/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get List Presence data by DTXSID"
+   }
+  },
+  "/exposure/list-presence/tags": {
+   "get": {
+    "summary": "Get List Presence Tags"
+   }
+  },
+  "/exposure/mmdb/aggregate/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get Aggregate data by DTXSID"
+   }
+  },
+  "/exposure/mmdb/aggregate/by-medium": {
+   "get": {
+    "summary": "Get Aggregate data by Medium"
+   }
+  },
+  "/exposure/mmdb/mediums": {
+   "get": {
+    "summary": "Get all Media options"
+   }
+  },
+  "/exposure/mmdb/single-sample/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get Single Sample data by DTXSID"
+   }
+  },
+  "/exposure/mmdb/single-sample/by-medium": {
+   "get": {
+    "summary": "Get Single Sample data by Medium"
+   }
+  },
+  "/exposure/product-data/puc": {
+   "get": {
+    "summary": "Get all product use categories"
+   }
+  },
+  "/exposure/product-data/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get product data for a batch of DTXSIDs"
+   }
+  },
+  "/exposure/product-data/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get product data by DTXSID"
+   }
+  },
+  "/exposure/seem/demographic/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get SEEM Demographic Exposure Prediction data for batch of DTXSIDs"
+   }
+  },
+  "/exposure/seem/demographic/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get SEEM Demographic Exposure Prediction data by DTXSID"
+   }
+  },
+  "/exposure/seem/general/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get SEEM General Exposure Prediction data for a batch of DTXSIDs"
+   }
+  },
+  "/exposure/seem/general/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get SEEM General Exposure Prediction data by DTXSID"
+   }
+  }
+ }
+}

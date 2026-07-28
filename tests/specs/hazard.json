@@ -1,0 +1,148 @@
+{
+ "info": {
+  "title": "Computational Toxicology and Exposure (CTX) APIs - CTX Hazard API",
+  "version": "1.1.1"
+ },
+ "paths": {
+  "/hazard/adme-ivive/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get ADME data for IVIVE by DTXSID with CCD projection"
+   }
+  },
+  "/hazard/cancer-summary/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get data for a batch of DTXSIDs"
+   }
+  },
+  "/hazard/cancer-summary/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get data by DTXSID"
+   }
+  },
+  "/hazard/genetox/details/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get detailed data for a batch of DTXSIDs"
+   }
+  },
+  "/hazard/genetox/details/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get detailed data by DTXSID with CCD projection"
+   }
+  },
+  "/hazard/genetox/summary/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get summary data for a batch of DTXSID"
+   }
+  },
+  "/hazard/genetox/summary/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get summary data by DTXSID"
+   }
+  },
+  "/hazard/hawc/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get HAWC link by DTXSID"
+   }
+  },
+  "/hazard/iris/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get IRIS data by DTXSID"
+   }
+  },
+  "/hazard/pprtv/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get PPRTV data by DTXSID"
+   }
+  },
+  "/hazard/skin-eye/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get data for a batch of DTXSID(s)"
+   }
+  },
+  "/hazard/skin-eye/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get data by DTXSID"
+   }
+  },
+  "/hazard/toxref/data/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get all data by DTXSID"
+   }
+  },
+  "/hazard/toxref/data/search/by-study-id/{studyId}": {
+   "get": {
+    "summary": "Get all data by Study ID"
+   }
+  },
+  "/hazard/toxref/data/search/by-study-type/{studyType}": {
+   "get": {
+    "summary": "Get all data by Study Type"
+   }
+  },
+  "/hazard/toxref/effects/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get effects data by DTXSID"
+   }
+  },
+  "/hazard/toxref/effects/search/by-study-id/{studyId}": {
+   "get": {
+    "summary": "Get effects data by Study ID"
+   }
+  },
+  "/hazard/toxref/effects/search/by-study-type/{studyType}": {
+   "get": {
+    "summary": "Get effects data by Study Type"
+   }
+  },
+  "/hazard/toxref/observations/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get observations by DTXSID"
+   }
+  },
+  "/hazard/toxref/observations/search/by-study-id/{studyId}": {
+   "get": {
+    "summary": "Get observations by Study ID"
+   }
+  },
+  "/hazard/toxref/observations/search/by-study-type/{studyType}": {
+   "get": {
+    "summary": "Get observations by Study Type"
+   }
+  },
+  "/hazard/toxref/summary/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get summary data by DTXSID"
+   }
+  },
+  "/hazard/toxref/summary/search/by-study-id/{studyId}": {
+   "get": {
+    "summary": "Get summary data by Study ID"
+   }
+  },
+  "/hazard/toxref/summary/search/by-study-type/{studyType}": {
+   "get": {
+    "summary": "Get summary data by Study Type"
+   }
+  },
+  "/hazard/toxval/search/by-category/{dtxsid}": {
+   "get": {
+    "summary": "Get all data by dtxsid and category"
+   }
+  },
+  "/hazard/toxval/search/by-dtxsid/": {
+   "post": {
+    "summary": "Get data for a batch of DTXSID(s)."
+   }
+  },
+  "/hazard/toxval/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get data by DTXSID"
+   }
+  },
+  "/hazard/toxval/supercategory/search/by-dtxsid/{dtxsid}": {
+   "get": {
+    "summary": "Get all toxval supercategories by dtxsid"
+   }
+  }
+ }
+}

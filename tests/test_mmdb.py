@@ -5,11 +5,7 @@ This script demonstrates basic usage of the MMDB API client
 and tests various methods for retrieving Molecular Modeling Database data.
 """
 
-import sys
-from pathlib import Path
 
-# Add the src directory to the path
-sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 from pycomptox.exposure import MMDB
 
@@ -29,7 +25,7 @@ def test_harmonized_single_sample_by_medium():
         medium = "surface water"
         print(f"Fetching single-sample data for medium: {medium}...")
         
-        data = client.harmonized_single_sample_by_medium(medium)
+        data = client.get_harmonized_single_sample_by_medium(medium)
         
         if data:
             print(f"✓ Retrieved single-sample data")
@@ -62,7 +58,7 @@ def test_pagination():
         page_number = 2
         print(f"Fetching page {page_number} for medium: {medium}...")
         
-        data = client.harmonized_single_sample_by_medium(medium, page_number=page_number)
+        data = client.get_harmonized_single_sample_by_medium(medium, page_number=page_number)
         
         if data:
             print(f"✓ Retrieved page {page_number}")
@@ -90,7 +86,7 @@ def test_input_validation():
         # Test with empty string
         print("Testing with empty medium...")
         try:
-            client.harmonized_single_sample_by_medium("")
+            client.get_harmonized_single_sample_by_medium("")
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")
@@ -98,7 +94,7 @@ def test_input_validation():
         # Test with invalid page number
         print("\nTesting with invalid page_number...")
         try:
-            client.harmonized_single_sample_by_medium("surface water", page_number=0)
+            client.get_harmonized_single_sample_by_medium("surface water", page_number=0)
             print("✗ Should have raised ValueError")
         except ValueError as e:
             print(f"✓ Correctly raised ValueError: {e}")

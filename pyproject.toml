@@ -3,7 +3,7 @@ name = "comptox-python"
 version = "0.7.0"
 description = "A Python interface for the EPA CompTox Dashboard Chemical API"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.12"
 license = {text = "MIT"}
 authors = [
     {name = "USEtox", email = "usetox@example.com"}
@@ -29,9 +29,6 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Typing :: Typed",
@@ -83,7 +80,7 @@ pycomptox = ["py.typed"]
 
 [tool.black]
 line-length = 100
-target-version = ["py39", "py310", "py311", "py312", "py313"]
+target-version = ["py312", "py313"]
 include = '\.pyi?$'
 extend-exclude = '''
 /(
@@ -109,8 +106,7 @@ use_parentheses = true
 ensure_newline_before_comments = true
 
 [tool.mypy]
-# No python_version pin: recent mypy refuses targets below 3.10, while the
-# package still supports 3.9. Type-check against the running interpreter.
+python_version = "3.12"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false

@@ -4,7 +4,7 @@ Get up and running with PyCompTox in minutes!
 
 ## Prerequisites
 
-- Python 3.9 or higher
+- Python 3.12 or higher
 - CompTox Dashboard API key ([Get one here](https://comptox.epa.gov/dashboard/api))
 
 ## Installation

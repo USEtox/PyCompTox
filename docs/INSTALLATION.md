@@ -223,7 +223,7 @@ pip install --upgrade pip setuptools wheel build
 
 ## Requirements
 
-- Python 3.9 or higher
+- Python 3.12 or higher
 - pip (usually comes with Python)
 - Internet connection (for API access)
 
@@ -233,7 +233,7 @@ PyCompTox is pure Python and works on:
 - ✓ Windows
 - ✓ macOS
 - ✓ Linux
-- ✓ Any platform with Python 3.9+
+- ✓ Any platform with Python 3.12+
 
 ## Getting Help
 

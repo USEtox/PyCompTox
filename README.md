@@ -1,6 +1,6 @@
 # PyCompTox
 
-[![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/downloads/)
 [![PyPI version](https://img.shields.io/pypi/v/comptox-python.svg)](https://pypi.org/project/comptox-python/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://github.com/USEtox/PyCompTox/workflows/CI/badge.svg)](https://github.com/USEtox/PyCompTox/actions/workflows/ci.yml)
@@ -25,7 +25,8 @@ print(results[0]["dtxsid"])   # DTXSID7020182
 > all, and contains breaking changes: caching is now opt-in rather than on by
 > default, `CCCData` is renamed `CCDData`, several methods were renamed for
 > consistency, and API failures now raise `pycomptox.exceptions` types instead
-> of `ValueError`. See the [changelog](CHANGELOG.md) for the full rename table.
+> of `ValueError`, and the minimum Python is now 3.12. See the
+> [changelog](CHANGELOG.md) for the full rename table.
 
 ## Installation
 

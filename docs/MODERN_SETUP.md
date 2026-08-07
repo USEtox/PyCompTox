@@ -77,7 +77,7 @@ Includes:
 ```toml
 [tool.black]
 line-length = 100
-target-version = ["py38", "py39", "py310", "py311", "py312"]
+target-version = ["py312", "py313"]
 ```
 
 Usage:
@@ -89,7 +89,7 @@ black src/ tests/
 
 ```toml
 [tool.mypy]
-# python_version pin omitted: recent mypy requires >=3.10 targets
+python_version = "3.12"
 check_untyped_defs = true
 ignore_missing_imports = true
 ```

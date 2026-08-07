@@ -169,8 +169,9 @@ work at all, and standardises method naming. It contains **breaking changes**.
   imported by the library. `urllib3>=1.26` is now declared explicitly, since the
   retry configuration depends on it.
 
-- **Python 3.8 support dropped** (end of life). Minimum is now 3.9; CI tests
-  3.9–3.13.
+- **Python 3.12 is now the minimum.** 3.8 through 3.11 are no longer supported;
+  CI tests 3.12 and 3.13. This also lets mypy pin `python_version = "3.12"`
+  again, which recent releases refuse to do for targets below 3.10.
 
 ### Removed
 

@@ -143,6 +143,7 @@ nav:
       - ToxRefDBObservation: api/toxrefdbobservation.md
   - About:
     - Contributing: contributing.md
+    - Releasing: RELEASING.md
     - License: license.md
     - Changelog: changelog.md
 

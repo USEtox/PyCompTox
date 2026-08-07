@@ -1,14 +1,29 @@
 name: CI
 
+# Disabled: tests are run locally, so this workflow no longer fires on push,
+# pull request, or a schedule. It is kept intact and can still be started by
+# hand from the Actions tab ("Run workflow"), or with:
+#
+#     gh workflow run ci.yml --ref main
+#
+# To re-enable automatic runs, restore the triggers below:
+#
+#   push:
+#     branches: [ main, develop ]
+#   pull_request:
+#     branches: [ main, develop ]
+#   schedule:
+#     - cron: '0 4 * * 1'      # weekly, for the slow bulk-endpoint job
+#
+# Local equivalents of the jobs here:
+#
+#   pytest -m "not integration"   # offline, no API key needed
+#   pytest                        # full suite, needs COMPTOX_API_KEY
+#   pytest --run-slow             # includes the slow ToxRefDB bulk endpoints
+#   mypy src/pycomptox --ignore-missing-imports
+#   flake8 src/ tests/ --select=E9,F63,F7,F82,F401
+#   mkdocs build --strict
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
-  schedule:
-    # Weekly, to exercise the slow bulk endpoints without
-    # slowing down every push.
-    - cron: '0 4 * * 1'
   workflow_dispatch:
 
 jobs:
